@@ -71,11 +71,11 @@ impl<'ctx> Block<'ctx> {
     }
 
     pub fn add_eval(&self, loc: Option<Location<'ctx>>, rvalue: RValue<'ctx>) {
-        unsafe {
-            let loc_ptr = match loc {
-                Some(loc) => location::get_ptr(&loc),
+        let loc_ptr = match loc {
+                Some(loc) => unsafe { location::get_ptr(&loc) },
                 None => ptr::null_mut()
             };
+        unsafe {
             gccjit_sys::gcc_jit_block_add_eval(self.ptr,
                                                loc_ptr,
                                                rvalue::get_ptr(&rvalue));
@@ -86,11 +86,11 @@ impl<'ctx> Block<'ctx> {
                           loc: Option<Location<'ctx>>,
                           lvalue: LValue<'ctx>,
                           rvalue: RValue<'ctx>) {
-        unsafe {
-            let loc_ptr = match loc {
-                Some(loc) => location::get_ptr(&loc),
+        let loc_ptr = match loc {
+                Some(loc) => unsafe { location::get_ptr(&loc) },
                 None => ptr::null_mut()
             };
+        unsafe {
             gccjit_sys::gcc_jit_block_add_assignment(self.ptr,
                                                      loc_ptr,
                                                      lvalue::get_ptr(&lvalue),
@@ -103,11 +103,11 @@ impl<'ctx> Block<'ctx> {
                              lvalue: LValue<'ctx>,
                              op: BinaryOp,
                              rvalue: RValue<'ctx>) {
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
         unsafe {
-            let loc_ptr = match loc {
-                Some(loc) => location::get_ptr(&loc),
-                None => ptr::null_mut()
-            };
             gccjit_sys::gcc_jit_block_add_assignment_op(self.ptr,
                                                         loc_ptr,
                                                         lvalue::get_ptr(&lvalue),
@@ -119,11 +119,11 @@ impl<'ctx> Block<'ctx> {
     pub fn add_comment(&self,
                        loc: Option<Location<'ctx>>,
                        message: &str) {
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
         unsafe {
-            let loc_ptr = match loc {
-                Some(loc) => location::get_ptr(&loc),
-                None => ptr::null_mut()
-            };
             let cstr = CString::new(message).unwrap();
             gccjit_sys::gcc_jit_block_add_comment(self.ptr,
                                                   loc_ptr,
@@ -136,13 +136,31 @@ impl<'ctx> Block<'ctx> {
                                 cond: RValue<'ctx>,
                                 on_true: Block<'ctx>,
                                 on_false: Block<'ctx>) {
-        unimplemented!()
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        unsafe {
+            gccjit_sys::gcc_jit_block_end_with_conditional(self.ptr,
+                                                           loc_ptr,
+                                                           rvalue::get_ptr(&cond),
+                                                           on_true.ptr,
+                                                           on_false.ptr);
+        }
     }
 
     pub fn end_with_jump(&self,
                          loc: Option<Location<'ctx>>,
                          target: Block<'ctx>) {
-        unimplemented!()
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        unsafe {
+            gccjit_sys::gcc_jit_block_end_with_jump(self.ptr,
+                                                    loc_ptr,
+                                                    target.ptr);
+        }
     }
 
     pub fn end_with_return(&self,
@@ -160,7 +178,14 @@ impl<'ctx> Block<'ctx> {
     }
 
     pub fn end_with_void_return(&self, loc: Option<Location<'ctx>>) {
-        unimplemented!()
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        unsafe {
+            gccjit_sys::gcc_jit_block_end_with_void_return(self.ptr,
+                                                           loc_ptr);
+        }
     }
 }
 

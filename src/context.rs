@@ -24,6 +24,12 @@ use function;
 
 use block::{BinaryOp, UnaryOp};
 
+use parameter::Parameter;
+use parameter;
+
+use lvalue::LValue;
+use lvalue;
+
 use gccjit_sys;
 
 use gccjit_sys::gcc_jit_int_option::*;
@@ -315,11 +321,14 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
+    /// Creates a new function with the given function kind, return type, parameters, name,
+    /// and whether or not the function is variadic. It's not currently possible to call
+    /// variadic functions from Rust right now, so that option is turned off for now.
     pub fn new_function<'a>(&'a self,
                             loc: Option<Location<'a>>,
                             kind: FunctionType,
                             return_ty: types::Type<'a>,
-                            params: &[types::Type<'a>],
+                            params: &[Parameter<'a>],
                             name: &str,
                             is_variadic: bool) -> Function<'a> {
         assert!(!is_variadic, "don't support variadic functions yet");
@@ -328,8 +337,8 @@ impl<'ctx> Context<'ctx> {
             None => ptr::null_mut()
         };
         let num_params = i32::from_usize(params.len()).unwrap();
-        let mut types_ptrs : Vec<_> = params.iter()
-            .map(|x| unsafe { types::get_ptr(&x) })
+        let mut params_ptrs : Vec<_> = params.iter()
+            .map(|x| unsafe { parameter::get_ptr(&x) })
             .collect();
         unsafe {
             let cstr = CString::new(name).unwrap();
@@ -339,12 +348,13 @@ impl<'ctx> Context<'ctx> {
                                                                types::get_ptr(&return_ty),
                                                                cstr.as_ptr(),
                                                                num_params,
-                                                               types_ptrs.as_mut_ptr(),
+                                                               params_ptrs.as_mut_ptr(),
                                                                0);
             function::from_ptr(ptr)
         }
     }
 
+    /// Creates a new binary operation between two RValues and produces a new RValue.
     pub fn new_binary_op<'a>(&'a self,
                         loc: Option<Location<'a>>,
                         op: BinaryOp,
@@ -366,98 +376,229 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
+    /// Creates a unary operation on one RValue and produces a result RValue.
     pub fn new_unary_op<'a>(&'a self,
                         loc: Option<Location<'a>>,
                         op: UnaryOp,
                         ty: types::Type<'a>,
                         rvalue: RValue<'a>) -> RValue<'a> {
-        unimplemented!()
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_new_unary_op(self.ptr,
+                                                               loc_ptr,
+                                                               mem::transmute(op),
+                                                               types::get_ptr(&ty),
+                                                               rvalue::get_ptr(&rvalue));
+            rvalue::from_ptr(ptr)
+        }
     }
 
+    /// Creates a function call to a function object with a given number of parameters.
+    /// The RValue that is returned is the result of the function call.
     pub fn new_call<'a>(&'a self,
                     loc: Option<Location<'a>>,
                     func: Function<'a>,
                     args: &[RValue<'a>]) -> RValue<'a> {
-        unimplemented!()
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        let num_params = i32::from_usize(args.len()).unwrap();
+        let mut params_ptrs : Vec<_> = args.iter()
+            .map(|x| unsafe { rvalue::get_ptr(&x) })
+            .collect();
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_new_call(self.ptr,
+                                                           loc_ptr,
+                                                           function::get_ptr(&func),
+                                                           num_params,
+                                                           params_ptrs.as_mut_ptr());
+            rvalue::from_ptr(ptr)
+        }
     }
 
-    pub fn new_call_through_pointer<'a>(&'a self,
+    /// Creates an indirect function call that dereferences a function pointer and
+    /// attempts to invoke it with the given arguments. The RValue that is returned
+    /// is the result of the function call.
+    pub fn new_call_through_ptr<'a>(&'a self,
                                     loc: Option<Location<'a>>,
                                     fun_ptr: RValue<'a>,
                                     args: &[RValue<'a>]) -> RValue<'a> {
-        unimplemented!()
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        let num_params = i32::from_usize(args.len()).unwrap();
+        let mut params_ptrs : Vec<_> = args.iter()
+            .map(|x| unsafe { rvalue::get_ptr(&x) })
+            .collect();
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_new_call_through_ptr(self.ptr,
+                                                           loc_ptr,
+                                                           rvalue::get_ptr(&fun_ptr),
+                                                           num_params,
+                                                           params_ptrs.as_mut_ptr());
+            rvalue::from_ptr(ptr)
+        }
     }
 
+    /// Cast an RValue to a specific type. I don't know what happens when the cast fails yet.
     pub fn new_cast<'a>(&'a self,
-                    loc: Option<Location<'a>>,
-                    rvalue: RValue<'a>,
-                    dest_type: types::Type<'a>) -> RValue<'a> {
-        unimplemented!()
+                        loc: Option<Location<'a>>,
+                        rvalue: RValue<'a>,
+                        dest_type: types::Type<'a>) -> RValue<'a> {
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_new_cast(self.ptr,
+                                                           loc_ptr,
+                                                           rvalue::get_ptr(&rvalue),
+                                                           types::get_ptr(&dest_type));
+            rvalue::from_ptr(ptr)
+        }
     }
 
+    /// Creates an LValue from an array pointer and an offset. The LValue can be the target
+    /// of an assignment, or it can be converted into an RValue (i.e. loaded).
     pub fn new_array_access<'a>(&'a self,
                             loc: Option<Location<'a>>,
                             array_ptr: RValue<'a>,
-                            index: RValue<'a>) -> RValue<'a> {
-        unimplemented!()
+                            index: RValue<'a>) -> LValue<'a> {
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_new_array_access(self.ptr,
+                                                                   loc_ptr,
+                                                                   rvalue::get_ptr(&array_ptr),
+                                                                   rvalue::get_ptr(&index));
+            lvalue::from_ptr(ptr)
+        }
     }
 
+    /// Creates a new RValue from a given long value.
     pub fn new_rvalue_from_long<'a>(&'a self,
                                     ty: types::Type<'a>,
                                     value: i64) -> RValue<'a> {
-        unimplemented!()
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_long(self.ptr,
+                                                                       types::get_ptr(&ty),
+                                                                       value);
+            rvalue::from_ptr(ptr)
+        }
     }
 
+    /// Creates a new RValue from a given int value.
     pub fn new_rvalue_from_int<'a>(&'a self,
                                    ty: types::Type<'a>,
                                    value: i32) -> RValue<'a> {
-        unimplemented!()
+
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_int(self.ptr,
+                                                                      types::get_ptr(&ty),
+                                                                      value);
+            rvalue::from_ptr(ptr)           
+        }
     }
 
+    /// Creates a new RValue from a given double value.
     pub fn new_rvalue_from_double<'a>(&'a self,
                                       ty: types::Type<'a>,
                                       value: f64) -> RValue<'a> {
-        unimplemented!()
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_double(self.ptr,
+                                                                       types::get_ptr(&ty),
+                                                                       value);
+            rvalue::from_ptr(ptr)
+        }
     }
 
-    pub fn new_rvalue_from_float<'a>(&'a self,
-                                     ty: types::Type<'a>,
-                                     value: f32) -> RValue<'a> {
-        unimplemented!()
-    }
-
+    /// Creates a zero element for a given type.
     pub fn new_rvalue_zero<'a>(&'a self,
                                ty: types::Type<'a>) -> RValue<'a> {
-        unimplemented!()
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_zero(self.ptr,
+                                                       types::get_ptr(&ty));
+            rvalue::from_ptr(ptr)
+        }
     }
 
+    /// Creates a one element for a given type.
     pub fn new_rvalue_one<'a>(&'a self,
                               ty: types::Type<'a>) -> RValue<'a> {
-        unimplemented!()
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_zero(self.ptr,
+                                                       types::get_ptr(&ty));
+            rvalue::from_ptr(ptr)
+        }
     }
 
+    /// Creates an RValue for a raw pointer.
     pub unsafe fn new_rvalue_from_ptr<'a>(&'a self,
                                           ty: types::Type<'a>,
                                           value: *mut u8) -> RValue<'a> {
-        unimplemented!()
+        let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_ptr(self.ptr,
+                                                          types::get_ptr(&ty),
+                                                          mem::transmute(value));
+        rvalue::from_ptr(ptr)
     }
 
+    /// Creates a null RValue.
     pub fn new_null<'a>(&'a self,
                     ty: types::Type<'a>) -> RValue<'a> {
-        unimplemented!()
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_null(self.ptr,
+                                                       types::get_ptr(&ty));
+            rvalue::from_ptr(ptr)
+        }
     }
 
+    /// Creates a string literal RValue.
     pub fn new_string_literal<'a>(&'a self,
                               value: &str) -> RValue<'a> {
-        unimplemented!()
+        unsafe {
+            // FIXME - is this safe?
+            let cstr = CString::new(value).unwrap();
+            let ptr = gccjit_sys::gcc_jit_context_new_string_literal(self.ptr,
+                                                                     cstr.as_ptr());
+            rvalue::from_ptr(ptr)
+        }
     }
 
+    /// Dumps a small C file to the path that can be used to reproduce a series
+    /// of API calls. You should only ever need to call this if you are debugging
+    /// a segfault in gccjit or this library.
     pub fn dump_reproducer_to_file(&self,
                                    path: &str) {
         unsafe {
             let cstr = CString::new(path).unwrap();
             gccjit_sys::gcc_jit_context_dump_reproducer_to_file(self.ptr,
                                                                 cstr.as_ptr());
+        }
+    }
+
+    /// Creates a new parameter with a given type, name, and location.
+    pub fn new_parameter<'a>(&'a self,
+                         loc: Option<Location<'a>>,
+                         ty: types::Type<'a>,
+                         name: &str) -> Parameter<'a> {
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        unsafe {
+            let cstr = CString::new(name).unwrap();
+            let ptr = gccjit_sys::gcc_jit_context_new_param(self.ptr,
+                                                            loc_ptr,
+                                                            types::get_ptr(&ty),
+                                                            cstr.as_ptr());
+            parameter::from_ptr(ptr)
         }
     }
 }

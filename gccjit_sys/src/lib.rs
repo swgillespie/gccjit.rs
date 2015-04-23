@@ -336,7 +336,7 @@ extern {
                                         return_ty: *mut gcc_jit_type,
                                         name: *const c_char,
                                         num_params: c_int,
-                                        param_tys: *mut *mut gcc_jit_type,
+                                        param: *mut *mut gcc_jit_param,
                                         is_variadic: c_int) -> *mut gcc_jit_function;
     pub fn gcc_jit_context_get_builtin_function(ctx: *mut gcc_jit_context,
                                                 name: *const c_char) -> *mut gcc_jit_function;
@@ -373,7 +373,7 @@ extern {
                                ty: *mut gcc_jit_type) -> *mut gcc_jit_rvalue;
     pub fn gcc_jit_context_new_rvalue_from_double(ctx: *mut gcc_jit_context,
                                                   ty: *mut gcc_jit_type,
-                                                  value: *mut c_double) -> *mut gcc_jit_rvalue;
+                                                  value: c_double) -> *mut gcc_jit_rvalue;
 
     pub fn gcc_jit_context_new_rvalue_from_ptr(ctx: *mut gcc_jit_context,
                                                ty: *mut gcc_jit_type,

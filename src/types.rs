@@ -80,6 +80,7 @@ macro_rules! typeable_def {
 }
 
 typeable_def!((), GCC_JIT_TYPE_VOID);
+typeable_def!(*mut (), GCC_JIT_TYPE_VOID_PTR);
 typeable_def!(bool, GCC_JIT_TYPE_BOOL);
 typeable_def!(char, GCC_JIT_TYPE_CHAR);
 typeable_def!(i8, GCC_JIT_TYPE_SIGNED_CHAR);

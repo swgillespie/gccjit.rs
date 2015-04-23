@@ -3,12 +3,9 @@ This repository contains the basics for some high-level bindings
 to libgccjit. The raw bindings themselves are in gccjit_sys, within this
 repository.
 
-Right now this doesn't work. In the example directory, I've got what
-will become a brainfuck interpreter in the future, but right now is
-attempting to JIT compile a square function. This unfortunately seems to stack
-overflow on my machine and I'm not sure why.
-
-At any rate, hopefully this becomes functional soon!
+This library is in its very early stages and very rough around the edges.
+The API is not as good as it could be and there's more work to be done.
+However, it does work!
 
 ## Building and running
 
@@ -24,10 +21,12 @@ cargo build
 should suffice. There aren't many unit tests right now, but they can be run
 using `cargo test`.
 
-In the `examples` directory, there's a project called `brainfuck` that was
-going to become a brainfuck interpreter. Right now it's a smoke test for this library
-that currently crashes. You can build it with `cargo build` or build/run with
-`cargo run` - although Cargo does not like it when the program it runs segfaults.
+There are two examples right now living in the `examples/` directory. One is a
+simple function that squares its integer argument, and the other is a function
+that calls a Rust function pointer to print "hello, world!".
 
-The docs can be built with `cargo doc` - I started out being good with documentation,
-but I slipped a little as I continued. I'll get better, I promise!
+Right now, if you call the APIs incorrectly, gccjit will print angry messages
+to standard error. It may be worth encoding this into the API. Right now there's
+no penalty to the APIs returning null (Rust never dereferences the opaque pointers
+and gccjit doesn't dereference them if they are null), but there's no indication
+to the user other than the message on standard error that something went wrong.
