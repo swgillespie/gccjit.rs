@@ -22,7 +22,7 @@ use rvalue;
 use function::{Function, FunctionType};
 use function;
 
-use block::{BinaryOp, UnaryOp};
+use block::{BinaryOp, UnaryOp, ComparisonOp};
 
 use parameter::Parameter;
 use parameter;
@@ -34,7 +34,7 @@ use gccjit_sys;
 
 use gccjit_sys::gcc_jit_int_option::*;
 use gccjit_sys::gcc_jit_str_option::*;
-//use gccjit_sys::gcc_jit_bool_option::*;
+use gccjit_sys::gcc_jit_bool_option::*;
 
 /// Represents an optimization level that the JIT compiler
 /// will use when compiling your code.
@@ -58,22 +58,36 @@ impl CompileResult {
     /// Gets a function pointer to a JIT compiled function. If the function
     /// does not exist (wasn't compiled by the Context that produced this
     /// CompileResult), this function returns None.
-    pub fn get_function<'a, A, R>(&'a self,
-                                  name: &str) -> Option<extern "C" fn(A) -> R> {
+    /// It is THE RESPONSIBILITY OF THE CALLER of this function to ensure
+    /// that this pointer does not outlive the CompileResult object. This
+    /// pointer must be transmuted to a function pointer in order to be
+    /// called.
+    pub fn get_function(&self, name: &str) -> Option<*mut u8> {
         let c_str = CString::new(name).unwrap();
         unsafe {
             let func = gccjit_sys::gcc_jit_result_get_code(self.ptr,
                                                            c_str.as_ptr());
-            mem::transmute(func)
+            if func.is_null() {
+                None
+            } else {
+                Some(mem::transmute(func))
+            }
         }
     }
 
-    /// Who knows what this thing does yet.
-    pub unsafe fn get_global<T>(&self, name: &str) -> *mut T {
+    /// Gets a pointer to a global variable that lives on the JIT heap.
+    /// It is similarly the caller's responsibility to ensure that this
+    /// value stays valid.
+    pub fn get_global(&self, name: &str) -> Option<*mut u8> {
         let c_str = CString::new(name).unwrap();
-        let global = gccjit_sys::gcc_jit_result_get_global(self.ptr,
-                                                               c_str.as_ptr());
-        mem::transmute(global)
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_result_get_global(self.ptr, c_str.as_ptr());
+            if ptr.is_null() {
+                None
+            } else {
+                Some(mem::transmute(ptr))
+            }
+        }
     }
 }
 
@@ -133,6 +147,14 @@ impl<'ctx> Context<'ctx> {
             gccjit_sys::gcc_jit_context_set_int_option(self.ptr,
                                                        GCC_JIT_INT_OPTION_OPTIMIZATION_LEVEL,
                                                        level as i32);
+        }
+    }
+
+    pub fn set_dump_code_on_compile(&self, value: bool) {
+        unsafe {
+            gccjit_sys::gcc_jit_context_set_bool_option(self.ptr,
+                                                        GCC_JIT_BOOL_OPTION_DUMP_GENERATED_CODE,
+                                                        value as i32);
         }
     }
 
@@ -396,6 +418,25 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
+    pub fn new_comparison<'a>(&'a self,
+                              loc: Option<Location<'a>>,
+                              op: ComparisonOp,
+                              left: RValue<'a>,
+                              right: RValue<'a>) -> RValue<'a> {
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_new_comparison(self.ptr,
+                                                                 loc_ptr,
+                                                                 mem::transmute(op),
+                                                                 rvalue::get_ptr(&left),
+                                                                 rvalue::get_ptr(&right));
+            rvalue::from_ptr(ptr)
+        }
+    }
+
     /// Creates a function call to a function object with a given number of parameters.
     /// The RValue that is returned is the result of the function call.
     pub fn new_call<'a>(&'a self,
@@ -533,8 +574,8 @@ impl<'ctx> Context<'ctx> {
     pub fn new_rvalue_one<'a>(&'a self,
                               ty: types::Type<'a>) -> RValue<'a> {
         unsafe {
-            let ptr = gccjit_sys::gcc_jit_context_zero(self.ptr,
-                                                       types::get_ptr(&ty));
+            let ptr = gccjit_sys::gcc_jit_context_one(self.ptr,
+                                                      types::get_ptr(&ty));
             rvalue::from_ptr(ptr)
         }
     }

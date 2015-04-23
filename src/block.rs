@@ -44,6 +44,18 @@ pub enum UnaryOp {
     Abs
 }
 
+/// ComparisonOp is an enum representing the various comparisons that
+/// gccjit is capable of doing.
+#[repr(C)]
+pub enum ComparisonOp {
+    Equals,
+    NotEquals,
+    LessThan,
+    LessThanEquals,
+    GreaterThan,
+    GreaterThanEquals
+}
+
 /// Block represents a basic block in gccjit. Blocks are created by functions.
 /// A basic block consists of a series of instructions terminated by a terminator
 /// instruction, which can be either a jump to one block, a conditional branch to

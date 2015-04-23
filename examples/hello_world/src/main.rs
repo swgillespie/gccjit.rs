@@ -4,6 +4,7 @@ use gccjit::Context;
 use gccjit::FunctionType;
 
 use std::default::Default;
+use std::mem;
 
 
 fn main() {
@@ -27,11 +28,12 @@ fn main() {
     block.add_eval(None, call);
     block.end_with_void_return(None);
     let result = context.compile();
-    let hello = result.get_function::<(),()>("hello").unwrap();
-    // this is an ugly quirk of how get_function works right now.
-    // if Rust had variadic templates/traits, this wouldn't be necessary.
-    // perhaps it would be better to do something other than this.
-    hello(());
+    let hello = result.get_function("hello");
+    let hello_fn : extern "C" fn() = match hello {
+        Some(x) => unsafe { mem::transmute(x) },
+        None => panic!("failed to retrieve function")
+    };
+    hello_fn();
 }
 
 extern "C" fn say_hello() {

@@ -29,4 +29,4 @@ pub use lvalue::{LValue, ToLValue};
 pub use rvalue::{RValue, ToRValue};
 pub use parameter::Parameter;
 pub use function::{Function, FunctionType};
-pub use block::{Block, BinaryOp, UnaryOp};
+pub use block::{Block, BinaryOp, UnaryOp, ComparisonOp};

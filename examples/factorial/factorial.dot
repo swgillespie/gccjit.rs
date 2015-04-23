@@ -1,0 +1,16 @@
+digraph factorial {
+	block_0 [shape=record,style=filled,fillcolor=white,label="{entry:\l\
+if\ (n\ ==\ (int)0)\ goto\ ret_block;\ else\ goto\ recurse_block;\l\
+}"];
+
+	block_1 [shape=record,style=filled,fillcolor=white,label="{recurse_block:\l\
+return\ n\ *\ factorial\ (n\ -\ (int)1);\l\
+}"];
+
+	block_2 [shape=record,style=filled,fillcolor=white,label="{ret_block:\l\
+return\ (int)1;\l\
+}"];
+
+	block_0:s -> block_2:n;
+	block_0:s -> block_1:n;
+}
