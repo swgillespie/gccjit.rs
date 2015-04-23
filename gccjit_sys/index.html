@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `gccjit_sys` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, gccjit_sys">
+
+    <title>gccjit_sys - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'gccjit_sys', ty: 'mod', relpath: '../'};</script>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>gccjit_sys</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
+        </span><a id='src-0' class='srclink' href='../src/gccjit_sys/lib.rs.html#1-471'>[src]</a></span></h1>
+<h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_binary_op.html'
+                               title='gccjit_sys::gcc_jit_binary_op'>gcc_jit_binary_op</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_block.html'
+                               title='gccjit_sys::gcc_jit_block'>gcc_jit_block</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_bool_option.html'
+                               title='gccjit_sys::gcc_jit_bool_option'>gcc_jit_bool_option</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_comparison.html'
+                               title='gccjit_sys::gcc_jit_comparison'>gcc_jit_comparison</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_context.html'
+                               title='gccjit_sys::gcc_jit_context'>gcc_jit_context</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_field.html'
+                               title='gccjit_sys::gcc_jit_field'>gcc_jit_field</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_function.html'
+                               title='gccjit_sys::gcc_jit_function'>gcc_jit_function</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_function_kind.html'
+                               title='gccjit_sys::gcc_jit_function_kind'>gcc_jit_function_kind</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_global_kind.html'
+                               title='gccjit_sys::gcc_jit_global_kind'>gcc_jit_global_kind</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_int_option.html'
+                               title='gccjit_sys::gcc_jit_int_option'>gcc_jit_int_option</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_location.html'
+                               title='gccjit_sys::gcc_jit_location'>gcc_jit_location</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_lvalue.html'
+                               title='gccjit_sys::gcc_jit_lvalue'>gcc_jit_lvalue</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_object.html'
+                               title='gccjit_sys::gcc_jit_object'>gcc_jit_object</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_output_kind.html'
+                               title='gccjit_sys::gcc_jit_output_kind'>gcc_jit_output_kind</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_param.html'
+                               title='gccjit_sys::gcc_jit_param'>gcc_jit_param</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_result.html'
+                               title='gccjit_sys::gcc_jit_result'>gcc_jit_result</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_rvalue.html'
+                               title='gccjit_sys::gcc_jit_rvalue'>gcc_jit_rvalue</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_str_option.html'
+                               title='gccjit_sys::gcc_jit_str_option'>gcc_jit_str_option</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_struct.html'
+                               title='gccjit_sys::gcc_jit_struct'>gcc_jit_struct</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_type.html'
+                               title='gccjit_sys::gcc_jit_type'>gcc_jit_type</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_types.html'
+                               title='gccjit_sys::gcc_jit_types'>gcc_jit_types</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.gcc_jit_unary_op.html'
+                               title='gccjit_sys::gcc_jit_unary_op'>gcc_jit_unary_op</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_block_add_assignment.html'
+                               title='gccjit_sys::gcc_jit_block_add_assignment'>gcc_jit_block_add_assignment</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_block_add_assignment_op.html'
+                               title='gccjit_sys::gcc_jit_block_add_assignment_op'>gcc_jit_block_add_assignment_op</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_block_add_comment.html'
+                               title='gccjit_sys::gcc_jit_block_add_comment'>gcc_jit_block_add_comment</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_block_add_eval.html'
+                               title='gccjit_sys::gcc_jit_block_add_eval'>gcc_jit_block_add_eval</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_block_as_object.html'
+                               title='gccjit_sys::gcc_jit_block_as_object'>gcc_jit_block_as_object</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_block_end_with_conditional.html'
+                               title='gccjit_sys::gcc_jit_block_end_with_conditional'>gcc_jit_block_end_with_conditional</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_block_end_with_jump.html'
+                               title='gccjit_sys::gcc_jit_block_end_with_jump'>gcc_jit_block_end_with_jump</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_block_end_with_return.html'
+                               title='gccjit_sys::gcc_jit_block_end_with_return'>gcc_jit_block_end_with_return</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_block_end_with_void_return.html'
+                               title='gccjit_sys::gcc_jit_block_end_with_void_return'>gcc_jit_block_end_with_void_return</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_block_get_function.html'
+                               title='gccjit_sys::gcc_jit_block_get_function'>gcc_jit_block_get_function</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_acquire.html'
+                               title='gccjit_sys::gcc_jit_context_acquire'>gcc_jit_context_acquire</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_compile.html'
+                               title='gccjit_sys::gcc_jit_context_compile'>gcc_jit_context_compile</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_compile_to_file.html'
+                               title='gccjit_sys::gcc_jit_context_compile_to_file'>gcc_jit_context_compile_to_file</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_dump_reproducer_to_file.html'
+                               title='gccjit_sys::gcc_jit_context_dump_reproducer_to_file'>gcc_jit_context_dump_reproducer_to_file</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_dump_to_file.html'
+                               title='gccjit_sys::gcc_jit_context_dump_to_file'>gcc_jit_context_dump_to_file</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_get_builtin_function.html'
+                               title='gccjit_sys::gcc_jit_context_get_builtin_function'>gcc_jit_context_get_builtin_function</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_get_first_error.html'
+                               title='gccjit_sys::gcc_jit_context_get_first_error'>gcc_jit_context_get_first_error</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_get_int_type.html'
+                               title='gccjit_sys::gcc_jit_context_get_int_type'>gcc_jit_context_get_int_type</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_get_type.html'
+                               title='gccjit_sys::gcc_jit_context_get_type'>gcc_jit_context_get_type</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_array_access.html'
+                               title='gccjit_sys::gcc_jit_context_new_array_access'>gcc_jit_context_new_array_access</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_array_type.html'
+                               title='gccjit_sys::gcc_jit_context_new_array_type'>gcc_jit_context_new_array_type</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_binary_op.html'
+                               title='gccjit_sys::gcc_jit_context_new_binary_op'>gcc_jit_context_new_binary_op</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_call.html'
+                               title='gccjit_sys::gcc_jit_context_new_call'>gcc_jit_context_new_call</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_call_through_ptr.html'
+                               title='gccjit_sys::gcc_jit_context_new_call_through_ptr'>gcc_jit_context_new_call_through_ptr</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_cast.html'
+                               title='gccjit_sys::gcc_jit_context_new_cast'>gcc_jit_context_new_cast</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_child_context.html'
+                               title='gccjit_sys::gcc_jit_context_new_child_context'>gcc_jit_context_new_child_context</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_comparison.html'
+                               title='gccjit_sys::gcc_jit_context_new_comparison'>gcc_jit_context_new_comparison</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_field.html'
+                               title='gccjit_sys::gcc_jit_context_new_field'>gcc_jit_context_new_field</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_function.html'
+                               title='gccjit_sys::gcc_jit_context_new_function'>gcc_jit_context_new_function</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_function_ptr_type.html'
+                               title='gccjit_sys::gcc_jit_context_new_function_ptr_type'>gcc_jit_context_new_function_ptr_type</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_global.html'
+                               title='gccjit_sys::gcc_jit_context_new_global'>gcc_jit_context_new_global</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_location.html'
+                               title='gccjit_sys::gcc_jit_context_new_location'>gcc_jit_context_new_location</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_opaque_struct.html'
+                               title='gccjit_sys::gcc_jit_context_new_opaque_struct'>gcc_jit_context_new_opaque_struct</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_param.html'
+                               title='gccjit_sys::gcc_jit_context_new_param'>gcc_jit_context_new_param</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_rvalue_from_double.html'
+                               title='gccjit_sys::gcc_jit_context_new_rvalue_from_double'>gcc_jit_context_new_rvalue_from_double</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_rvalue_from_int.html'
+                               title='gccjit_sys::gcc_jit_context_new_rvalue_from_int'>gcc_jit_context_new_rvalue_from_int</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_rvalue_from_long.html'
+                               title='gccjit_sys::gcc_jit_context_new_rvalue_from_long'>gcc_jit_context_new_rvalue_from_long</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_rvalue_from_ptr.html'
+                               title='gccjit_sys::gcc_jit_context_new_rvalue_from_ptr'>gcc_jit_context_new_rvalue_from_ptr</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_string_literal.html'
+                               title='gccjit_sys::gcc_jit_context_new_string_literal'>gcc_jit_context_new_string_literal</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_struct_type.html'
+                               title='gccjit_sys::gcc_jit_context_new_struct_type'>gcc_jit_context_new_struct_type</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_unary_op.html'
+                               title='gccjit_sys::gcc_jit_context_new_unary_op'>gcc_jit_context_new_unary_op</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_new_union_type.html'
+                               title='gccjit_sys::gcc_jit_context_new_union_type'>gcc_jit_context_new_union_type</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_null.html'
+                               title='gccjit_sys::gcc_jit_context_null'>gcc_jit_context_null</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_one.html'
+                               title='gccjit_sys::gcc_jit_context_one'>gcc_jit_context_one</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_release.html'
+                               title='gccjit_sys::gcc_jit_context_release'>gcc_jit_context_release</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_set_bool_option.html'
+                               title='gccjit_sys::gcc_jit_context_set_bool_option'>gcc_jit_context_set_bool_option</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_set_int_option.html'
+                               title='gccjit_sys::gcc_jit_context_set_int_option'>gcc_jit_context_set_int_option</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_set_logfile.html'
+                               title='gccjit_sys::gcc_jit_context_set_logfile'>gcc_jit_context_set_logfile</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_set_str_option.html'
+                               title='gccjit_sys::gcc_jit_context_set_str_option'>gcc_jit_context_set_str_option</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_context_zero.html'
+                               title='gccjit_sys::gcc_jit_context_zero'>gcc_jit_context_zero</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_field_as_object.html'
+                               title='gccjit_sys::gcc_jit_field_as_object'>gcc_jit_field_as_object</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_function_as_object.html'
+                               title='gccjit_sys::gcc_jit_function_as_object'>gcc_jit_function_as_object</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_function_dump_to_dot.html'
+                               title='gccjit_sys::gcc_jit_function_dump_to_dot'>gcc_jit_function_dump_to_dot</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_function_get_param.html'
+                               title='gccjit_sys::gcc_jit_function_get_param'>gcc_jit_function_get_param</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_function_new_block.html'
+                               title='gccjit_sys::gcc_jit_function_new_block'>gcc_jit_function_new_block</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_function_new_local.html'
+                               title='gccjit_sys::gcc_jit_function_new_local'>gcc_jit_function_new_local</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_location_as_object.html'
+                               title='gccjit_sys::gcc_jit_location_as_object'>gcc_jit_location_as_object</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_lvalue_access_field.html'
+                               title='gccjit_sys::gcc_jit_lvalue_access_field'>gcc_jit_lvalue_access_field</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_lvalue_as_object.html'
+                               title='gccjit_sys::gcc_jit_lvalue_as_object'>gcc_jit_lvalue_as_object</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_lvalue_as_rvalue.html'
+                               title='gccjit_sys::gcc_jit_lvalue_as_rvalue'>gcc_jit_lvalue_as_rvalue</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_lvalue_get_address.html'
+                               title='gccjit_sys::gcc_jit_lvalue_get_address'>gcc_jit_lvalue_get_address</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_object_get_context.html'
+                               title='gccjit_sys::gcc_jit_object_get_context'>gcc_jit_object_get_context</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_object_get_debug_string.html'
+                               title='gccjit_sys::gcc_jit_object_get_debug_string'>gcc_jit_object_get_debug_string</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_param_as_lvalue.html'
+                               title='gccjit_sys::gcc_jit_param_as_lvalue'>gcc_jit_param_as_lvalue</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_param_as_object.html'
+                               title='gccjit_sys::gcc_jit_param_as_object'>gcc_jit_param_as_object</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_param_as_rvalue.html'
+                               title='gccjit_sys::gcc_jit_param_as_rvalue'>gcc_jit_param_as_rvalue</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_result_get_code.html'
+                               title='gccjit_sys::gcc_jit_result_get_code'>gcc_jit_result_get_code</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_result_get_global.html'
+                               title='gccjit_sys::gcc_jit_result_get_global'>gcc_jit_result_get_global</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_result_release.html'
+                               title='gccjit_sys::gcc_jit_result_release'>gcc_jit_result_release</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_rvalue_access_field.html'
+                               title='gccjit_sys::gcc_jit_rvalue_access_field'>gcc_jit_rvalue_access_field</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_rvalue_as_object.html'
+                               title='gccjit_sys::gcc_jit_rvalue_as_object'>gcc_jit_rvalue_as_object</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_rvalue_dereference.html'
+                               title='gccjit_sys::gcc_jit_rvalue_dereference'>gcc_jit_rvalue_dereference</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_rvalue_dereference_field.html'
+                               title='gccjit_sys::gcc_jit_rvalue_dereference_field'>gcc_jit_rvalue_dereference_field</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_rvalue_get_type.html'
+                               title='gccjit_sys::gcc_jit_rvalue_get_type'>gcc_jit_rvalue_get_type</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_struct_as_type.html'
+                               title='gccjit_sys::gcc_jit_struct_as_type'>gcc_jit_struct_as_type</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_struct_set_fields.html'
+                               title='gccjit_sys::gcc_jit_struct_set_fields'>gcc_jit_struct_set_fields</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_type_as_object.html'
+                               title='gccjit_sys::gcc_jit_type_as_object'>gcc_jit_type_as_object</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_type_get_const.html'
+                               title='gccjit_sys::gcc_jit_type_get_const'>gcc_jit_type_get_const</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_type_get_pointer.html'
+                               title='gccjit_sys::gcc_jit_type_get_pointer'>gcc_jit_type_get_pointer</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.gcc_jit_type_get_volatile.html'
+                               title='gccjit_sys::gcc_jit_type_get_volatile'>gcc_jit_type_get_volatile</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                </table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "gccjit_sys";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script async src="../search-index.js"></script>
+</body>
+</html>

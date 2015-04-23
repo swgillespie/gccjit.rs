@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Context` struct in crate `gccjit`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Context">
+
+    <title>gccjit::Context - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'><a href='index.html'>gccjit</a></p><script>window.sidebarCurrent = {name: 'Context', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>gccjit</a>::<wbr><a class='struct' href=''>Context</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
+        </span><a id='src-891' class='srclink' href='../src/gccjit/context.rs.html#99-102'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Context&lt;'ctx&gt; {
+    // some fields omitted
+}</pre><div class='docblock'><p>Wrapper around a GCC JIT context object that keeps
+the state of the JIT compiler. In GCCJIT, this object
+is responsible for all memory management of JIT data
+structures, and as such anything made from this context
+must have a lifetime strictly less than this object.</p>
+
+<p>It&#39;s possible to create a child context from a parent context.
+In that case, the child context must have a lifetime strictly
+less than the parent context.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='struct' href='../gccjit/struct.Context.html' title='gccjit::Context'>Context</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.set_program_name' class='method'><code>fn <a href='#method.set_program_name' class='fnname'>set_program_name</a>(&amp;self, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>)</code></h4>
+<div class='docblock'><p>Sets the program name reported by the JIT.</p>
+</div><h4 id='method.set_optimization_level' class='method'><code>fn <a href='#method.set_optimization_level' class='fnname'>set_optimization_level</a>(&amp;self, level: <a class='enum' href='../gccjit/enum.OptimizationLevel.html' title='gccjit::OptimizationLevel'>OptimizationLevel</a>)</code></h4>
+<div class='docblock'><p>Sets the optimization level that the JIT compiler will use.
+The higher the optimization level, the longer compilation will
+take.</p>
+</div><h4 id='method.compile' class='method'><code>fn <a href='#method.compile' class='fnname'>compile</a>(&amp;self) -&gt; <a class='struct' href='../gccjit/struct.CompileResult.html' title='gccjit::CompileResult'>CompileResult</a></code></h4>
+<div class='docblock'><p>Compiles the context and returns a CompileResult that contains
+the means to access functions and globals that have currently
+been JIT compiled.</p>
+</div><h4 id='method.new_child_context' class='method'><code>fn <a href='#method.new_child_context' class='fnname'>new_child_context</a>&lt;'b&gt;(&amp;'b self) -&gt; <a class='struct' href='../gccjit/struct.Context.html' title='gccjit::Context'>Context</a>&lt;'b&gt;</code></h4>
+<div class='docblock'><p>Creates a new child context from this context. The child context
+is a fully-featured context, but it has a lifetime that is strictly
+less than the lifetime that spawned it.</p>
+</div><h4 id='method.new_location' class='method'><code>fn <a href='#method.new_location' class='fnname'>new_location</a>&lt;'a&gt;(&amp;'a self, filename: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, line: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>, col: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; <a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a new location for use by gdb when debugging a JIT compiled
+program. The filename, line, and col are used by gdb to &quot;show&quot; your
+source when in a debugger.</p>
+</div><h4 id='method.new_type' class='method'><code>fn <a href='#method.new_type' class='fnname'>new_type</a>&lt;'a, T: <a class='trait' href='../gccjit/trait.Typeable.html' title='gccjit::Typeable'>Typeable</a>&gt;(&amp;'a self) -&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Constructs a new type for any type that implements the Typeable trait.
+This library only provides a handful of implementations of Typeable
+for some primitive types - utilizers of this library are encouraged
+to provide their own types that implement Typeable for ease of type
+creation.</p>
+</div><h4 id='method.new_field' class='method'><code>fn <a href='#method.new_field' class='fnname'>new_field</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../gccjit/struct.Field.html' title='gccjit::Field'>Field</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Constructs a new field with an optional source location, type, and name.
+This field can be used to compose unions or structs. </p>
+</div><h4 id='method.new_array_type' class='method'><code>fn <a href='#method.new_array_type' class='fnname'>new_array_type</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;, num_elements: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Constructs a new array type with a given base element type and a
+size.</p>
+</div><h4 id='method.new_struct_type' class='method'><code>fn <a href='#method.new_struct_type' class='fnname'>new_struct_type</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, fields: <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='struct' href='../gccjit/struct.Field.html' title='gccjit::Field'>Field</a>&lt;'a&gt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='struct' href='../gccjit/struct.Struct.html' title='gccjit::Struct'>Struct</a>&lt;'a, <a class='enum' href='../gccjit/enum.Concrete.html' title='gccjit::Concrete'>Concrete</a>&gt;</code></h4>
+<div class='docblock'><p>Constructs a new struct type with the given name, optional source location,
+and a list of fields. The returned struct is concrete and new fields cannot
+be added to it.</p>
+</div><h4 id='method.new_opaque_struct_type' class='method'><code>fn <a href='#method.new_opaque_struct_type' class='fnname'>new_opaque_struct_type</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../gccjit/struct.Struct.html' title='gccjit::Struct'>Struct</a>&lt;'a, <a class='enum' href='../gccjit/enum.Opaque.html' title='gccjit::Opaque'>Opaque</a>&gt;</code></h4>
+<div class='docblock'><p>Constructs a new struct type whose fields are not known. Fields can
+be added to this struct later, but only once.</p>
+</div><h4 id='method.new_union_type' class='method'><code>fn <a href='#method.new_union_type' class='fnname'>new_union_type</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, fields: <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='struct' href='../gccjit/struct.Field.html' title='gccjit::Field'>Field</a>&lt;'a&gt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a new union type from a set of fields.</p>
+</div><h4 id='method.new_function_pointer_type' class='method'><code>fn <a href='#method.new_function_pointer_type' class='fnname'>new_function_pointer_type</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, return_type: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;, param_types: <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>, is_variadic: <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>) -&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a new function pointer type with the given return type
+parameter types, and an optional location. The last flag can
+make the function variadic, although Rust can&#39;t really handle
+the varargs calling convention.</p>
+</div><h4 id='method.new_function' class='method'><code>fn <a href='#method.new_function' class='fnname'>new_function</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, kind: <a class='enum' href='../gccjit/enum.FunctionType.html' title='gccjit::FunctionType'>FunctionType</a>, return_ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;, params: <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='struct' href='../gccjit/struct.Parameter.html' title='gccjit::Parameter'>Parameter</a>&lt;'a&gt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, is_variadic: <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>) -&gt; <a class='struct' href='../gccjit/struct.Function.html' title='gccjit::Function'>Function</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a new function with the given function kind, return type, parameters, name,
+and whether or not the function is variadic. It&#39;s not currently possible to call
+variadic functions from Rust right now, so that option is turned off for now.</p>
+</div><h4 id='method.new_binary_op' class='method'><code>fn <a href='#method.new_binary_op' class='fnname'>new_binary_op</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, op: <a class='enum' href='../gccjit/enum.BinaryOp.html' title='gccjit::BinaryOp'>BinaryOp</a>, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;, left: <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;, right: <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a new binary operation between two RValues and produces a new RValue.</p>
+</div><h4 id='method.new_unary_op' class='method'><code>fn <a href='#method.new_unary_op' class='fnname'>new_unary_op</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, op: <a class='enum' href='../gccjit/enum.UnaryOp.html' title='gccjit::UnaryOp'>UnaryOp</a>, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;, rvalue: <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a unary operation on one RValue and produces a result RValue.</p>
+</div><h4 id='method.new_call' class='method'><code>fn <a href='#method.new_call' class='fnname'>new_call</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, func: <a class='struct' href='../gccjit/struct.Function.html' title='gccjit::Function'>Function</a>&lt;'a&gt;, args: <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a function call to a function object with a given number of parameters.
+The RValue that is returned is the result of the function call.</p>
+</div><h4 id='method.new_call_through_ptr' class='method'><code>fn <a href='#method.new_call_through_ptr' class='fnname'>new_call_through_ptr</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, fun_ptr: <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;, args: <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates an indirect function call that dereferences a function pointer and
+attempts to invoke it with the given arguments. The RValue that is returned
+is the result of the function call.</p>
+</div><h4 id='method.new_cast' class='method'><code>fn <a href='#method.new_cast' class='fnname'>new_cast</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, rvalue: <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;, dest_type: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Cast an RValue to a specific type. I don&#39;t know what happens when the cast fails yet.</p>
+</div><h4 id='method.new_array_access' class='method'><code>fn <a href='#method.new_array_access' class='fnname'>new_array_access</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, array_ptr: <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;, index: <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;) -&gt; <a class='struct' href='../gccjit/struct.LValue.html' title='gccjit::LValue'>LValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates an LValue from an array pointer and an offset. The LValue can be the target
+of an assignment, or it can be converted into an RValue (i.e. loaded).</p>
+</div><h4 id='method.new_rvalue_from_long' class='method'><code>fn <a href='#method.new_rvalue_from_long' class='fnname'>new_rvalue_from_long</a>&lt;'a&gt;(&amp;'a self, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;, value: <a href='http://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a>) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a new RValue from a given long value.</p>
+</div><h4 id='method.new_rvalue_from_int' class='method'><code>fn <a href='#method.new_rvalue_from_int' class='fnname'>new_rvalue_from_int</a>&lt;'a&gt;(&amp;'a self, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;, value: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a new RValue from a given int value.</p>
+</div><h4 id='method.new_rvalue_from_double' class='method'><code>fn <a href='#method.new_rvalue_from_double' class='fnname'>new_rvalue_from_double</a>&lt;'a&gt;(&amp;'a self, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;, value: <a href='http://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a new RValue from a given double value.</p>
+</div><h4 id='method.new_rvalue_zero' class='method'><code>fn <a href='#method.new_rvalue_zero' class='fnname'>new_rvalue_zero</a>&lt;'a&gt;(&amp;'a self, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a zero element for a given type.</p>
+</div><h4 id='method.new_rvalue_one' class='method'><code>fn <a href='#method.new_rvalue_one' class='fnname'>new_rvalue_one</a>&lt;'a&gt;(&amp;'a self, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a one element for a given type.</p>
+</div><h4 id='method.new_rvalue_from_ptr' class='method'><code>unsafe fn <a href='#method.new_rvalue_from_ptr' class='fnname'>new_rvalue_from_ptr</a>&lt;'a&gt;(&amp;'a self, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;, value: <a href='http://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*mut <a href='http://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a></a>) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates an RValue for a raw pointer.</p>
+</div><h4 id='method.new_null' class='method'><code>fn <a href='#method.new_null' class='fnname'>new_null</a>&lt;'a&gt;(&amp;'a self, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a null RValue.</p>
+</div><h4 id='method.new_string_literal' class='method'><code>fn <a href='#method.new_string_literal' class='fnname'>new_string_literal</a>&lt;'a&gt;(&amp;'a self, value: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a string literal RValue.</p>
+</div><h4 id='method.dump_reproducer_to_file' class='method'><code>fn <a href='#method.dump_reproducer_to_file' class='fnname'>dump_reproducer_to_file</a>(&amp;self, path: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>)</code></h4>
+<div class='docblock'><p>Dumps a small C file to the path that can be used to reproduce a series
+of API calls. You should only ever need to call this if you are debugging
+a segfault in gccjit or this library.</p>
+</div><h4 id='method.new_parameter' class='method'><code>fn <a href='#method.new_parameter' class='fnname'>new_parameter</a>&lt;'a&gt;(&amp;'a self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'a&gt;&gt;, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../gccjit/struct.Parameter.html' title='gccjit::Parameter'>Parameter</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Creates a new parameter with a given type, name, and location.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='http://doc.rust-lang.org/nightly/core/default/trait.Default.html' title='core::default::Default'>Default</a> for <a class='struct' href='../gccjit/struct.Context.html' title='gccjit::Context'>Context</a>&lt;'static&gt;</code></h3><div class='impl-items'><h4 id='method.default' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/default/trait.Default.html#method.default' class='fnname'>default</a>() -&gt; <a class='struct' href='../gccjit/struct.Context.html' title='gccjit::Context'>Context</a>&lt;'static&gt;</code></h4>
+</div><h3 class='impl'><code>impl&lt;'ctx&gt; !<a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> for <a class='struct' href='../gccjit/struct.Context.html' title='gccjit::Context'>Context</a>&lt;'ctx&gt;</code></h3><div class='impl-items'></div><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../gccjit/struct.Context.html' title='gccjit::Context'>Context</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.drop' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#method.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "gccjit";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script async src="../search-index.js"></script>
+</body>
+</html>
