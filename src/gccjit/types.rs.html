@@ -147,6 +147,10 @@
 <span id="105">105</span>
 <span id="106">106</span>
 <span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>marker</span>::{<span class='ident'>PhantomData</span>, <span class='ident'>Send</span>};
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
@@ -211,6 +215,10 @@
     }
 }
 
+<span class='doccomment'>/// Typeable is a trait for types that have a corresponding type within</span>
+<span class='doccomment'>/// gccjit. This library implements this type for a variety of primitive types,</span>
+<span class='doccomment'>/// but it&#39;s also possible to implement this trait for more complex types</span>
+<span class='doccomment'>/// that will use the API on Context to construct analagous struct/union types.</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Typeable</span> {
     <span class='kw'>fn</span> <span class='ident'>get_type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>Context</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>;
 }

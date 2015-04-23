@@ -43,13 +43,19 @@
     <section id='main' class="content enum">
 <h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>gccjit</a>::<wbr><a class='enum' href=''>FunctionType</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-4038' class='srclink' href='../src/gccjit/function.rs.html#21-26'>[src]</a></span></h1>
+        </span><a id='src-4106' class='srclink' href='../src/gccjit/function.rs.html#27-32'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum FunctionType {
     Exported,
     Internal,
     Extern,
     AlwaysInline,
-}</pre><h2 class='variants'>Variants</h2>
+}</pre><div class='docblock'><p>FunctionType informs gccjit what sort of function a new function will be.
+An exported function is a function that will be exported using the CompileResult
+interface, able to be called outside of the jit. An internal function is
+a function that cannot be called outside of jitted code. An extern function
+is a function with external linkage, and always inline is a function that is
+always inlined wherever it is called and cannot be accessed outside of the jit.</p>
+</div><h2 class='variants'>Variants</h2>
 <table><tr><td id='variant.Exported'><code>Exported</code></td><td></td></tr><tr><td id='variant.Internal'><code>Internal</code></td><td></td></tr><tr><td id='variant.Extern'><code>Extern</code></td><td></td></tr><tr><td id='variant.AlwaysInline'><code>AlwaysInline</code></td><td></td></tr></table></section>
     <section id='search' class="content hidden"></section>
 

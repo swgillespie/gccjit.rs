@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Concrete",""],["Opaque",""]],"struct":[["Struct",""]]});
+initSidebarItems({"struct":[["Struct","A Struct is gccjit's representation of a composite type. Despite the name, Struct can represent either a struct, an union, or an opaque named type."]]});

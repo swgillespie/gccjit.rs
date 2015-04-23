@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Object",""]],"trait":[["ToObject",""]]});
+initSidebarItems({"struct":[["Object","Object represents the root of all objects in gccjit. It is not useful in and of itself, but it provides the implementation for Debug used by most objects in this library."]],"trait":[["ToObject","ToObject is a trait implemented by types that can be upcast to Object."]]});

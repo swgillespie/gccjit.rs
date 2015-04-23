@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Parameter",""]]});
+initSidebarItems({"struct":[["Parameter","Parameter represents a parameter to a function. A series of parameteres can be combined to form a function signature."]]});

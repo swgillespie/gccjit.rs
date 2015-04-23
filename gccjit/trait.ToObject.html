@@ -43,10 +43,11 @@
     <section id='main' class="content trait">
 <h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>gccjit</a>::<wbr><a class='trait' href=''>ToObject</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-2622' class='srclink' href='../src/gccjit/object.rs.html#25-27'>[src]</a></span></h1>
+        </span><a id='src-2620' class='srclink' href='../src/gccjit/object.rs.html#29-31'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait ToObject&lt;'ctx&gt; {
     fn <a href='#tymethod.to_object' class='fnname'>to_object</a>(&amp;self) -&gt; <a class='struct' href='../gccjit/struct.Object.html' title='gccjit::Object'>Object</a>&lt;'ctx&gt;;
-}</pre>
+}</pre><div class='docblock'><p>ToObject is a trait implemented by types that can be upcast to Object.</p>
+</div>
             <h2 id='required-methods'>Required Methods</h2>
             <div class='methods'>
         <h3 id='tymethod.to_object' class='method stab '><code>fn <a href='#tymethod.to_object' class='fnname'>to_object</a>(&amp;self) -&gt; <a class='struct' href='../gccjit/struct.Object.html' title='gccjit::Object'>Object</a>&lt;'ctx&gt;</code></h3></div>
@@ -56,7 +57,7 @@
 <li><code>impl&lt;'ctx&gt; <a class='trait' href='../gccjit/trait.ToObject.html' title='gccjit::ToObject'>ToObject</a>&lt;'ctx&gt; for <a class='struct' href='../gccjit/struct.Object.html' title='gccjit::Object'>Object</a>&lt;'ctx&gt;</code></li>
 <li><code>impl&lt;'ctx&gt; <a class='trait' href='../gccjit/trait.ToObject.html' title='gccjit::ToObject'>ToObject</a>&lt;'ctx&gt; for <a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;</code></li>
 <li><code>impl&lt;'ctx&gt; <a class='trait' href='../gccjit/trait.ToObject.html' title='gccjit::ToObject'>ToObject</a>&lt;'ctx&gt; for <a class='struct' href='../gccjit/struct.Field.html' title='gccjit::Field'>Field</a>&lt;'ctx&gt;</code></li>
-<li><code>impl&lt;'ctx, T&gt; <a class='trait' href='../gccjit/trait.ToObject.html' title='gccjit::ToObject'>ToObject</a>&lt;'ctx&gt; for <a class='struct' href='../gccjit/struct.Struct.html' title='gccjit::Struct'>Struct</a>&lt;'ctx, T&gt;</code></li>
+<li><code>impl&lt;'ctx&gt; <a class='trait' href='../gccjit/trait.ToObject.html' title='gccjit::ToObject'>ToObject</a>&lt;'ctx&gt; for <a class='struct' href='../gccjit/struct.Struct.html' title='gccjit::Struct'>Struct</a>&lt;'ctx&gt;</code></li>
 <li><code>impl&lt;'ctx&gt; <a class='trait' href='../gccjit/trait.ToObject.html' title='gccjit::ToObject'>ToObject</a>&lt;'ctx&gt; for <a class='struct' href='../gccjit/struct.LValue.html' title='gccjit::LValue'>LValue</a>&lt;'ctx&gt;</code></li>
 <li><code>impl&lt;'ctx&gt; <a class='trait' href='../gccjit/trait.ToObject.html' title='gccjit::ToObject'>ToObject</a>&lt;'ctx&gt; for <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'ctx&gt;</code></li>
 <li><code>impl&lt;'ctx&gt; <a class='trait' href='../gccjit/trait.ToObject.html' title='gccjit::ToObject'>ToObject</a>&lt;'ctx&gt; for <a class='struct' href='../gccjit/struct.Parameter.html' title='gccjit::Parameter'>Parameter</a>&lt;'ctx&gt;</code></li>

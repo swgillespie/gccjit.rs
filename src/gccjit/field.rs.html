@@ -82,6 +82,8 @@
 <span id="40">40</span>
 <span id="41">41</span>
 <span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>gccjit_sys</span>;
 
@@ -92,6 +94,8 @@
 <span class='kw'>use</span> <span class='ident'>object</span>::{<span class='ident'>ToObject</span>, <span class='ident'>Object</span>};
 <span class='kw'>use</span> <span class='ident'>object</span>;
 
+<span class='doccomment'>/// Field represents a field that composes structs or unions. A number of fields</span>
+<span class='doccomment'>/// can be combined to create either a struct or a union.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Field</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> {
     <span class='ident'>marker</span>: <span class='ident'>PhantomData</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;ctx</span> <span class='ident'>Context</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;&gt;</span>,

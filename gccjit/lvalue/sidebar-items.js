@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["LValue",""]],"trait":[["ToLValue",""]]});
+initSidebarItems({"struct":[["LValue","An LValue in gccjit represents a value that has a concrete location in memory. A LValue can be converted into an RValue through the ToRValue trait. It is also possible to get the address of an LValue."]],"trait":[["ToLValue","ToLValue is a trait implemented by types that can be converted (or treated as) LValues."]]});

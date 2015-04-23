@@ -80,6 +80,7 @@
 <span id="38">38</span>
 <span id="39">39</span>
 <span id="40">40</span>
+<span id="41">41</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>gccjit_sys</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>marker</span>::{<span class='ident'>PhantomData</span>, <span class='ident'>Send</span>};
@@ -88,6 +89,7 @@
 <span class='kw'>use</span> <span class='ident'>object</span>;
 <span class='kw'>use</span> <span class='ident'>object</span>::{<span class='ident'>Object</span>, <span class='ident'>ToObject</span>};
 
+<span class='doccomment'>/// A Location represents a location used when debugging jitted code.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> {
     <span class='ident'>marker</span>: <span class='ident'>PhantomData</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;ctx</span> <span class='ident'>Context</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;&gt;</span>,

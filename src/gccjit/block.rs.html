@@ -243,6 +243,14 @@
 <span id="201">201</span>
 <span id="202">202</span>
 <span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>marker</span>::{<span class='ident'>PhantomData</span>, <span class='ident'>Send</span>};
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ffi</span>::<span class='ident'>CString</span>;
@@ -262,6 +270,8 @@
 <span class='kw'>use</span> <span class='ident'>lvalue</span>::<span class='ident'>LValue</span>;
 <span class='kw'>use</span> <span class='ident'>lvalue</span>;
 
+<span class='doccomment'>/// BinaryOp is a enum representing the various binary operations</span>
+<span class='doccomment'>/// that gccjit knows how to codegen.</span>
 <span class='attribute'>#[<span class='ident'>repr</span>(<span class='ident'>C</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>BinaryOp</span> {
     <span class='ident'>Plus</span>,
@@ -278,6 +288,8 @@
     <span class='ident'>RShift</span>
 }
 
+<span class='doccomment'>/// UnaryOp is an enum representing the various unary operations</span>
+<span class='doccomment'>/// that gccjit knows how to codegen.</span>
 <span class='attribute'>#[<span class='ident'>repr</span>(<span class='ident'>C</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>UnaryOp</span> {
     <span class='ident'>Minus</span>,
@@ -286,6 +298,10 @@
     <span class='ident'>Abs</span>
 }
 
+<span class='doccomment'>/// Block represents a basic block in gccjit. Blocks are created by functions.</span>
+<span class='doccomment'>/// A basic block consists of a series of instructions terminated by a terminator</span>
+<span class='doccomment'>/// instruction, which can be either a jump to one block, a conditional branch to</span>
+<span class='doccomment'>/// two blocks (true/false branches), a return, or a void return.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Block</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> {
     <span class='ident'>marker</span>: <span class='ident'>PhantomData</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;ctx</span> <span class='ident'>Context</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;&gt;</span>,

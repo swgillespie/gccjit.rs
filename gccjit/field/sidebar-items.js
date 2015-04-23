@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Field",""]]});
+initSidebarItems({"struct":[["Field","Field represents a field that composes structs or unions. A number of fields can be combined to create either a struct or a union."]]});

@@ -43,10 +43,14 @@
     <section id='main' class="content trait">
 <h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>gccjit</a>::<wbr><a class='trait' href=''>Typeable</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-183' class='srclink' href='../src/gccjit/types.rs.html#64-66'>[src]</a></span></h1>
+        </span><a id='src-183' class='srclink' href='../src/gccjit/types.rs.html#68-70'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait Typeable {
     fn <a href='#tymethod.get_type' class='fnname'>get_type</a>&lt;'a, 'ctx&gt;(&amp;'a <a class='struct' href='../gccjit/struct.Context.html' title='gccjit::Context'>Context</a>&lt;'ctx&gt;) -&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;;
-}</pre>
+}</pre><div class='docblock'><p>Typeable is a trait for types that have a corresponding type within
+gccjit. This library implements this type for a variety of primitive types,
+but it&#39;s also possible to implement this trait for more complex types
+that will use the API on Context to construct analagous struct/union types.</p>
+</div>
             <h2 id='required-methods'>Required Methods</h2>
             <div class='methods'>
         <h3 id='tymethod.get_type' class='method stab '><code>fn <a href='#tymethod.get_type' class='fnname'>get_type</a>&lt;'a, 'ctx&gt;(&amp;'a <a class='struct' href='../gccjit/struct.Context.html' title='gccjit::Context'>Context</a>&lt;'ctx&gt;) -&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'a&gt;</code></h3></div>

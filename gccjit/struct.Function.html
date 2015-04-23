@@ -43,10 +43,13 @@
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>gccjit</a>::<wbr><a class='struct' href=''>Function</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-4044' class='srclink' href='../src/gccjit/function.rs.html#29-32'>[src]</a></span></h1>
+        </span><a id='src-4112' class='srclink' href='../src/gccjit/function.rs.html#38-41'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Function&lt;'ctx&gt; {
     // some fields omitted
-}</pre><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='struct' href='../gccjit/struct.Function.html' title='gccjit::Function'>Function</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.get_param' class='method'><code>fn <a href='#method.get_param' class='fnname'>get_param</a>(&amp;self, idx: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; <a class='struct' href='../gccjit/struct.Parameter.html' title='gccjit::Parameter'>Parameter</a>&lt;'ctx&gt;</code></h4>
+}</pre><div class='docblock'><p>Function is gccjit&#39;s representation of a function. Functions are constructed
+by constructing basic blocks and connecting them together. Locals are declared
+at the function level.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='struct' href='../gccjit/struct.Function.html' title='gccjit::Function'>Function</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.get_param' class='method'><code>fn <a href='#method.get_param' class='fnname'>get_param</a>(&amp;self, idx: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; <a class='struct' href='../gccjit/struct.Parameter.html' title='gccjit::Parameter'>Parameter</a>&lt;'ctx&gt;</code></h4>
 <h4 id='method.dump_to_dot' class='method'><code>fn <a href='#method.dump_to_dot' class='fnname'>dump_to_dot</a>(&amp;self, path: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>)</code></h4>
 <h4 id='method.new_block' class='method'><code>fn <a href='#method.new_block' class='fnname'>new_block</a>(&amp;self, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;</code></h4>
 <h4 id='method.new_local' class='method'><code>fn <a href='#method.new_local' class='fnname'>new_local</a>(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, ty: <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../gccjit/struct.LValue.html' title='gccjit::LValue'>LValue</a>&lt;'ctx&gt;</code></h4>

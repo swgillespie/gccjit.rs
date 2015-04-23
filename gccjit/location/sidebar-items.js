@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Location",""]]});
+initSidebarItems({"struct":[["Location","A Location represents a location used when debugging jitted code."]]});

@@ -50,7 +50,11 @@
                         <td><a class='struct' href='struct.Block.html'
                                title='gccjit::Block'>Block</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Block represents a basic block in gccjit. Blocks are created by functions.
+A basic block consists of a series of instructions terminated by a terminator
+instruction, which can be either a jump to one block, a conditional branch to
+two blocks (true/false branches), a return, or a void return.</p>
+
                         </td>
                     </tr>
                 
@@ -83,7 +87,9 @@ must have a lifetime strictly less than this object.</p>
                         <td><a class='struct' href='struct.Field.html'
                                title='gccjit::Field'>Field</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Field represents a field that composes structs or unions. A number of fields
+can be combined to create either a struct or a union.</p>
+
                         </td>
                     </tr>
                 
@@ -91,7 +97,10 @@ must have a lifetime strictly less than this object.</p>
                         <td><a class='struct' href='struct.Function.html'
                                title='gccjit::Function'>Function</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Function is gccjit&#39;s representation of a function. Functions are constructed
+by constructing basic blocks and connecting them together. Locals are declared
+at the function level.</p>
+
                         </td>
                     </tr>
                 
@@ -99,7 +108,11 @@ must have a lifetime strictly less than this object.</p>
                         <td><a class='struct' href='struct.LValue.html'
                                title='gccjit::LValue'>LValue</a></td>
                         <td class='docblock short'>
-                             
+                             <p>An LValue in gccjit represents a value that has a concrete
+location in memory. A LValue can be converted into an RValue
+through the ToRValue trait.
+It is also possible to get the address of an LValue.</p>
+
                         </td>
                     </tr>
                 
@@ -107,7 +120,8 @@ must have a lifetime strictly less than this object.</p>
                         <td><a class='struct' href='struct.Location.html'
                                title='gccjit::Location'>Location</a></td>
                         <td class='docblock short'>
-                             
+                             <p>A Location represents a location used when debugging jitted code.</p>
+
                         </td>
                     </tr>
                 
@@ -115,7 +129,10 @@ must have a lifetime strictly less than this object.</p>
                         <td><a class='struct' href='struct.Object.html'
                                title='gccjit::Object'>Object</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Object represents the root of all objects in gccjit. It is not useful
+in and of itself, but it provides the implementation for Debug
+used by most objects in this library.</p>
+
                         </td>
                     </tr>
                 
@@ -123,7 +140,9 @@ must have a lifetime strictly less than this object.</p>
                         <td><a class='struct' href='struct.Parameter.html'
                                title='gccjit::Parameter'>Parameter</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Parameter represents a parameter to a function. A series of parameteres
+can be combined to form a function signature.</p>
+
                         </td>
                     </tr>
                 
@@ -131,7 +150,10 @@ must have a lifetime strictly less than this object.</p>
                         <td><a class='struct' href='struct.RValue.html'
                                title='gccjit::RValue'>RValue</a></td>
                         <td class='docblock short'>
-                             
+                             <p>An RValue is a value that may or may not have a storage address in gccjit.
+RValues can be dereferenced, used for field accesses, and are the parameters
+given to a majority of the gccjit API calls.</p>
+
                         </td>
                     </tr>
                 
@@ -139,7 +161,9 @@ must have a lifetime strictly less than this object.</p>
                         <td><a class='struct' href='struct.Struct.html'
                                title='gccjit::Struct'>Struct</a></td>
                         <td class='docblock short'>
-                             
+                             <p>A Struct is gccjit&#39;s representation of a composite type. Despite the name,
+Struct can represent either a struct, an union, or an opaque named type.</p>
+
                         </td>
                     </tr>
                 
@@ -159,15 +183,9 @@ be created dynamically by composing Field types.</p>
                         <td><a class='enum' href='enum.BinaryOp.html'
                                title='gccjit::BinaryOp'>BinaryOp</a></td>
                         <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='enum' href='enum.Concrete.html'
-                               title='gccjit::Concrete'>Concrete</a></td>
-                        <td class='docblock short'>
-                             
+                             <p>BinaryOp is a enum representing the various binary operations
+that gccjit knows how to codegen.</p>
+
                         </td>
                     </tr>
                 
@@ -175,15 +193,13 @@ be created dynamically by composing Field types.</p>
                         <td><a class='enum' href='enum.FunctionType.html'
                                title='gccjit::FunctionType'>FunctionType</a></td>
                         <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='enum' href='enum.Opaque.html'
-                               title='gccjit::Opaque'>Opaque</a></td>
-                        <td class='docblock short'>
-                             
+                             <p>FunctionType informs gccjit what sort of function a new function will be.
+An exported function is a function that will be exported using the CompileResult
+interface, able to be called outside of the jit. An internal function is
+a function that cannot be called outside of jitted code. An extern function
+is a function with external linkage, and always inline is a function that is
+always inlined wherever it is called and cannot be accessed outside of the jit.</p>
+
                         </td>
                     </tr>
                 
@@ -201,7 +217,9 @@ will use when compiling your code.</p>
                         <td><a class='enum' href='enum.UnaryOp.html'
                                title='gccjit::UnaryOp'>UnaryOp</a></td>
                         <td class='docblock short'>
-                             
+                             <p>UnaryOp is an enum representing the various unary operations
+that gccjit knows how to codegen.</p>
+
                         </td>
                     </tr>
                 </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
@@ -210,7 +228,9 @@ will use when compiling your code.</p>
                         <td><a class='trait' href='trait.ToLValue.html'
                                title='gccjit::ToLValue'>ToLValue</a></td>
                         <td class='docblock short'>
-                             
+                             <p>ToLValue is a trait implemented by types that can be converted (or treated
+as) LValues.</p>
+
                         </td>
                     </tr>
                 
@@ -218,7 +238,8 @@ will use when compiling your code.</p>
                         <td><a class='trait' href='trait.ToObject.html'
                                title='gccjit::ToObject'>ToObject</a></td>
                         <td class='docblock short'>
-                             
+                             <p>ToObject is a trait implemented by types that can be upcast to Object.</p>
+
                         </td>
                     </tr>
                 
@@ -226,7 +247,9 @@ will use when compiling your code.</p>
                         <td><a class='trait' href='trait.ToRValue.html'
                                title='gccjit::ToRValue'>ToRValue</a></td>
                         <td class='docblock short'>
-                             
+                             <p>ToRValue is a trait implemented by types that can be converted to, or
+treated as, an RValue.</p>
+
                         </td>
                     </tr>
                 
@@ -234,7 +257,11 @@ will use when compiling your code.</p>
                         <td><a class='trait' href='trait.Typeable.html'
                                title='gccjit::Typeable'>Typeable</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Typeable is a trait for types that have a corresponding type within
+gccjit. This library implements this type for a variety of primitive types,
+but it&#39;s also possible to implement this trait for more complex types
+that will use the API on Context to construct analagous struct/union types.</p>
+
                         </td>
                     </tr>
                 </table></section>

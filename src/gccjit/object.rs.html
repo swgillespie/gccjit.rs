@@ -83,6 +83,10 @@
 <span id="41">41</span>
 <span id="42">42</span>
 <span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>gccjit_sys</span>;
 <span class='kw'>use</span> <span class='ident'>context</span>::<span class='ident'>Context</span>;
@@ -91,6 +95,9 @@
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ffi</span>::<span class='ident'>CStr</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>str</span>;
 
+<span class='doccomment'>/// Object represents the root of all objects in gccjit. It is not useful</span>
+<span class='doccomment'>/// in and of itself, but it provides the implementation for Debug</span>
+<span class='doccomment'>/// used by most objects in this library.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Object</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> {
     <span class='ident'>marker</span>: <span class='ident'>PhantomData</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;ctx</span> <span class='ident'>Context</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;&gt;</span>,
@@ -108,6 +115,7 @@
     }
 }
 
+<span class='doccomment'>/// ToObject is a trait implemented by types that can be upcast to Object.</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>ToObject</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> {
     <span class='kw'>fn</span> <span class='ident'>to_object</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Object</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span>;
 }

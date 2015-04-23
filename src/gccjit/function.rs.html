@@ -146,6 +146,15 @@
 <span id="104">104</span>
 <span id="105">105</span>
 <span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>marker</span>::{<span class='ident'>PhantomData</span>, <span class='ident'>Send</span>};
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
@@ -166,6 +175,12 @@
 <span class='kw'>use</span> <span class='ident'>types</span>::<span class='ident'>Type</span>;
 <span class='kw'>use</span> <span class='ident'>types</span>;
 
+<span class='doccomment'>/// FunctionType informs gccjit what sort of function a new function will be.</span>
+<span class='doccomment'>/// An exported function is a function that will be exported using the CompileResult</span>
+<span class='doccomment'>/// interface, able to be called outside of the jit. An internal function is</span>
+<span class='doccomment'>/// a function that cannot be called outside of jitted code. An extern function</span>
+<span class='doccomment'>/// is a function with external linkage, and always inline is a function that is</span>
+<span class='doccomment'>/// always inlined wherever it is called and cannot be accessed outside of the jit.</span>
 <span class='attribute'>#[<span class='ident'>repr</span>(<span class='ident'>C</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>FunctionType</span> {
     <span class='ident'>Exported</span>,
@@ -174,6 +189,9 @@
     <span class='ident'>AlwaysInline</span>
 }
 
+<span class='doccomment'>/// Function is gccjit&#39;s representation of a function. Functions are constructed</span>
+<span class='doccomment'>/// by constructing basic blocks and connecting them together. Locals are declared</span>
+<span class='doccomment'>/// at the function level.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> {
     <span class='ident'>marker</span>: <span class='ident'>PhantomData</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;ctx</span> <span class='ident'>Context</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;&gt;</span>,
