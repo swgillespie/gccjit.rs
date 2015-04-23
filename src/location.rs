@@ -5,6 +5,7 @@ use context::Context;
 use object;
 use object::{Object, ToObject};
 
+/// A Location represents a location used when debugging jitted code.
 #[derive(Copy, Clone)]
 pub struct Location<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,

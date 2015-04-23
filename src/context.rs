@@ -230,7 +230,7 @@ impl<'ctx> Context<'ctx> {
     pub fn new_struct_type<'a>(&'a self,
                            loc: Option<Location<'a>>,
                            name: &str,
-                           fields: &[Field<'a>]) -> Struct<'a, structs::Concrete> {
+                           fields: &[Field<'a>]) -> Struct<'a> {
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
@@ -254,7 +254,7 @@ impl<'ctx> Context<'ctx> {
     /// be added to this struct later, but only once.
     pub fn new_opaque_struct_type<'a>(&'a self,
                                   loc: Option<Location<'a>>,
-                                  name: &str) -> Struct<'a, structs::Opaque> {
+                                  name: &str) -> Struct<'a> {
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()

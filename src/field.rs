@@ -7,6 +7,8 @@ use context::Context;
 use object::{ToObject, Object};
 use object;
 
+/// Field represents a field that composes structs or unions. A number of fields
+/// can be combined to create either a struct or a union.
 #[derive(Copy, Clone)]
 pub struct Field<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,

@@ -9,6 +9,8 @@ use rvalue;
 use lvalue::{LValue, ToLValue};
 use lvalue;
 
+/// Parameter represents a parameter to a function. A series of parameteres
+/// can be combined to form a function signature.
 #[derive(Copy, Clone)]
 pub struct Parameter<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,

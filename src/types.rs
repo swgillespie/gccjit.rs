@@ -61,6 +61,10 @@ impl<'ctx> Type<'ctx> {
     }
 }
 
+/// Typeable is a trait for types that have a corresponding type within
+/// gccjit. This library implements this type for a variety of primitive types,
+/// but it's also possible to implement this trait for more complex types
+/// that will use the API on Context to construct analagous struct/union types.
 pub trait Typeable {
     fn get_type<'a, 'ctx>(&'a Context<'ctx>) -> Type<'a>;
 }

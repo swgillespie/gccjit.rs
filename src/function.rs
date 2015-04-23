@@ -17,6 +17,12 @@ use location;
 use types::Type;
 use types;
 
+/// FunctionType informs gccjit what sort of function a new function will be.
+/// An exported function is a function that will be exported using the CompileResult
+/// interface, able to be called outside of the jit. An internal function is
+/// a function that cannot be called outside of jitted code. An extern function
+/// is a function with external linkage, and always inline is a function that is
+/// always inlined wherever it is called and cannot be accessed outside of the jit.
 #[repr(C)]
 pub enum FunctionType {
     Exported,
@@ -25,6 +31,9 @@ pub enum FunctionType {
     AlwaysInline
 }
 
+/// Function is gccjit's representation of a function. Functions are constructed
+/// by constructing basic blocks and connecting them together. Locals are declared
+/// at the function level.
 #[derive(Copy, Clone)]
 pub struct Function<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,

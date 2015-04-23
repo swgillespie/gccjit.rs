@@ -2,63 +2,80 @@ use gccjit_sys;
 
 use std::marker::{PhantomData, Send};
 use std::fmt;
+use std::ptr;
+use std::num::FromPrimitive;
 
 use context::Context;
 use field::Field;
-
+use field;
 use types::Type;
 use types;
-
+use location::Location;
+use location;
 use object::{ToObject, Object};
 
 pub enum Opaque {}
 pub enum Concrete {}
 
+/// A Struct is gccjit's representation of a composite type. Despite the name,
+/// Struct can represent either a struct, an union, or an opaque named type.
 #[derive(Copy, Clone)]
-pub struct Struct<'ctx, T> {
-    opacity: PhantomData<T>,
+pub struct Struct<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,
     ptr: *mut gccjit_sys::gcc_jit_struct
 }
 
-impl<'ctx> Struct<'ctx, Opaque> {
-    pub fn set_fields(self, fields: &[Field<'ctx>]) -> Struct<'ctx, Concrete> {
-        unimplemented!()
-    }
-}
-
-impl<'ctx, T> Struct<'ctx, T> {
+impl<'ctx> Struct<'ctx> {
     pub fn as_type(&self) -> Type<'ctx> {
         unsafe {
             let ptr = gccjit_sys::gcc_jit_struct_as_type(self.ptr);
             types::from_ptr(ptr)
         }
     }
+
+    pub fn set_fields(&self,
+                      location: Option<Location<'ctx>>,
+                      fields: &[Field<'ctx>]) {
+        let loc_ptr = match location {
+                Some(loc) => unsafe { location::get_ptr(&loc) },
+                None => ptr::null_mut()
+        };
+        let num_fields = i32::from_usize(fields.len()).unwrap();
+        let mut fields_ptrs : Vec<_> = fields.iter()
+            .map(|x| unsafe { field::get_ptr(&x) })
+            .collect();
+        unsafe {
+            
+            let ptr = gccjit_sys::gcc_jit_struct_set_fields(self.ptr,
+                                                            loc_ptr,
+                                                            num_fields,
+                                                            fields_ptrs.as_mut_ptr());
+        }
+    }
 }
 
-impl<'ctx, T> ToObject<'ctx> for Struct<'ctx, T> {
+impl<'ctx> ToObject<'ctx> for Struct<'ctx> {
     fn to_object(&self) -> Object<'ctx> {
         let ty = self.as_type();
         ty.to_object()
     }
 }
 
-impl<'ctx, T> fmt::Debug for Struct<'ctx, T> {
+impl<'ctx> fmt::Debug for Struct<'ctx> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> {
         let obj = self.as_type();
         obj.fmt(fmt)
     }
 }
 
-impl<'ctx, T> !Send for Struct<'ctx, T> {}
+impl<'ctx> !Send for Struct<'ctx> {}
 
-pub unsafe fn get_ptr<'ctx, T>(s: &Struct<'ctx, T>) -> *mut gccjit_sys::gcc_jit_struct {
+pub unsafe fn get_ptr<'ctx>(s: &Struct<'ctx>) -> *mut gccjit_sys::gcc_jit_struct {
     s.ptr
 }
 
-pub unsafe fn from_ptr<'ctx, T>(ptr: *mut gccjit_sys::gcc_jit_struct) -> Struct<'ctx, T> {
+pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_struct) -> Struct<'ctx> {
     Struct {
-        opacity: PhantomData,
         marker: PhantomData,
         ptr: ptr
     }
