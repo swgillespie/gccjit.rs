@@ -1,5 +1,5 @@
 #![allow(dead_code, unused_variables, raw_pointer_derive)]
-#![feature(core, optin_builtin_traits)]
+#![feature(optin_builtin_traits)]
 
 extern crate gccjit_sys;
 

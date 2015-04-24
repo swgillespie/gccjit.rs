@@ -4,7 +4,6 @@ use std::ffi::CString;
 use std::marker::{PhantomData, Send};
 use std::mem;
 use std::ptr;
-use std::num::FromPrimitive;
 
 use location::Location;
 use location;
@@ -208,7 +207,7 @@ impl<'ctx> Context<'ctx> {
     }
 
     /// Constructs a new field with an optional source location, type, and name.
-    /// This field can be used to compose unions or structs. 
+    /// This field can be used to compose unions or structs.
     pub fn new_field<'a>(&'a self,
                      loc: Option<Location<'a>>,
                      ty: types::Type<'a>,
@@ -257,7 +256,7 @@ impl<'ctx> Context<'ctx> {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
         };
-        let num_fields = i32::from_usize(fields.len()).unwrap();
+        let num_fields = fields.len() as i32;
         let mut fields_ptrs : Vec<_> = fields.iter()
             .map(|x| unsafe { field::get_ptr(&x) })
             .collect();
@@ -299,7 +298,7 @@ impl<'ctx> Context<'ctx> {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
         };
-        let num_fields = i32::from_usize(fields.len()).unwrap();
+        let num_fields = fields.len() as i32;
         let mut fields_ptrs : Vec<_> = fields.iter()
             .map(|x| unsafe { field::get_ptr(&x) })
             .collect();
@@ -328,7 +327,7 @@ impl<'ctx> Context<'ctx> {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
         };
-        let num_types = i32::from_usize(param_types.len()).unwrap();
+        let num_types = param_types.len() as i32;
         let mut types_ptrs : Vec<_> = param_types.iter()
             .map(|x| unsafe { types::get_ptr(&x) })
             .collect();
@@ -358,7 +357,7 @@ impl<'ctx> Context<'ctx> {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
         };
-        let num_params = i32::from_usize(params.len()).unwrap();
+        let num_params = params.len() as i32;
         let mut params_ptrs : Vec<_> = params.iter()
             .map(|x| unsafe { parameter::get_ptr(&x) })
             .collect();
@@ -447,7 +446,7 @@ impl<'ctx> Context<'ctx> {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
         };
-        let num_params = i32::from_usize(args.len()).unwrap();
+        let num_params = args.len() as i32;
         let mut params_ptrs : Vec<_> = args.iter()
             .map(|x| unsafe { rvalue::get_ptr(&x) })
             .collect();
@@ -472,7 +471,7 @@ impl<'ctx> Context<'ctx> {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
         };
-        let num_params = i32::from_usize(args.len()).unwrap();
+        let num_params = args.len() as i32;
         let mut params_ptrs : Vec<_> = args.iter()
             .map(|x| unsafe { rvalue::get_ptr(&x) })
             .collect();
@@ -544,7 +543,7 @@ impl<'ctx> Context<'ctx> {
             let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_int(self.ptr,
                                                                       types::get_ptr(&ty),
                                                                       value);
-            rvalue::from_ptr(ptr)           
+            rvalue::from_ptr(ptr)
         }
     }
 
@@ -661,7 +660,7 @@ pub unsafe fn get_ptr<'ctx>(ctx: &'ctx Context<'ctx>) -> *mut gccjit_sys::gcc_ji
 mod tests {
     use super::*;
     use std::default::Default;
-    
+
     #[test]
     fn create_context() {
         let ctx = Context::default();
