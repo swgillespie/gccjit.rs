@@ -2,7 +2,6 @@ extern crate gccjit;
 
 use gccjit::Context;
 use gccjit::FunctionType;
-use gccjit::BinaryOp;
 use gccjit::ToRValue;
 use gccjit::OptimizationLevel;
 
@@ -24,12 +23,8 @@ fn main() {
                                    false);
     let block = fun.new_block("main_block");
     let parm = fun.get_param(0).to_rvalue();
-    let binop = context.new_binary_op(None,
-                                      BinaryOp::Mult,
-                                      int_ty,
-                                      parm,
-                                      parm);
-    block.end_with_return(None, binop);
+    let square = parm * parm;
+    block.end_with_return(None, square);
     let result = context.compile();
     let func = result.get_function("square");
     let jit_compiled_fun : extern "C" fn(i32) -> i32 = match func {

@@ -1,6 +1,8 @@
 use std::marker::{Send, PhantomData};
 use std::fmt;
 use std::ptr;
+use std::mem;
+use std::ops::{Add, Sub, Mul, Div, Rem, BitAnd, BitOr, BitXor, Shl, Shr};
 use gccjit_sys;
 use context::Context;
 use object::{ToObject, Object};
@@ -13,6 +15,7 @@ use lvalue::LValue;
 use lvalue;
 use location::Location;
 use location;
+use block::BinaryOp;
 
 /// An RValue is a value that may or may not have a storage address in gccjit.
 /// RValues can be dereferenced, used for field accesses, and are the parameters
@@ -49,6 +52,41 @@ impl<'ctx> ToRValue<'ctx> for RValue<'ctx> {
         unsafe { from_ptr(self.ptr) }
     }
 }
+
+macro_rules! binary_operator_for {
+    ($ty:ty, $name:ident, $op:expr) => {
+        impl<'ctx> $ty for RValue<'ctx> {
+            type Output = RValue<'ctx>;
+
+            fn $name(self, rhs: RValue<'ctx>) -> RValue<'ctx> {
+                unsafe {
+                    let obj_ptr = object::get_ptr(&self.to_object());
+                    let ctx_ptr = gccjit_sys::gcc_jit_object_get_context(obj_ptr);
+                    let ty = rhs.get_type();
+                    let ptr = gccjit_sys::gcc_jit_context_new_binary_op(ctx_ptr,
+                                                                        ptr::null_mut(),
+                                                                        mem::transmute($op),
+                                                                        types::get_ptr(&ty),
+                                                                        self.ptr,
+                                                                        rhs.ptr);
+                    from_ptr(ptr)
+                }
+            }
+        }
+    }
+}
+
+// Operator overloads for ease of manipulation of rvalues
+binary_operator_for!(Add, add, BinaryOp::Plus);
+binary_operator_for!(Sub, sub, BinaryOp::Minus);
+binary_operator_for!(Mul, mul, BinaryOp::Mult);
+binary_operator_for!(Div, div, BinaryOp::Divide);
+binary_operator_for!(Rem, rem, BinaryOp::Modulo);
+binary_operator_for!(BitAnd, bitand, BinaryOp::BitwiseAnd);
+binary_operator_for!(BitOr, bitor, BinaryOp::BitwiseOr);
+binary_operator_for!(BitXor, bitxor, BinaryOp::BitwiseXor);
+binary_operator_for!(Shl<RValue<'ctx>>, shl, BinaryOp::LShift);
+binary_operator_for!(Shr<RValue<'ctx>>, shr, BinaryOp::RShift);
 
 impl<'ctx> !Send for RValue<'ctx> {}
 

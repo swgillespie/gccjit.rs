@@ -36,17 +36,9 @@ fn main() {
     // ret_block: return 1
     true_branch.end_with_return(None, context.new_rvalue_one(int_ty));
     // recurse_block: return n * fact(n-1)
-    let n_minus_one = context.new_binary_op(None,
-                                            BinaryOp::Minus,
-                                            int_ty,
-                                            parm,
-                                            context.new_rvalue_one(int_ty));
+    let n_minus_one = parm - context.new_rvalue_one(int_ty);
     let call = context.new_call(None, factorial, &[n_minus_one]);
-    let mul = context.new_binary_op(None,
-                                    BinaryOp::Mult,
-                                    int_ty,
-                                    parm,
-                                    call);
+    let mul = parm * call;
     false_branch.end_with_return(None, mul);
     let result = context.compile();
     factorial.dump_to_dot("factorial.dot");
