@@ -217,7 +217,3 @@ pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_block) -> Block<'ctx>
         ptr: ptr
     }
 }
-
-pub unsafe fn get_ptr<'ctx>(loc: &Block<'ctx>) -> *mut gccjit_sys::gcc_jit_block {
-    loc.ptr
-}

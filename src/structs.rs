@@ -13,9 +13,6 @@ use location::Location;
 use location;
 use object::{ToObject, Object};
 
-pub enum Opaque {}
-pub enum Concrete {}
-
 /// A Struct is gccjit's representation of a composite type. Despite the name,
 /// Struct can represent either a struct, an union, or an opaque named type.
 #[derive(Copy, Clone)]
@@ -44,11 +41,10 @@ impl<'ctx> Struct<'ctx> {
             .map(|x| unsafe { field::get_ptr(&x) })
             .collect();
         unsafe {
-
-            let ptr = gccjit_sys::gcc_jit_struct_set_fields(self.ptr,
-                                                            loc_ptr,
-                                                            num_fields,
-                                                            fields_ptrs.as_mut_ptr());
+            gccjit_sys::gcc_jit_struct_set_fields(self.ptr,
+                                                  loc_ptr,
+                                                  num_fields,
+                                                  fields_ptrs.as_mut_ptr());
         }
     }
 }
@@ -68,10 +64,6 @@ impl<'ctx> fmt::Debug for Struct<'ctx> {
 }
 
 impl<'ctx> !Send for Struct<'ctx> {}
-
-pub unsafe fn get_ptr<'ctx>(s: &Struct<'ctx>) -> *mut gccjit_sys::gcc_jit_struct {
-    s.ptr
-}
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_struct) -> Struct<'ctx> {
     Struct {

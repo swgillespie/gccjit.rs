@@ -1,4 +1,4 @@
-#![allow(dead_code, unused_variables, raw_pointer_derive)]
+#![allow(raw_pointer_derive)]
 #![feature(optin_builtin_traits)]
 
 extern crate gccjit_sys;
@@ -18,6 +18,7 @@ mod block;
 pub use context::Context;
 pub use context::OptimizationLevel;
 pub use context::CompileResult;
+pub use context::OutputKind;
 pub use location::Location;
 pub use object::Object;
 pub use object::ToObject;

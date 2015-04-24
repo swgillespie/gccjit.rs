@@ -45,6 +45,16 @@ pub enum OptimizationLevel {
     Aggressive
 }
 
+/// This enum indicates to gccjit the format of the output
+/// code that is written out by compile_to_file.
+#[repr(C)]
+pub enum OutputKind {
+    Assembler,
+    ObjectFile,
+    DynamicLibrary,
+    Executable
+}
+
 /// Represents a successful compilation of a context. This type
 /// provides the means to access compiled functions and globals.
 /// JIT compiled functions are exposted to Rust as an extern "C" function
@@ -167,6 +177,19 @@ impl<'ctx> Context<'ctx> {
             }
         }
     }
+
+    /// Compiles the context and saves the result to a file. The
+    /// type of the file is controlled by the OutputKind parameter.
+    pub fn compile_to_file(&self, kind: OutputKind, file: &str) {
+        unsafe {
+            let cstr = CString::new(file).unwrap();
+            gccjit_sys::gcc_jit_context_compile_to_file(self.ptr,
+                                                        mem::transmute(kind),
+                                                        cstr.as_ptr());
+        }
+    }
+
+    
 
     /// Creates a new child context from this context. The child context
     /// is a fully-featured context, but it has a lifetime that is strictly
@@ -639,6 +662,15 @@ impl<'ctx> Context<'ctx> {
                                                             types::get_ptr(&ty),
                                                             cstr.as_ptr());
             parameter::from_ptr(ptr)
+        }
+    }
+
+    pub fn get_builtin_function<'a>(&'a self, name: &str) -> Function<'a> {
+        unsafe {
+            let cstr = CString::new(name).unwrap();
+            let ptr = gccjit_sys::gcc_jit_context_get_builtin_function(self.ptr,
+                                                                       cstr.as_ptr());
+            function::from_ptr(ptr)
         }
     }
 }
