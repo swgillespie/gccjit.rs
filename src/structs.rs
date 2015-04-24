@@ -3,7 +3,6 @@ use gccjit_sys;
 use std::marker::{PhantomData, Send};
 use std::fmt;
 use std::ptr;
-use std::num::FromPrimitive;
 
 use context::Context;
 use field::Field;
@@ -40,12 +39,12 @@ impl<'ctx> Struct<'ctx> {
                 Some(loc) => unsafe { location::get_ptr(&loc) },
                 None => ptr::null_mut()
         };
-        let num_fields = i32::from_usize(fields.len()).unwrap();
+        let num_fields = fields.len() as i32;
         let mut fields_ptrs : Vec<_> = fields.iter()
             .map(|x| unsafe { field::get_ptr(&x) })
             .collect();
         unsafe {
-            
+
             let ptr = gccjit_sys::gcc_jit_struct_set_fields(self.ptr,
                                                             loc_ptr,
                                                             num_fields,
