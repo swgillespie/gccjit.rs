@@ -1,5 +1,6 @@
 use gccjit_sys;
 use context::Context;
+use context;
 use std::marker::{PhantomData, Send};
 use std::fmt;
 use std::ffi::CStr;
@@ -43,5 +44,9 @@ pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_object) -> Object<'ct
         marker: PhantomData,
         ptr: ptr
     }
+}
+
+pub unsafe fn get_ptr<'ctx>(object: &Object<'ctx>) -> *mut gccjit_sys::gcc_jit_object {
+    object.ptr
 }
 

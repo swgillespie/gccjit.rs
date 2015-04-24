@@ -1,6 +1,7 @@
 use std::marker::{Send, PhantomData};
 use std::fmt;
 use std::ptr;
+use std::ops::Add;
 use gccjit_sys;
 use context::Context;
 use object::{ToObject, Object};
@@ -13,6 +14,7 @@ use lvalue::LValue;
 use lvalue;
 use location::Location;
 use location;
+use block::BinaryOp;
 
 /// An RValue is a value that may or may not have a storage address in gccjit.
 /// RValues can be dereferenced, used for field accesses, and are the parameters
@@ -49,6 +51,29 @@ impl<'ctx> ToRValue<'ctx> for RValue<'ctx> {
         unsafe { from_ptr(self.ptr) }
     }
 }
+
+macro_rules! operator_for {
+    ($ty:ty, $name:ident, $op:expr) => {
+        impl<'ctx> $ty for RValue<'ctx> {
+            type Output = RValue<'ctx>;
+
+            fn $name(self, rhs: RValue<'ctx>) -> RValue<'ctx> {
+                let obj_ptr = object::get_ptr(&self.to_object());
+                let ctx_ptr = gccjit_sys::gcc_jit_object_get_context(obj_ptr);
+                let ty = rhs.get_type();
+                let ptr = gccjit_sys::gcc_jit_context_new_binary_op(ctx_ptr,
+                                                                    ptr::null_mut(),
+                                                                    $op as i32,
+                                                                    types::get_ptr(&ty),
+                                                                    rhs.ptr,
+                                                                    self.ptr);
+                from_ptr(ptr)
+            }
+        }
+    }
+}
+
+operator_for!(Add, add, BinaryOp::Plus);
 
 impl<'ctx> !Send for RValue<'ctx> {}
 
