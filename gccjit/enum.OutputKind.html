@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `OptimizationLevel` enum in crate `gccjit`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, OptimizationLevel">
+    <meta name="description" content="API documentation for the Rust `OutputKind` enum in crate `gccjit`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, OutputKind">
 
-    <title>gccjit::OptimizationLevel - Rust</title>
+    <title>gccjit::OutputKind - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>gccjit</a></p><script>window.sidebarCurrent = {name: 'OptimizationLevel', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='index.html'>gccjit</a></p><script>window.sidebarCurrent = {name: 'OutputKind', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -41,18 +41,18 @@
     </nav>
 
     <section id='main' class="content enum">
-<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>gccjit</a>::<wbr><a class='enum' href=''>OptimizationLevel</a></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>gccjit</a>::<wbr><a class='enum' href=''>OutputKind</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-784' class='srclink' href='../src/gccjit/context.rs.html#41-46'>[src]</a></span></h1>
-<pre class='rust enum'>pub enum OptimizationLevel {
-    None,
-    Limited,
-    Standard,
-    Aggressive,
-}</pre><div class='docblock'><p>Represents an optimization level that the JIT compiler
-will use when compiling your code.</p>
+        </span><a id='src-790' class='srclink' href='../src/gccjit/context.rs.html#51-56'>[src]</a></span></h1>
+<pre class='rust enum'>pub enum OutputKind {
+    Assembler,
+    ObjectFile,
+    DynamicLibrary,
+    Executable,
+}</pre><div class='docblock'><p>This enum indicates to gccjit the format of the output
+code that is written out by compile_to_file.</p>
 </div><h2 class='variants'>Variants</h2>
-<table><tr><td id='variant.None'><code>None</code></td><td></td></tr><tr><td id='variant.Limited'><code>Limited</code></td><td></td></tr><tr><td id='variant.Standard'><code>Standard</code></td><td></td></tr><tr><td id='variant.Aggressive'><code>Aggressive</code></td><td></td></tr></table></section>
+<table><tr><td id='variant.Assembler'><code>Assembler</code></td><td></td></tr><tr><td id='variant.ObjectFile'><code>ObjectFile</code></td><td></td></tr><tr><td id='variant.DynamicLibrary'><code>DynamicLibrary</code></td><td></td></tr><tr><td id='variant.Executable'><code>Executable</code></td><td></td></tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>

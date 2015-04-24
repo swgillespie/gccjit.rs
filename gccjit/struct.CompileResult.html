@@ -43,19 +43,25 @@
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>gccjit</a>::<wbr><a class='struct' href=''>CompileResult</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-789' class='srclink' href='../src/gccjit/context.rs.html#53-55'>[src]</a></span></h1>
+        </span><a id='src-796' class='srclink' href='../src/gccjit/context.rs.html#62-64'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct CompileResult {
     // some fields omitted
 }</pre><div class='docblock'><p>Represents a successful compilation of a context. This type
 provides the means to access compiled functions and globals.
 JIT compiled functions are exposted to Rust as an extern &quot;C&quot; function
 pointer.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../gccjit/struct.CompileResult.html' title='gccjit::CompileResult'>CompileResult</a></code></h3><div class='impl-items'><h4 id='method.get_function' class='method'><code>fn <a href='#method.get_function' class='fnname'>get_function</a>&lt;'a, A, R&gt;(&amp;'a self, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt; extern "C" fn(A) -&gt; R&gt;</code></h4>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../gccjit/struct.CompileResult.html' title='gccjit::CompileResult'>CompileResult</a></code></h3><div class='impl-items'><h4 id='method.get_function' class='method'><code>fn <a href='#method.get_function' class='fnname'>get_function</a>(&amp;self, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*mut <a href='http://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a></a>&gt;</code></h4>
 <div class='docblock'><p>Gets a function pointer to a JIT compiled function. If the function
 does not exist (wasn&#39;t compiled by the Context that produced this
-CompileResult), this function returns None.</p>
-</div><h4 id='method.get_global' class='method'><code>unsafe fn <a href='#method.get_global' class='fnname'>get_global</a>&lt;T&gt;(&amp;self, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*mut T</a></code></h4>
-<div class='docblock'><p>Who knows what this thing does yet.</p>
+CompileResult), this function returns None.
+It is THE RESPONSIBILITY OF THE CALLER of this function to ensure
+that this pointer does not outlive the CompileResult object. This
+pointer must be transmuted to a function pointer in order to be
+called.</p>
+</div><h4 id='method.get_global' class='method'><code>fn <a href='#method.get_global' class='fnname'>get_global</a>(&amp;self, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*mut <a href='http://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a></a>&gt;</code></h4>
+<div class='docblock'><p>Gets a pointer to a global variable that lives on the JIT heap.
+It is similarly the caller&#39;s responsibility to ensure that this
+value stays valid.</p>
 </div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../gccjit/struct.CompileResult.html' title='gccjit::CompileResult'>CompileResult</a></code></h3><div class='impl-items'><h4 id='method.drop' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#method.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
 </div><h3 class='impl'><code>impl !<a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> for <a class='struct' href='../gccjit/struct.CompileResult.html' title='gccjit::CompileResult'>CompileResult</a></code></h3><div class='impl-items'></div></section>
     <section id='search' class="content hidden"></section>

@@ -72,9 +72,10 @@
 <span id="30">30</span>
 <span id="31">31</span>
 <span id="32">32</span>
+<span id="33">33</span>
 </pre><pre class='rust '>
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>allow</span>(<span class='ident'>dead_code</span>, <span class='ident'>unused_variables</span>, <span class='ident'>raw_pointer_derive</span>)]</span>
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>core</span>, <span class='ident'>optin_builtin_traits</span>)]</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>allow</span>(<span class='ident'>raw_pointer_derive</span>)]</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>optin_builtin_traits</span>)]</span>
 
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>gccjit_sys</span>;
 
@@ -93,6 +94,7 @@
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>context</span>::<span class='ident'>Context</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>context</span>::<span class='ident'>OptimizationLevel</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>context</span>::<span class='ident'>CompileResult</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>context</span>::<span class='ident'>OutputKind</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>location</span>::<span class='ident'>Location</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>object</span>::<span class='ident'>Object</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>object</span>::<span class='ident'>ToObject</span>;
@@ -104,7 +106,7 @@
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>rvalue</span>::{<span class='ident'>RValue</span>, <span class='ident'>ToRValue</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>parameter</span>::<span class='ident'>Parameter</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>function</span>::{<span class='ident'>Function</span>, <span class='ident'>FunctionType</span>};
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>block</span>::{<span class='ident'>Block</span>, <span class='ident'>BinaryOp</span>, <span class='ident'>UnaryOp</span>};
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>block</span>::{<span class='ident'>Block</span>, <span class='ident'>BinaryOp</span>, <span class='ident'>UnaryOp</span>, <span class='ident'>ComparisonOp</span>};
 </pre>
 </section>
     <section id='search' class="content hidden"></section>

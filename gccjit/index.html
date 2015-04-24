@@ -43,7 +43,7 @@
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>gccjit</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' class='srclink' href='../src/gccjit/lib.rs.html#1-32'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/gccjit/lib.rs.html#1-33'>[src]</a></span></h1>
 <h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
                     <tr class=' module-item'>
@@ -190,6 +190,16 @@ that gccjit knows how to codegen.</p>
                     </tr>
                 
                     <tr class=' module-item'>
+                        <td><a class='enum' href='enum.ComparisonOp.html'
+                               title='gccjit::ComparisonOp'>ComparisonOp</a></td>
+                        <td class='docblock short'>
+                             <p>ComparisonOp is an enum representing the various comparisons that
+gccjit is capable of doing.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
                         <td><a class='enum' href='enum.FunctionType.html'
                                title='gccjit::FunctionType'>FunctionType</a></td>
                         <td class='docblock short'>
@@ -209,6 +219,16 @@ always inlined wherever it is called and cannot be accessed outside of the jit.<
                         <td class='docblock short'>
                              <p>Represents an optimization level that the JIT compiler
 will use when compiling your code.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.OutputKind.html'
+                               title='gccjit::OutputKind'>OutputKind</a></td>
+                        <td class='docblock short'>
+                             <p>This enum indicates to gccjit the format of the output
+code that is written out by compile_to_file.</p>
 
                         </td>
                     </tr>

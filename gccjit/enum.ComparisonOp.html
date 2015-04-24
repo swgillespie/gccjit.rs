@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `OptimizationLevel` enum in crate `gccjit`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, OptimizationLevel">
+    <meta name="description" content="API documentation for the Rust `ComparisonOp` enum in crate `gccjit`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ComparisonOp">
 
-    <title>gccjit::OptimizationLevel - Rust</title>
+    <title>gccjit::ComparisonOp - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>gccjit</a></p><script>window.sidebarCurrent = {name: 'OptimizationLevel', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='index.html'>gccjit</a></p><script>window.sidebarCurrent = {name: 'ComparisonOp', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -41,18 +41,20 @@
     </nav>
 
     <section id='main' class="content enum">
-<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>gccjit</a>::<wbr><a class='enum' href=''>OptimizationLevel</a></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>gccjit</a>::<wbr><a class='enum' href=''>ComparisonOp</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-784' class='srclink' href='../src/gccjit/context.rs.html#41-46'>[src]</a></span></h1>
-<pre class='rust enum'>pub enum OptimizationLevel {
-    None,
-    Limited,
-    Standard,
-    Aggressive,
-}</pre><div class='docblock'><p>Represents an optimization level that the JIT compiler
-will use when compiling your code.</p>
+        </span><a id='src-5257' class='srclink' href='../src/gccjit/block.rs.html#50-57'>[src]</a></span></h1>
+<pre class='rust enum'>pub enum ComparisonOp {
+    Equals,
+    NotEquals,
+    LessThan,
+    LessThanEquals,
+    GreaterThan,
+    GreaterThanEquals,
+}</pre><div class='docblock'><p>ComparisonOp is an enum representing the various comparisons that
+gccjit is capable of doing.</p>
 </div><h2 class='variants'>Variants</h2>
-<table><tr><td id='variant.None'><code>None</code></td><td></td></tr><tr><td id='variant.Limited'><code>Limited</code></td><td></td></tr><tr><td id='variant.Standard'><code>Standard</code></td><td></td></tr><tr><td id='variant.Aggressive'><code>Aggressive</code></td><td></td></tr></table></section>
+<table><tr><td id='variant.Equals'><code>Equals</code></td><td></td></tr><tr><td id='variant.NotEquals'><code>NotEquals</code></td><td></td></tr><tr><td id='variant.LessThan'><code>LessThan</code></td><td></td></tr><tr><td id='variant.LessThanEquals'><code>LessThanEquals</code></td><td></td></tr><tr><td id='variant.GreaterThan'><code>GreaterThan</code></td><td></td></tr><tr><td id='variant.GreaterThanEquals'><code>GreaterThanEquals</code></td><td></td></tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
