@@ -1,6 +1,6 @@
 use gccjit_sys;
 
-use std::marker::{PhantomData, Send};
+use std::marker::PhantomData;
 use std::fmt;
 use std::ptr;
 
@@ -62,8 +62,6 @@ impl<'ctx> fmt::Debug for Struct<'ctx> {
         obj.fmt(fmt)
     }
 }
-
-impl<'ctx> !Send for Struct<'ctx> {}
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_struct) -> Struct<'ctx> {
     Struct {

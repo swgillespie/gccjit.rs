@@ -1,4 +1,4 @@
-use std::marker::{PhantomData, Send};
+use std::marker::PhantomData;
 use std::ffi::CString;
 use std::fmt;
 use std::ptr;
@@ -208,8 +208,6 @@ impl<'ctx> Block<'ctx> {
         }
     }
 }
-
-impl<'ctx> !Send for Block<'ctx> {}
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_block) -> Block<'ctx> {
     Block {

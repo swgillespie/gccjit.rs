@@ -1,4 +1,4 @@
-use std::marker::{Send, PhantomData};
+use std::marker::PhantomData;
 use std::fmt;
 use std::ptr;
 use std::mem;
@@ -87,8 +87,6 @@ binary_operator_for!(BitOr, bitor, BinaryOp::BitwiseOr);
 binary_operator_for!(BitXor, bitxor, BinaryOp::BitwiseXor);
 binary_operator_for!(Shl<RValue<'ctx>>, shl, BinaryOp::LShift);
 binary_operator_for!(Shr<RValue<'ctx>>, shr, BinaryOp::RShift);
-
-impl<'ctx> !Send for RValue<'ctx> {}
 
 impl<'ctx> RValue<'ctx> {
     /// Gets the type of this RValue.

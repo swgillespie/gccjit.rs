@@ -1,4 +1,4 @@
-use std::marker::{Send, PhantomData};
+use std::marker::PhantomData;
 use std::fmt;
 use std::ptr;
 use gccjit_sys;
@@ -90,8 +90,6 @@ impl<'ctx> LValue<'ctx> {
         }
     }
 }
-
-impl<'ctx> !Send for LValue<'ctx> {}
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_lvalue) -> LValue<'ctx> {
     LValue {

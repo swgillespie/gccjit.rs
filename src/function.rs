@@ -1,4 +1,4 @@
-use std::marker::{PhantomData, Send};
+use std::marker::PhantomData;
 use std::fmt;
 use std::ptr;
 use context::Context;
@@ -98,8 +98,6 @@ impl<'ctx> Function<'ctx> {
         }
     }
 }
-
-impl<'ctx> !Send for Function<'ctx> {}
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_function) -> Function<'ctx> {
     Function {

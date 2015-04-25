@@ -1,6 +1,6 @@
 use gccjit_sys;
 use context::Context;
-use std::marker::{PhantomData, Send};
+use std::marker::PhantomData;
 use std::fmt;
 use std::ffi::CStr;
 use std::str;
@@ -35,8 +35,6 @@ impl<'ctx> ToObject<'ctx> for Object<'ctx> {
         unsafe { from_ptr(self.ptr) }
     }
 }
-
-impl<'ctx> !Send for Object<'ctx> {}
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_object) -> Object<'ctx> {
     Object {

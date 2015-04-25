@@ -1,5 +1,4 @@
 #![allow(raw_pointer_derive)]
-#![feature(optin_builtin_traits)]
 
 extern crate gccjit_sys;
 

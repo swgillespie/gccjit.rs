@@ -1,4 +1,4 @@
-use std::marker::{PhantomData, Send};
+use std::marker::PhantomData;
 use std::fmt;
 
 use gccjit_sys;
@@ -34,8 +34,6 @@ impl<'ctx> fmt::Debug for Type<'ctx> {
         obj.fmt(fmt)
     }
 }
-
-impl<'ctx> !Send for Type<'ctx> {}
 
 impl<'ctx> Type<'ctx> {
     /// Given a type T, changes the type to *T, a pointer to T.

@@ -1,6 +1,6 @@
 use gccjit_sys;
 
-use std::marker::{PhantomData, Send};
+use std::marker::PhantomData;
 use std::fmt;
 
 use context::Context;
@@ -29,8 +29,6 @@ impl<'ctx> fmt::Debug for Field<'ctx> {
         obj.fmt(fmt)
     }
 }
-
-impl<'ctx> !Send for Field<'ctx> {}
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_field) -> Field<'ctx> {
     Field {

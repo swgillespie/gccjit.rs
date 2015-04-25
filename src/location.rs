@@ -1,5 +1,5 @@
 use gccjit_sys;
-use std::marker::{PhantomData, Send};
+use std::marker::PhantomData;
 use std::fmt;
 use context::Context;
 use object;
@@ -26,8 +26,6 @@ impl<'ctx> fmt::Debug for Location<'ctx> {
         obj.fmt(fmt)
     }
 }
-
-impl<'ctx> !Send for Location<'ctx> {}
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_location) -> Location<'ctx> {
     Location {

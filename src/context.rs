@@ -1,7 +1,7 @@
 use std::default::Default;
 use std::ops::Drop;
 use std::ffi::CString;
-use std::marker::{PhantomData, Send};
+use std::marker::PhantomData;
 use std::mem;
 use std::ptr;
 
@@ -108,8 +108,6 @@ impl Drop for CompileResult {
     }
 }
 
-impl !Send for CompileResult {}
-
 /// Wrapper around a GCC JIT context object that keeps
 /// the state of the JIT compiler. In GCCJIT, this object
 /// is responsible for all memory management of JIT data
@@ -134,8 +132,6 @@ impl Default for Context<'static> {
         }
     }
 }
-
-impl<'ctx> !Send for Context<'ctx> {}
 
 impl<'ctx> Context<'ctx> {
     /// Sets the program name reported by the JIT.
