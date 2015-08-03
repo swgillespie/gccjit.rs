@@ -60,6 +60,7 @@ macro_rules! binary_operator_for {
 
             fn $name(self, rhs: RValue<'ctx>) -> RValue<'ctx> {
                 unsafe {
+                    let rhs_rvalue = rhs.to_rvalue();
                     let obj_ptr = object::get_ptr(&self.to_object());
                     let ctx_ptr = gccjit_sys::gcc_jit_object_get_context(obj_ptr);
                     let ty = rhs.get_type();
@@ -68,7 +69,7 @@ macro_rules! binary_operator_for {
                                                                         mem::transmute($op),
                                                                         types::get_ptr(&ty),
                                                                         self.ptr,
-                                                                        rhs.ptr);
+                                                                        rhs_rvalue.ptr);
                     from_ptr(ptr)
                 }
             }

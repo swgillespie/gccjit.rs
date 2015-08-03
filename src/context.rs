@@ -5,32 +5,16 @@ use std::marker::PhantomData;
 use std::mem;
 use std::ptr;
 
-use location::Location;
-use location;
-
-use structs::Struct;
-use structs;
-
+use location::{self, Location};
+use structs::{self, Struct};
 use types;
-use field::Field;
-use field;
-
-use rvalue::RValue;
-use rvalue;
-
-use function::{Function, FunctionType};
-use function;
-
+use field::{self, Field};
+use rvalue::{self, RValue, ToRValue};
+use function::{self, Function, FunctionType};
 use block::{BinaryOp, UnaryOp, ComparisonOp};
-
-use parameter::Parameter;
-use parameter;
-
-use lvalue::LValue;
-use lvalue;
-
+use parameter::{self, Parameter};
+use lvalue::{self, LValue};
 use gccjit_sys;
-
 use gccjit_sys::gcc_jit_int_option::*;
 use gccjit_sys::gcc_jit_str_option::*;
 use gccjit_sys::gcc_jit_bool_option::*;
@@ -395,12 +379,14 @@ impl<'ctx> Context<'ctx> {
     }
 
     /// Creates a new binary operation between two RValues and produces a new RValue.
-    pub fn new_binary_op<'a>(&'a self,
+    pub fn new_binary_op<'a, L: ToRValue<'a>, R: ToRValue<'a>>(&'a self,
                         loc: Option<Location<'a>>,
                         op: BinaryOp,
                         ty: types::Type<'a>,
-                        left: RValue<'a>,
-                        right: RValue<'a>) -> RValue<'a> {
+                        left: L,
+                        right: R) -> RValue<'a> {
+        let left_rvalue = left.to_rvalue();
+        let right_rvalue = right.to_rvalue();
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
@@ -410,18 +396,19 @@ impl<'ctx> Context<'ctx> {
                                                                 loc_ptr,
                                                                 mem::transmute(op),
                                                                 types::get_ptr(&ty),
-                                                                rvalue::get_ptr(&left),
-                                                                rvalue::get_ptr(&right));
+                                                                rvalue::get_ptr(&left_rvalue),
+                                                                rvalue::get_ptr(&right_rvalue));
             rvalue::from_ptr(ptr)
         }
     }
 
     /// Creates a unary operation on one RValue and produces a result RValue.
-    pub fn new_unary_op<'a>(&'a self,
+    pub fn new_unary_op<'a, T: ToRValue<'a>>(&'a self,
                         loc: Option<Location<'a>>,
                         op: UnaryOp,
                         ty: types::Type<'a>,
-                        rvalue: RValue<'a>) -> RValue<'a> {
+                        target: T) -> RValue<'a> {
+        let rvalue = target.to_rvalue();
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
@@ -436,11 +423,13 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
-    pub fn new_comparison<'a>(&'a self,
+    pub fn new_comparison<'a, L: ToRValue<'a>, R: ToRValue<'a>>(&'a self,
                               loc: Option<Location<'a>>,
                               op: ComparisonOp,
-                              left: RValue<'a>,
-                              right: RValue<'a>) -> RValue<'a> {
+                              left: L,
+                              right: R) -> RValue<'a> {
+        let left_rvalue = left.to_rvalue();
+        let right_rvalue = right.to_rvalue();
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
@@ -449,14 +438,19 @@ impl<'ctx> Context<'ctx> {
             let ptr = gccjit_sys::gcc_jit_context_new_comparison(self.ptr,
                                                                  loc_ptr,
                                                                  mem::transmute(op),
-                                                                 rvalue::get_ptr(&left),
-                                                                 rvalue::get_ptr(&right));
+                                                                 rvalue::get_ptr(&left_rvalue),
+                                                                 rvalue::get_ptr(&right_rvalue));
             rvalue::from_ptr(ptr)
         }
     }
 
     /// Creates a function call to a function object with a given number of parameters.
     /// The RValue that is returned is the result of the function call.
+    /// Note that due to the way that Rust's generics work, it is currently
+    /// not possible to be generic over different types of arguments (RValues
+    /// together with LValues and Parameters, for example), so in order to
+    /// mix the types of the arguments it may be necessary to call to_rvalue()
+    /// before calling this function.
     pub fn new_call<'a>(&'a self,
                     loc: Option<Location<'a>>,
                     func: Function<'a>,
@@ -482,22 +476,24 @@ impl<'ctx> Context<'ctx> {
     /// Creates an indirect function call that dereferences a function pointer and
     /// attempts to invoke it with the given arguments. The RValue that is returned
     /// is the result of the function call.
-    pub fn new_call_through_ptr<'a>(&'a self,
+    pub fn new_call_through_ptr<'a, F: ToRValue<'a>, A: ToRValue<'a>>(&'a self,
                                     loc: Option<Location<'a>>,
-                                    fun_ptr: RValue<'a>,
-                                    args: &[RValue<'a>]) -> RValue<'a> {
+                                    fun_ptr: F,
+                                    args: &[A]) -> RValue<'a> {
+        let fun_ptr_rvalue = fun_ptr.to_rvalue();
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
         };
         let num_params = args.len() as i32;
         let mut params_ptrs : Vec<_> = args.iter()
+            .map(|x| x.to_rvalue())
             .map(|x| unsafe { rvalue::get_ptr(&x) })
             .collect();
         unsafe {
             let ptr = gccjit_sys::gcc_jit_context_new_call_through_ptr(self.ptr,
                                                            loc_ptr,
-                                                           rvalue::get_ptr(&fun_ptr),
+                                                           rvalue::get_ptr(&fun_ptr_rvalue),
                                                            num_params,
                                                            params_ptrs.as_mut_ptr());
             rvalue::from_ptr(ptr)
@@ -505,10 +501,11 @@ impl<'ctx> Context<'ctx> {
     }
 
     /// Cast an RValue to a specific type. I don't know what happens when the cast fails yet.
-    pub fn new_cast<'a>(&'a self,
+    pub fn new_cast<'a, T: ToRValue<'a>>(&'a self,
                         loc: Option<Location<'a>>,
-                        rvalue: RValue<'a>,
+                        value: T,
                         dest_type: types::Type<'a>) -> RValue<'a> {
+        let rvalue = value.to_rvalue();
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
@@ -524,10 +521,12 @@ impl<'ctx> Context<'ctx> {
 
     /// Creates an LValue from an array pointer and an offset. The LValue can be the target
     /// of an assignment, or it can be converted into an RValue (i.e. loaded).
-    pub fn new_array_access<'a>(&'a self,
+    pub fn new_array_access<'a, A: ToRValue<'a>, I: ToRValue<'a>>(&'a self,
                             loc: Option<Location<'a>>,
-                            array_ptr: RValue<'a>,
-                            index: RValue<'a>) -> LValue<'a> {
+                            array_ptr: A,
+                            index: I) -> LValue<'a> {
+        let array_rvalue = array_ptr.to_rvalue();
+        let idx_rvalue = index.to_rvalue();
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
@@ -535,8 +534,8 @@ impl<'ctx> Context<'ctx> {
         unsafe {
             let ptr = gccjit_sys::gcc_jit_context_new_array_access(self.ptr,
                                                                    loc_ptr,
-                                                                   rvalue::get_ptr(&array_ptr),
-                                                                   rvalue::get_ptr(&index));
+                                                                   rvalue::get_ptr(&array_rvalue),
+                                                                   rvalue::get_ptr(&idx_rvalue));
             lvalue::from_ptr(ptr)
         }
     }
@@ -661,6 +660,9 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
+    /// Get a builtin function from gcc. It's not clear what functions are
+    /// builtin and you'll likely need to consult the GCC internal docs
+    /// for a full list.
     pub fn get_builtin_function<'a>(&'a self, name: &str) -> Function<'a> {
         unsafe {
             let cstr = CString::new(name).unwrap();

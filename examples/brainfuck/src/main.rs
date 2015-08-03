@@ -1,6 +1,7 @@
 extern crate gccjit;
 use std::io;
 use std::default::Default;
+use std::mem;
 
 use gccjit::ToRValue;
 
@@ -30,15 +31,13 @@ fn main() {
         panic!("unbalanced brackets");
     }
 
-    context.compile_to_file(gccjit::OutputKind::Executable, "bf_out");
-    /*
+    let result = context.compile();
     let main_result = result.get_function("bf_main");
     let main : extern "C" fn() = match main_result {
         Some(x) => unsafe { mem::transmute(x) },
         None => panic!("failed to codegen")
     };
     main();
-    */
 }
 
 fn read_ops<R: io::Read>(mut reader: R) -> Result<Vec<Op>, io::Error> {
@@ -55,7 +54,7 @@ fn read_ops<R: io::Read>(mut reader: R) -> Result<Vec<Op>, io::Error> {
             ']' => ops.push(Op::BranchRight),
             ',' => ops.push(Op::Input),
             '.' => ops.push(Op::Output),
-            _ => println!("ignoring unknown character: {}", c)
+            _ => {}
         }
     }
     Ok(ops)
@@ -83,8 +82,7 @@ fn codegen<'a, 'ctx>(ops: &[Op], context: &'a gccjit::Context<'ctx>) -> bool {
     let memory_ty = context.new_array_type(None, char_ty, MEMORY_SIZE);
     // memset definition - going to cheat a little bit and not give the C definition since
     // gcc's backend doesn't have C's notion of implicit type conversions (i.e. unsigned char[] to void*)
-    let mut char_ptr = context.new_type::<u8>();
-    char_ptr.make_pointer();
+    let char_ptr = context.new_type::<u8>().make_pointer();
     let void_param = context.new_parameter(None, char_ptr, "ptr");
     // also here - we're lying a bit and saying that int == size_t. This obviously isn't always true
     // but it's good enough for this toy program.
@@ -98,7 +96,7 @@ fn codegen<'a, 'ctx>(ops: &[Op], context: &'a gccjit::Context<'ctx>) -> bool {
                                       "memset",
                                       false);
 
-    let brainf_main = context.new_function(None, gccjit::FunctionType::Exported, void_ty, &[], "main", false);
+    let brainf_main = context.new_function(None, gccjit::FunctionType::Exported, void_ty, &[], "bf_main", false);
     // next, we set up the brainfuck memory array.
     let size = context.new_rvalue_from_int(int_ty, MEMORY_SIZE);
     let array = brainf_main.new_local(None, memory_ty, "memory");

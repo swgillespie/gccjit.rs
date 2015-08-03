@@ -5,16 +5,11 @@ use std::ptr;
 use std::mem;
 use context::Context;
 use gccjit_sys;
-use object::{ToObject, Object};
-use object;
-use function::Function;
-use function;
-use location::Location;
-use location;
-use rvalue::RValue;
-use rvalue;
-use lvalue::LValue;
-use lvalue;
+use object::{self, ToObject, Object};
+use function::{self, Function};
+use location::{self, Location};
+use rvalue::{self, ToRValue};
+use lvalue::{self, ToLValue};
 
 /// BinaryOp is a enum representing the various binary operations
 /// that gccjit knows how to codegen.
@@ -90,7 +85,12 @@ impl<'ctx> Block<'ctx> {
         }
     }
 
-    pub fn add_eval(&self, loc: Option<Location<'ctx>>, rvalue: RValue<'ctx>) {
+    /// Evaluates the rvalue parameter and discards its result. Equivalent
+    /// to (void)<expr> in C.
+    pub fn add_eval<T: ToRValue<'ctx>>(&self,
+                                       loc: Option<Location<'ctx>>,
+                                       value: T) {
+        let rvalue = value.to_rvalue();
         let loc_ptr = match loc {
                 Some(loc) => unsafe { location::get_ptr(&loc) },
                 None => ptr::null_mut()
@@ -102,10 +102,14 @@ impl<'ctx> Block<'ctx> {
         }
     }
 
-    pub fn add_assignment(&self,
-                          loc: Option<Location<'ctx>>,
-                          lvalue: LValue<'ctx>,
-                          rvalue: RValue<'ctx>) {
+    /// Assigns the value of an rvalue to an lvalue directly. Equivalent
+    /// to <lvalue> = <rvalue> in C.
+    pub fn add_assignment<L: ToLValue<'ctx>, R: ToRValue<'ctx>>(&self,
+                                                                loc: Option<Location<'ctx>>,
+                                                                assign_target: L,
+                                                                value: R) {
+        let lvalue = assign_target.to_lvalue();
+        let rvalue = value.to_rvalue();
         let loc_ptr = match loc {
                 Some(loc) => unsafe { location::get_ptr(&loc) },
                 None => ptr::null_mut()
@@ -118,11 +122,16 @@ impl<'ctx> Block<'ctx> {
         }
     }
 
-    pub fn add_assignment_op(&self,
-                             loc: Option<Location<'ctx>>,
-                             lvalue: LValue<'ctx>,
-                             op: BinaryOp,
-                             rvalue: RValue<'ctx>) {
+    /// Performs a binary operation on an LValue and an RValue, assigning
+    /// the result of the binary operation to the LValue upon completion.
+    /// Equivalent to the *=, +=, -=, etc. operator family in C.
+    pub fn add_assignment_op<L: ToLValue<'ctx>, R: ToRValue<'ctx>>(&self,
+                                                                   loc: Option<Location<'ctx>>,
+                                                                   assign_target: L,
+                                                                   op: BinaryOp,
+                                                                   value: R) {
+        let lvalue = assign_target.to_lvalue();
+        let rvalue = value.to_rvalue();
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
@@ -136,6 +145,8 @@ impl<'ctx> Block<'ctx> {
         }
     }
 
+    /// Adds a comment to a block. It's unclear from the documentation what
+    /// this actually means.
     pub fn add_comment(&self,
                        loc: Option<Location<'ctx>>,
                        message: &str) {
@@ -151,11 +162,14 @@ impl<'ctx> Block<'ctx> {
         }
     }
 
-    pub fn end_with_conditional(&self,
+    /// Terminates a block by branching to one of two blocks, depending
+    /// on the value of a conditional RValue.
+    pub fn end_with_conditional<T: ToRValue<'ctx>>(&self,
                                 loc: Option<Location<'ctx>>,
-                                cond: RValue<'ctx>,
+                                cond: T,
                                 on_true: Block<'ctx>,
                                 on_false: Block<'ctx>) {
+        let cond_rvalue = cond.to_rvalue();
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
@@ -163,12 +177,13 @@ impl<'ctx> Block<'ctx> {
         unsafe {
             gccjit_sys::gcc_jit_block_end_with_conditional(self.ptr,
                                                            loc_ptr,
-                                                           rvalue::get_ptr(&cond),
+                                                           rvalue::get_ptr(&cond_rvalue),
                                                            on_true.ptr,
                                                            on_false.ptr);
         }
     }
 
+    /// Terminates a block by unconditionally jumping to another block.
     pub fn end_with_jump(&self,
                          loc: Option<Location<'ctx>>,
                          target: Block<'ctx>) {
@@ -183,9 +198,14 @@ impl<'ctx> Block<'ctx> {
         }
     }
 
-    pub fn end_with_return(&self,
-                           loc: Option<Location<'ctx>>,
-                           ret: RValue<'ctx>) {
+    /// Terminates a block by returning from the containing function, setting
+    /// the rvalue to be the return value of the function. This is equivalent
+    /// to C's "return <expr>". This function can only be used to terminate
+    /// a block within a function whose return type is not void.
+    pub fn end_with_return<T: ToRValue<'ctx>>(&self,
+                                              loc: Option<Location<'ctx>>,
+                                              ret: T) {
+        let ret_rvalue = ret.to_rvalue();
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
@@ -193,10 +213,14 @@ impl<'ctx> Block<'ctx> {
         unsafe {
             gccjit_sys::gcc_jit_block_end_with_return(self.ptr,
                                                       loc_ptr,
-                                                      rvalue::get_ptr(&ret));
+                                                      rvalue::get_ptr(&ret_rvalue));
         }
     }
 
+    /// Terminates a block by returning from the containing function, returning
+    /// no value. This is equivalent to C's bare "return" with no expression.
+    /// This function can only be used to terminate a block within a function
+    /// that returns void.
     pub fn end_with_void_return(&self, loc: Option<Location<'ctx>>) {
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
