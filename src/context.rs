@@ -476,10 +476,10 @@ impl<'ctx> Context<'ctx> {
     /// Creates an indirect function call that dereferences a function pointer and
     /// attempts to invoke it with the given arguments. The RValue that is returned
     /// is the result of the function call.
-    pub fn new_call_through_ptr<'a, F: ToRValue<'a>, A: ToRValue<'a>>(&'a self,
+    pub fn new_call_through_ptr<'a, F: ToRValue<'a>>(&'a self,
                                     loc: Option<Location<'a>>,
                                     fun_ptr: F,
-                                    args: &[A]) -> RValue<'a> {
+                                    args: &[RValue<'a>]) -> RValue<'a> {
         let fun_ptr_rvalue = fun_ptr.to_rvalue();
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
