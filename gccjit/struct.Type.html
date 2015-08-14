@@ -34,7 +34,7 @@
             <div class="search-container">
                 <input class="search-input" name="search"
                        autocomplete="off"
-                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
                        type="search">
             </div>
         </form>
@@ -42,23 +42,25 @@
 
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>gccjit</a>::<wbr><a class='struct' href=''>Type</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-19' class='srclink' href='../src/gccjit/types.rs.html#17-20'>[src]</a></span></h1>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-17' class='srclink' href='../src/gccjit/types.rs.html#17-20' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Type&lt;'ctx&gt; {
     // some fields omitted
 }</pre><div class='docblock'><p>A representation of a type, as it is known to the JIT compiler.
 Types can be created through the Typeable trait or they can
 be created dynamically by composing Field types.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.make_pointer' class='method'><code>fn <a href='#method.make_pointer' class='fnname'>make_pointer</a>(&amp;mut self)</code></h4>
-<div class='docblock'><p>Given a type T, changes the type to *T, a pointer to T.</p>
-</div><h4 id='method.make_const' class='method'><code>fn <a href='#method.make_const' class='fnname'>make_const</a>(&amp;mut self)</code></h4>
-<div class='docblock'><p>Given a type T, changes the type to const T.</p>
-</div><h4 id='method.make_volatile' class='method'><code>fn <a href='#method.make_volatile' class='fnname'>make_volatile</a>(&amp;mut self)</code></h4>
-<div class='docblock'><p>Given a type T, changes the type to volatile T, which
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.make_pointer' class='method'><code>fn <a href='#method.make_pointer' class='fnname'>make_pointer</a>(self) -&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h4>
+<div class='docblock'><p>Given a type T, creates a type to *T, a pointer to T.</p>
+</div><h4 id='method.make_const' class='method'><code>fn <a href='#method.make_const' class='fnname'>make_const</a>(self) -&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h4>
+<div class='docblock'><p>Given a type T, creates a type of const T.</p>
+</div><h4 id='method.make_volatile' class='method'><code>fn <a href='#method.make_volatile' class='fnname'>make_volatile</a>(self) -&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h4>
+<div class='docblock'><p>Given a type T, creates a new type of volatile T, which
 has the semantics of C&#39;s volatile.</p>
 </div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='trait' href='../gccjit/trait.ToObject.html' title='gccjit::ToObject'>ToObject</a>&lt;'ctx&gt; for <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.to_object' class='method'><code>fn <a href='../gccjit/trait.ToObject.html#method.to_object' class='fnname'>to_object</a>(&amp;self) -&gt; <a class='struct' href='../gccjit/struct.Object.html' title='gccjit::Object'>Object</a>&lt;'ctx&gt;</code></h4>
 </div><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#method.fmt' class='fnname'>fmt</a>(&amp;self, fmt: &amp;mut <a class='struct' href='http://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/core/fmt/struct.Error.html' title='core::fmt::Error'>Error</a>&gt;</code></h4>
-</div><h3 class='impl'><code>impl&lt;'ctx&gt; !<a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> for <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h3><div class='impl-items'></div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h4>
+</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h4>
 <h4 id='method.clone_from' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
 </div><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> for <a class='struct' href='../gccjit/struct.Type.html' title='gccjit::Type'>Type</a>&lt;'ctx&gt;</code></h3><div class='impl-items'></div></section>
     <section id='search' class="content hidden"></section>
@@ -66,33 +68,44 @@ has the semantics of C&#39;s volatile.</p>
     <section class="footer"></section>
 
     <div id="help" class="hidden">
-        <div class="shortcuts">
-            <h1>Keyboard shortcuts</h1>
-            <dl>
-                <dt>?</dt>
-                <dd>Show this help dialog</dd>
-                <dt>S</dt>
-                <dd>Focus the search field</dd>
-                <dt>&larrb;</dt>
-                <dd>Move up in search results</dd>
-                <dt>&rarrb;</dt>
-                <dd>Move down in search results</dd>
-                <dt>&#9166;</dt>
-                <dd>Go to active search result</dd>
-            </dl>
-        </div>
-        <div class="infos">
-            <h1>Search tricks</h1>
-            <p>
-                Prefix searches with a type followed by a colon (e.g.
-                <code>fn:</code>) to restrict the search to a given type.
-            </p>
-            <p>
-                Accepted types are: <code>fn</code>, <code>mod</code>,
-                <code>struct</code>, <code>enum</code>,
-                <code>trait</code>, <code>typedef</code> (or
-                <code>tdef</code>).
-            </p>
+        <div>
+            <div class="shortcuts">
+                <h1>Keyboard Shortcuts</h1>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h1>Search Tricks</h1>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>typedef</code> (or
+                    <code>tdef</code>).
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
         </div>
     </div>
 

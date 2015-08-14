@@ -34,7 +34,7 @@
             <div class="search-container">
                 <input class="search-input" name="search"
                        autocomplete="off"
-                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
                        type="search">
             </div>
         </form>
@@ -42,8 +42,10 @@
 
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>gccjit</a>::<wbr><a class='struct' href=''>Block</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-5265' class='srclink' href='../src/gccjit/block.rs.html#64-67'>[src]</a></span></h1>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-5365' class='srclink' href='../src/gccjit/block.rs.html#59-62' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Block&lt;'ctx&gt; {
     // some fields omitted
 }</pre><div class='docblock'><p>Block represents a basic block in gccjit. Blocks are created by functions.
@@ -51,17 +53,37 @@ A basic block consists of a series of instructions terminated by a terminator
 instruction, which can be either a jump to one block, a conditional branch to
 two blocks (true/false branches), a return, or a void return.</p>
 </div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.get_function' class='method'><code>fn <a href='#method.get_function' class='fnname'>get_function</a>(&amp;self) -&gt; <a class='struct' href='../gccjit/struct.Function.html' title='gccjit::Function'>Function</a>&lt;'ctx&gt;</code></h4>
-<h4 id='method.add_eval' class='method'><code>fn <a href='#method.add_eval' class='fnname'>add_eval</a>(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, rvalue: <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'ctx&gt;)</code></h4>
-<h4 id='method.add_assignment' class='method'><code>fn <a href='#method.add_assignment' class='fnname'>add_assignment</a>(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, lvalue: <a class='struct' href='../gccjit/struct.LValue.html' title='gccjit::LValue'>LValue</a>&lt;'ctx&gt;, rvalue: <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'ctx&gt;)</code></h4>
-<h4 id='method.add_assignment_op' class='method'><code>fn <a href='#method.add_assignment_op' class='fnname'>add_assignment_op</a>(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, lvalue: <a class='struct' href='../gccjit/struct.LValue.html' title='gccjit::LValue'>LValue</a>&lt;'ctx&gt;, op: <a class='enum' href='../gccjit/enum.BinaryOp.html' title='gccjit::BinaryOp'>BinaryOp</a>, rvalue: <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'ctx&gt;)</code></h4>
-<h4 id='method.add_comment' class='method'><code>fn <a href='#method.add_comment' class='fnname'>add_comment</a>(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, message: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>)</code></h4>
-<h4 id='method.end_with_conditional' class='method'><code>fn <a href='#method.end_with_conditional' class='fnname'>end_with_conditional</a>(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, cond: <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'ctx&gt;, on_true: <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;, on_false: <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;)</code></h4>
-<h4 id='method.end_with_jump' class='method'><code>fn <a href='#method.end_with_jump' class='fnname'>end_with_jump</a>(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, target: <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;)</code></h4>
-<h4 id='method.end_with_return' class='method'><code>fn <a href='#method.end_with_return' class='fnname'>end_with_return</a>(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, ret: <a class='struct' href='../gccjit/struct.RValue.html' title='gccjit::RValue'>RValue</a>&lt;'ctx&gt;)</code></h4>
-<h4 id='method.end_with_void_return' class='method'><code>fn <a href='#method.end_with_void_return' class='fnname'>end_with_void_return</a>(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;)</code></h4>
-</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='trait' href='../gccjit/trait.ToObject.html' title='gccjit::ToObject'>ToObject</a>&lt;'ctx&gt; for <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.to_object' class='method'><code>fn <a href='../gccjit/trait.ToObject.html#method.to_object' class='fnname'>to_object</a>(&amp;self) -&gt; <a class='struct' href='../gccjit/struct.Object.html' title='gccjit::Object'>Object</a>&lt;'ctx&gt;</code></h4>
+<h4 id='method.add_eval' class='method'><code>fn <a href='#method.add_eval' class='fnname'>add_eval</a>&lt;T: <a class='trait' href='../gccjit/trait.ToRValue.html' title='gccjit::ToRValue'>ToRValue</a>&lt;'ctx&gt;&gt;(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, value: T)</code></h4>
+<div class='docblock'><p>Evaluates the rvalue parameter and discards its result. Equivalent
+to (void)<expr> in C.</p>
+</div><h4 id='method.add_assignment' class='method'><code>fn <a href='#method.add_assignment' class='fnname'>add_assignment</a>&lt;L: <a class='trait' href='../gccjit/trait.ToLValue.html' title='gccjit::ToLValue'>ToLValue</a>&lt;'ctx&gt;, R: <a class='trait' href='../gccjit/trait.ToRValue.html' title='gccjit::ToRValue'>ToRValue</a>&lt;'ctx&gt;&gt;(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, assign_target: L, value: R)</code></h4>
+<div class='docblock'><p>Assigns the value of an rvalue to an lvalue directly. Equivalent
+to <lvalue> = <rvalue> in C.</p>
+</div><h4 id='method.add_assignment_op' class='method'><code>fn <a href='#method.add_assignment_op' class='fnname'>add_assignment_op</a>&lt;L: <a class='trait' href='../gccjit/trait.ToLValue.html' title='gccjit::ToLValue'>ToLValue</a>&lt;'ctx&gt;, R: <a class='trait' href='../gccjit/trait.ToRValue.html' title='gccjit::ToRValue'>ToRValue</a>&lt;'ctx&gt;&gt;(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, assign_target: L, op: <a class='enum' href='../gccjit/enum.BinaryOp.html' title='gccjit::BinaryOp'>BinaryOp</a>, value: R)</code></h4>
+<div class='docblock'><p>Performs a binary operation on an LValue and an RValue, assigning
+the result of the binary operation to the LValue upon completion.
+Equivalent to the *=, +=, -=, etc. operator family in C.</p>
+</div><h4 id='method.add_comment' class='method'><code>fn <a href='#method.add_comment' class='fnname'>add_comment</a>&lt;S: <a class='trait' href='http://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;&gt;(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, message: S)</code></h4>
+<div class='docblock'><p>Adds a comment to a block. It&#39;s unclear from the documentation what
+this actually means.</p>
+</div><h4 id='method.end_with_conditional' class='method'><code>fn <a href='#method.end_with_conditional' class='fnname'>end_with_conditional</a>&lt;T: <a class='trait' href='../gccjit/trait.ToRValue.html' title='gccjit::ToRValue'>ToRValue</a>&lt;'ctx&gt;&gt;(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, cond: T, on_true: <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;, on_false: <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;)</code></h4>
+<div class='docblock'><p>Terminates a block by branching to one of two blocks, depending
+on the value of a conditional RValue.</p>
+</div><h4 id='method.end_with_jump' class='method'><code>fn <a href='#method.end_with_jump' class='fnname'>end_with_jump</a>(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, target: <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;)</code></h4>
+<div class='docblock'><p>Terminates a block by unconditionally jumping to another block.</p>
+</div><h4 id='method.end_with_return' class='method'><code>fn <a href='#method.end_with_return' class='fnname'>end_with_return</a>&lt;T: <a class='trait' href='../gccjit/trait.ToRValue.html' title='gccjit::ToRValue'>ToRValue</a>&lt;'ctx&gt;&gt;(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;, ret: T)</code></h4>
+<div class='docblock'><p>Terminates a block by returning from the containing function, setting
+the rvalue to be the return value of the function. This is equivalent
+to C&#39;s &quot;return <expr>&quot;. This function can only be used to terminate
+a block within a function whose return type is not void.</p>
+</div><h4 id='method.end_with_void_return' class='method'><code>fn <a href='#method.end_with_void_return' class='fnname'>end_with_void_return</a>(&amp;self, loc: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../gccjit/struct.Location.html' title='gccjit::Location'>Location</a>&lt;'ctx&gt;&gt;)</code></h4>
+<div class='docblock'><p>Terminates a block by returning from the containing function, returning
+no value. This is equivalent to C&#39;s bare &quot;return&quot; with no expression.
+This function can only be used to terminate a block within a function
+that returns void.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='trait' href='../gccjit/trait.ToObject.html' title='gccjit::ToObject'>ToObject</a>&lt;'ctx&gt; for <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.to_object' class='method'><code>fn <a href='../gccjit/trait.ToObject.html#method.to_object' class='fnname'>to_object</a>(&amp;self) -&gt; <a class='struct' href='../gccjit/struct.Object.html' title='gccjit::Object'>Object</a>&lt;'ctx&gt;</code></h4>
 </div><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#method.fmt' class='fnname'>fmt</a>(&amp;self, fmt: &amp;mut <a class='struct' href='http://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/core/fmt/struct.Error.html' title='core::fmt::Error'>Error</a>&gt;</code></h4>
-</div><h3 class='impl'><code>impl&lt;'ctx&gt; !<a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> for <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;</code></h3><div class='impl-items'></div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;</code></h4>
+</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;</code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;</code></h4>
 <h4 id='method.clone_from' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
 </div><h3 class='impl'><code>impl&lt;'ctx&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> for <a class='struct' href='../gccjit/struct.Block.html' title='gccjit::Block'>Block</a>&lt;'ctx&gt;</code></h3><div class='impl-items'></div></section>
     <section id='search' class="content hidden"></section>
@@ -69,33 +91,44 @@ two blocks (true/false branches), a return, or a void return.</p>
     <section class="footer"></section>
 
     <div id="help" class="hidden">
-        <div class="shortcuts">
-            <h1>Keyboard shortcuts</h1>
-            <dl>
-                <dt>?</dt>
-                <dd>Show this help dialog</dd>
-                <dt>S</dt>
-                <dd>Focus the search field</dd>
-                <dt>&larrb;</dt>
-                <dd>Move up in search results</dd>
-                <dt>&rarrb;</dt>
-                <dd>Move down in search results</dd>
-                <dt>&#9166;</dt>
-                <dd>Go to active search result</dd>
-            </dl>
-        </div>
-        <div class="infos">
-            <h1>Search tricks</h1>
-            <p>
-                Prefix searches with a type followed by a colon (e.g.
-                <code>fn:</code>) to restrict the search to a given type.
-            </p>
-            <p>
-                Accepted types are: <code>fn</code>, <code>mod</code>,
-                <code>struct</code>, <code>enum</code>,
-                <code>trait</code>, <code>typedef</code> (or
-                <code>tdef</code>).
-            </p>
+        <div>
+            <div class="shortcuts">
+                <h1>Keyboard Shortcuts</h1>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h1>Search Tricks</h1>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>typedef</code> (or
+                    <code>tdef</code>).
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
         </div>
     </div>
 

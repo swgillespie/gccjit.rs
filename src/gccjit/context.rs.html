@@ -34,7 +34,7 @@
             <div class="search-container">
                 <input class="search-input" name="search"
                        autocomplete="off"
-                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
                        type="search">
             </div>
         </form>
@@ -786,40 +786,66 @@
 <span id="744">744</span>
 <span id="745">745</span>
 <span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>default</span>::<span class='ident'>Default</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ops</span>::<span class='ident'>Drop</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ffi</span>::<span class='ident'>CString</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>marker</span>::{<span class='ident'>PhantomData</span>, <span class='ident'>Send</span>};
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>marker</span>::<span class='ident'>PhantomData</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>mem</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ptr</span>;
 
-<span class='kw'>use</span> <span class='ident'>location</span>::<span class='ident'>Location</span>;
-<span class='kw'>use</span> <span class='ident'>location</span>;
-
-<span class='kw'>use</span> <span class='ident'>structs</span>::<span class='ident'>Struct</span>;
-<span class='kw'>use</span> <span class='ident'>structs</span>;
-
+<span class='kw'>use</span> <span class='ident'>location</span>::{<span class='self'>self</span>, <span class='ident'>Location</span>};
+<span class='kw'>use</span> <span class='ident'>structs</span>::{<span class='self'>self</span>, <span class='ident'>Struct</span>};
 <span class='kw'>use</span> <span class='ident'>types</span>;
-<span class='kw'>use</span> <span class='ident'>field</span>::<span class='ident'>Field</span>;
-<span class='kw'>use</span> <span class='ident'>field</span>;
-
-<span class='kw'>use</span> <span class='ident'>rvalue</span>::<span class='ident'>RValue</span>;
-<span class='kw'>use</span> <span class='ident'>rvalue</span>;
-
-<span class='kw'>use</span> <span class='ident'>function</span>::{<span class='ident'>Function</span>, <span class='ident'>FunctionType</span>};
-<span class='kw'>use</span> <span class='ident'>function</span>;
-
+<span class='kw'>use</span> <span class='ident'>field</span>::{<span class='self'>self</span>, <span class='ident'>Field</span>};
+<span class='kw'>use</span> <span class='ident'>rvalue</span>::{<span class='self'>self</span>, <span class='ident'>RValue</span>, <span class='ident'>ToRValue</span>};
+<span class='kw'>use</span> <span class='ident'>function</span>::{<span class='self'>self</span>, <span class='ident'>Function</span>, <span class='ident'>FunctionType</span>};
 <span class='kw'>use</span> <span class='ident'>block</span>::{<span class='ident'>BinaryOp</span>, <span class='ident'>UnaryOp</span>, <span class='ident'>ComparisonOp</span>};
-
-<span class='kw'>use</span> <span class='ident'>parameter</span>::<span class='ident'>Parameter</span>;
-<span class='kw'>use</span> <span class='ident'>parameter</span>;
-
-<span class='kw'>use</span> <span class='ident'>lvalue</span>::<span class='ident'>LValue</span>;
-<span class='kw'>use</span> <span class='ident'>lvalue</span>;
-
+<span class='kw'>use</span> <span class='ident'>parameter</span>::{<span class='self'>self</span>, <span class='ident'>Parameter</span>};
+<span class='kw'>use</span> <span class='ident'>lvalue</span>::{<span class='self'>self</span>, <span class='ident'>LValue</span>};
 <span class='kw'>use</span> <span class='ident'>gccjit_sys</span>;
-
 <span class='kw'>use</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_int_option</span>::<span class='op'>*</span>;
 <span class='kw'>use</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_str_option</span>::<span class='op'>*</span>;
 <span class='kw'>use</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_bool_option</span>::<span class='op'>*</span>;
@@ -828,9 +854,17 @@
 <span class='doccomment'>/// will use when compiling your code.</span>
 <span class='attribute'>#[<span class='ident'>repr</span>(<span class='ident'>C</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>OptimizationLevel</span> {
+    <span class='doccomment'>/// No optimizations are applied.</span>
     <span class='prelude-val'>None</span>,
+    <span class='doccomment'>/// Optimizies for both speed and code size, but doesn&#39;t apply</span>
+    <span class='doccomment'>/// any optimizations that take extended periods of time.</span>
     <span class='ident'>Limited</span>,
+    <span class='doccomment'>/// Performs all optimizations that do not involve a tradeoff</span>
+    <span class='doccomment'>/// of code size for speed. </span>
     <span class='ident'>Standard</span>,
+    <span class='doccomment'>/// Performs all optimizations at the Standard level, as well</span>
+    <span class='doccomment'>/// as function inlining, loop vectorization, some loop unrolling,</span>
+    <span class='doccomment'>/// and various other optimizations.</span>
     <span class='ident'>Aggressive</span>
 }
 
@@ -838,9 +872,13 @@
 <span class='doccomment'>/// code that is written out by compile_to_file.</span>
 <span class='attribute'>#[<span class='ident'>repr</span>(<span class='ident'>C</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>OutputKind</span> {
+    <span class='doccomment'>/// Outputs an assembly file (.S)</span>
     <span class='ident'>Assembler</span>,
+    <span class='doccomment'>/// Outputs an object file (.o)</span>
     <span class='ident'>ObjectFile</span>,
+    <span class='doccomment'>/// Outputs a dynamic library (.so)</span>
     <span class='ident'>DynamicLibrary</span>,
+    <span class='doccomment'>/// Outputs an executable</span>
     <span class='ident'>Executable</span>
 }
 
@@ -855,36 +893,33 @@
 <span class='kw'>impl</span> <span class='ident'>CompileResult</span> {
     <span class='doccomment'>/// Gets a function pointer to a JIT compiled function. If the function</span>
     <span class='doccomment'>/// does not exist (wasn&#39;t compiled by the Context that produced this</span>
-    <span class='doccomment'>/// CompileResult), this function returns None.</span>
-    <span class='doccomment'>/// It is THE RESPONSIBILITY OF THE CALLER of this function to ensure</span>
-    <span class='doccomment'>/// that this pointer does not outlive the CompileResult object. This</span>
-    <span class='doccomment'>/// pointer must be transmuted to a function pointer in order to be</span>
-    <span class='doccomment'>/// called.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>get_function</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>u8</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>c_str</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name</span>).<span class='ident'>unwrap</span>();
+    <span class='doccomment'>/// CompileResult), this function returns a null pointer.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// It is the caller&#39;s responsibility to ensure that this pointer is not used</span>
+    <span class='doccomment'>/// past the lifetime of the CompileResult object. Second, it is</span>
+    <span class='doccomment'>/// the caller&#39;s responsibility to check whether or not the pointer</span>
+    <span class='doccomment'>/// is null. It is also expected that the caller of this function</span>
+    <span class='doccomment'>/// will transmute this pointer to a function pointer type.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>get_function</span><span class='op'>&lt;</span><span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>S</span>) <span class='op'>-&gt;</span> <span class='op'>*</span><span class='kw-2'>mut</span> () {
+        <span class='kw'>let</span> <span class='ident'>c_str</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name</span>.<span class='ident'>as_ref</span>()).<span class='ident'>unwrap</span>();
         <span class='kw'>unsafe</span> {
             <span class='kw'>let</span> <span class='ident'>func</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_result_get_code</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                            <span class='ident'>c_str</span>.<span class='ident'>as_ptr</span>());
-            <span class='kw'>if</span> <span class='ident'>func</span>.<span class='ident'>is_null</span>() {
-                <span class='prelude-val'>None</span>
-            } <span class='kw'>else</span> {
-                <span class='prelude-val'>Some</span>(<span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>func</span>))
-            }
+            <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>func</span>)
         }
     }
 
     <span class='doccomment'>/// Gets a pointer to a global variable that lives on the JIT heap.</span>
-    <span class='doccomment'>/// It is similarly the caller&#39;s responsibility to ensure that this</span>
-    <span class='doccomment'>/// value stays valid.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>get_global</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>u8</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>c_str</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name</span>).<span class='ident'>unwrap</span>();
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// It is the caller&#39;s responsibility</span>
+    <span class='doccomment'>/// to ensure that the pointer is not used past the lifetime of the</span>
+    <span class='doccomment'>/// CompileResult object. It is also the caller&#39;s responsibility to</span>
+    <span class='doccomment'>/// check whether or not the returned pointer is null.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>get_global</span><span class='op'>&lt;</span><span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>S</span>) <span class='op'>-&gt;</span> <span class='op'>*</span><span class='kw-2'>mut</span> () {
+        <span class='kw'>let</span> <span class='ident'>c_str</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name</span>.<span class='ident'>as_ref</span>()).<span class='ident'>unwrap</span>();
         <span class='kw'>unsafe</span> {
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_result_get_global</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>, <span class='ident'>c_str</span>.<span class='ident'>as_ptr</span>());
-            <span class='kw'>if</span> <span class='ident'>ptr</span>.<span class='ident'>is_null</span>() {
-                <span class='prelude-val'>None</span>
-            } <span class='kw'>else</span> {
-                <span class='prelude-val'>Some</span>(<span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>ptr</span>))
-            }
+            <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>ptr</span>)
         }
     }
 }
@@ -896,8 +931,6 @@
         }
     }
 }
-
-<span class='kw'>impl</span> <span class='op'>!</span><span class='ident'>Send</span> <span class='kw'>for</span> <span class='ident'>CompileResult</span> {}
 
 <span class='doccomment'>/// Wrapper around a GCC JIT context object that keeps</span>
 <span class='doccomment'>/// the state of the JIT compiler. In GCCJIT, this object</span>
@@ -924,19 +957,18 @@
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> <span class='op'>!</span><span class='ident'>Send</span> <span class='kw'>for</span> <span class='ident'>Context</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> {}
-
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> <span class='ident'>Context</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// Sets the program name reported by the JIT.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>set_program_name</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) {
-        <span class='kw'>let</span> <span class='ident'>c_str</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name</span>).<span class='ident'>unwrap</span>();
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>set_program_name</span><span class='op'>&lt;</span><span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>S</span>) {
+        <span class='kw'>let</span> <span class='ident'>name_ref</span> <span class='op'>=</span> <span class='ident'>name</span>.<span class='ident'>as_ref</span>();
+        <span class='kw'>let</span> <span class='ident'>c_str</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name_ref</span>).<span class='ident'>unwrap</span>();
         <span class='kw'>unsafe</span> {
             <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_set_str_option</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                        <span class='ident'>GCC_JIT_STR_OPTION_PROGNAME</span>,
                                                        <span class='ident'>c_str</span>.<span class='ident'>as_ptr</span>());
         }
     }
-
+    
     <span class='doccomment'>/// Sets the optimization level that the JIT compiler will use.</span>
     <span class='doccomment'>/// The higher the optimization level, the longer compilation will</span>
     <span class='doccomment'>/// take.</span>
@@ -947,7 +979,9 @@
                                                        <span class='ident'>level</span> <span class='kw'>as</span> <span class='ident'>i32</span>);
         }
     }
-
+    
+    <span class='doccomment'>/// When set to true, dumps the code that the JIT generates to standard</span>
+    <span class='doccomment'>/// out during compilation.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>set_dump_code_on_compile</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>value</span>: <span class='ident'>bool</span>) {
         <span class='kw'>unsafe</span> {
             <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_set_bool_option</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
@@ -966,20 +1000,21 @@
             }
         }
     }
-
+    
     <span class='doccomment'>/// Compiles the context and saves the result to a file. The</span>
     <span class='doccomment'>/// type of the file is controlled by the OutputKind parameter.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>compile_to_file</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>kind</span>: <span class='ident'>OutputKind</span>, <span class='ident'>file</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>compile_to_file</span><span class='op'>&lt;</span><span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>kind</span>: <span class='ident'>OutputKind</span>, <span class='ident'>file</span>: <span class='ident'>S</span>) {
         <span class='kw'>unsafe</span> {
-            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>file</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>file_ref</span> <span class='op'>=</span> <span class='ident'>file</span>.<span class='ident'>as_ref</span>();
+            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>file_ref</span>).<span class='ident'>unwrap</span>();
             <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_compile_to_file</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                         <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>kind</span>),
                                                         <span class='ident'>cstr</span>.<span class='ident'>as_ptr</span>());
         }
     }
-
     
-
+    
+    
     <span class='doccomment'>/// Creates a new child context from this context. The child context</span>
     <span class='doccomment'>/// is a fully-featured context, but it has a lifetime that is strictly</span>
     <span class='doccomment'>/// less than the lifetime that spawned it.</span>
@@ -991,16 +1026,17 @@
             }
         }
     }
-
+    
     <span class='doccomment'>/// Creates a new location for use by gdb when debugging a JIT compiled</span>
     <span class='doccomment'>/// program. The filename, line, and col are used by gdb to &quot;show&quot; your</span>
     <span class='doccomment'>/// source when in a debugger.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                        <span class='ident'>filename</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>,
-                        <span class='ident'>line</span>: <span class='ident'>i32</span>,
-                        <span class='ident'>col</span>: <span class='ident'>i32</span>) <span class='op'>-&gt;</span> <span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                                           <span class='ident'>filename</span>: <span class='ident'>S</span>,
+                                           <span class='ident'>line</span>: <span class='ident'>i32</span>,
+                                           <span class='ident'>col</span>: <span class='ident'>i32</span>) <span class='op'>-&gt;</span> <span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
         <span class='kw'>unsafe</span> {
-            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>filename</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>filename_ref</span> <span class='op'>=</span> <span class='ident'>filename</span>.<span class='ident'>as_ref</span>();
+            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>filename_ref</span>).<span class='ident'>unwrap</span>();
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_new_location</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                                <span class='ident'>cstr</span>.<span class='ident'>as_ptr</span>(),
                                                                <span class='ident'>line</span>,
@@ -1008,7 +1044,7 @@
             <span class='ident'>location</span>::<span class='ident'>from_ptr</span>(<span class='ident'>ptr</span>)
         }
     }
-
+    
     <span class='doccomment'>/// Constructs a new type for any type that implements the Typeable trait.</span>
     <span class='doccomment'>/// This library only provides a handful of implementations of Typeable</span>
     <span class='doccomment'>/// for some primitive types - utilizers of this library are encouraged</span>
@@ -1017,19 +1053,20 @@
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>: <span class='ident'>types</span>::<span class='ident'>Typeable</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
         <span class='op'>&lt;</span><span class='ident'>T</span> <span class='kw'>as</span> <span class='ident'>types</span>::<span class='ident'>Typeable</span><span class='op'>&gt;</span>::<span class='ident'>get_type</span>(<span class='self'>self</span>)
     }
-
+    
     <span class='doccomment'>/// Constructs a new field with an optional source location, type, and name.</span>
     <span class='doccomment'>/// This field can be used to compose unions or structs.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_field</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                     <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                     <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-                     <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='ident'>Field</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_field</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                         <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                         <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
+                         <span class='ident'>name</span>: <span class='ident'>S</span>) <span class='op'>-&gt;</span> <span class='ident'>Field</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>name_ref</span> <span class='op'>=</span> <span class='ident'>name</span>.<span class='ident'>as_ref</span>();
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
         };
         <span class='kw'>unsafe</span> {
-            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name_ref</span>).<span class='ident'>unwrap</span>();
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_new_field</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                             <span class='ident'>loc_ptr</span>,
                                                             <span class='ident'>types</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>ty</span>),
@@ -1037,13 +1074,13 @@
             <span class='ident'>field</span>::<span class='ident'>from_ptr</span>(<span class='ident'>ptr</span>)
         }
     }
-
+    
     <span class='doccomment'>/// Constructs a new array type with a given base element type and a</span>
     <span class='doccomment'>/// size.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_array_type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                          <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                          <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-                          <span class='ident'>num_elements</span>: <span class='ident'>i32</span>) <span class='op'>-&gt;</span> <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+                              <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                              <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
+                              <span class='ident'>num_elements</span>: <span class='ident'>i32</span>) <span class='op'>-&gt;</span> <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
@@ -1060,10 +1097,11 @@
     <span class='doccomment'>/// Constructs a new struct type with the given name, optional source location,</span>
     <span class='doccomment'>/// and a list of fields. The returned struct is concrete and new fields cannot</span>
     <span class='doccomment'>/// be added to it.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_struct_type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                           <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                           <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>,
-                           <span class='ident'>fields</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>Field</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>]) <span class='op'>-&gt;</span> <span class='ident'>Struct</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_struct_type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                                              <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                                              <span class='ident'>name</span>: <span class='ident'>S</span>,
+                                              <span class='ident'>fields</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>Field</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>]) <span class='op'>-&gt;</span> <span class='ident'>Struct</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>name_ref</span> <span class='op'>=</span> <span class='ident'>name</span>.<span class='ident'>as_ref</span>();
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
@@ -1073,7 +1111,7 @@
             .<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw'>unsafe</span> { <span class='ident'>field</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>x</span>) })
             .<span class='ident'>collect</span>();
         <span class='kw'>unsafe</span> {
-            <span class='kw'>let</span> <span class='ident'>cname</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>cname</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name_ref</span>).<span class='ident'>unwrap</span>();
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_new_struct_type</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                                   <span class='ident'>loc_ptr</span>,
                                                                   <span class='ident'>cname</span>.<span class='ident'>as_ptr</span>(),
@@ -1082,30 +1120,32 @@
             <span class='ident'>structs</span>::<span class='ident'>from_ptr</span>(<span class='ident'>ptr</span>)
         }
     }
-
+    
     <span class='doccomment'>/// Constructs a new struct type whose fields are not known. Fields can</span>
     <span class='doccomment'>/// be added to this struct later, but only once.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_opaque_struct_type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                                  <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                                  <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='ident'>Struct</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_opaque_struct_type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                                                     <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                                                     <span class='ident'>name</span>: <span class='ident'>S</span>) <span class='op'>-&gt;</span> <span class='ident'>Struct</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>name_ref</span> <span class='op'>=</span> <span class='ident'>name</span>.<span class='ident'>as_ref</span>();
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
         };
         <span class='kw'>unsafe</span> {
-            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name_ref</span>).<span class='ident'>unwrap</span>();
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_new_opaque_struct</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                                     <span class='ident'>loc_ptr</span>,
                                                                     <span class='ident'>cstr</span>.<span class='ident'>as_ptr</span>());
             <span class='ident'>structs</span>::<span class='ident'>from_ptr</span>(<span class='ident'>ptr</span>)
         }
     }
-
+    
     <span class='doccomment'>/// Creates a new union type from a set of fields.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_union_type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                              <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                              <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>,
-                              <span class='ident'>fields</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>Field</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>]) <span class='op'>-&gt;</span> <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_union_type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                                             <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                                             <span class='ident'>name</span>: <span class='ident'>S</span>,
+                                             <span class='ident'>fields</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>Field</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>]) <span class='op'>-&gt;</span> <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>name_ref</span> <span class='op'>=</span> <span class='ident'>name</span>.<span class='ident'>as_ref</span>();
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
@@ -1115,7 +1155,7 @@
             .<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw'>unsafe</span> { <span class='ident'>field</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>x</span>) })
             .<span class='ident'>collect</span>();
         <span class='kw'>unsafe</span> {
-            <span class='kw'>let</span> <span class='ident'>cname</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>cname</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name_ref</span>).<span class='ident'>unwrap</span>();
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_new_union_type</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                                  <span class='ident'>loc_ptr</span>,
                                                                  <span class='ident'>cname</span>.<span class='ident'>as_ptr</span>(),
@@ -1124,7 +1164,7 @@
             <span class='ident'>types</span>::<span class='ident'>from_ptr</span>(<span class='ident'>ptr</span>)
         }
     }
-
+    
     <span class='doccomment'>/// Creates a new function pointer type with the given return type</span>
     <span class='doccomment'>/// parameter types, and an optional location. The last flag can</span>
     <span class='doccomment'>/// make the function variadic, although Rust can&#39;t really handle</span>
@@ -1134,7 +1174,6 @@
                                          <span class='ident'>return_type</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
                                          <span class='ident'>param_types</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>],
                                          <span class='ident'>is_variadic</span>: <span class='ident'>bool</span>) <span class='op'>-&gt;</span> <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
-        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>!</span><span class='ident'>is_variadic</span>, <span class='string'>&quot;Rust can&#39;t call variadic C methods&quot;</span>);
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
@@ -1155,16 +1194,15 @@
     }
 
     <span class='doccomment'>/// Creates a new function with the given function kind, return type, parameters, name,</span>
-    <span class='doccomment'>/// and whether or not the function is variadic. It&#39;s not currently possible to call</span>
-    <span class='doccomment'>/// variadic functions from Rust right now, so that option is turned off for now.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                            <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                            <span class='ident'>kind</span>: <span class='ident'>FunctionType</span>,
-                            <span class='ident'>return_ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-                            <span class='ident'>params</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>Parameter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>],
-                            <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>,
-                            <span class='ident'>is_variadic</span>: <span class='ident'>bool</span>) <span class='op'>-&gt;</span> <span class='ident'>Function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
-        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>!</span><span class='ident'>is_variadic</span>, <span class='string'>&quot;don&#39;t support variadic functions yet&quot;</span>);
+    <span class='doccomment'>/// and whether or not the function is variadic.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                                           <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                                           <span class='ident'>kind</span>: <span class='ident'>FunctionType</span>,
+                                           <span class='ident'>return_ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
+                                           <span class='ident'>params</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>Parameter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>],
+                                           <span class='ident'>name</span>: <span class='ident'>S</span>,
+                                           <span class='ident'>is_variadic</span>: <span class='ident'>bool</span>) <span class='op'>-&gt;</span> <span class='ident'>Function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>name_ref</span> <span class='op'>=</span> <span class='ident'>name</span>.<span class='ident'>as_ref</span>();
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
@@ -1174,7 +1212,7 @@
             .<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw'>unsafe</span> { <span class='ident'>parameter</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>x</span>) })
             .<span class='ident'>collect</span>();
         <span class='kw'>unsafe</span> {
-            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name_ref</span>).<span class='ident'>unwrap</span>();
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_new_function</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                                <span class='ident'>loc_ptr</span>,
                                                                <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>kind</span>),
@@ -1182,18 +1220,20 @@
                                                                <span class='ident'>cstr</span>.<span class='ident'>as_ptr</span>(),
                                                                <span class='ident'>num_params</span>,
                                                                <span class='ident'>params_ptrs</span>.<span class='ident'>as_mut_ptr</span>(),
-                                                               <span class='number'>0</span>);
+                                                               <span class='ident'>is_variadic</span> <span class='kw'>as</span> <span class='ident'>i32</span>);
             <span class='ident'>function</span>::<span class='ident'>from_ptr</span>(<span class='ident'>ptr</span>)
         }
     }
 
     <span class='doccomment'>/// Creates a new binary operation between two RValues and produces a new RValue.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_binary_op</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                        <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                        <span class='ident'>op</span>: <span class='ident'>BinaryOp</span>,
-                        <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-                        <span class='ident'>left</span>: <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-                        <span class='ident'>right</span>: <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_binary_op</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>L</span>: <span class='ident'>ToRValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>, <span class='ident'>R</span>: <span class='ident'>ToRValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                                                               <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                                                               <span class='ident'>op</span>: <span class='ident'>BinaryOp</span>,
+                                                               <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
+                                                               <span class='ident'>left</span>: <span class='ident'>L</span>,
+                                                               <span class='ident'>right</span>: <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>left_rvalue</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>to_rvalue</span>();
+        <span class='kw'>let</span> <span class='ident'>right_rvalue</span> <span class='op'>=</span> <span class='ident'>right</span>.<span class='ident'>to_rvalue</span>();
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
@@ -1203,18 +1243,19 @@
                                                                 <span class='ident'>loc_ptr</span>,
                                                                 <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>op</span>),
                                                                 <span class='ident'>types</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>ty</span>),
-                                                                <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>left</span>),
-                                                                <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>right</span>));
+                                                                <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>left_rvalue</span>),
+                                                                <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>right_rvalue</span>));
             <span class='ident'>rvalue</span>::<span class='ident'>from_ptr</span>(<span class='ident'>ptr</span>)
         }
     }
 
     <span class='doccomment'>/// Creates a unary operation on one RValue and produces a result RValue.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_unary_op</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                        <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                        <span class='ident'>op</span>: <span class='ident'>UnaryOp</span>,
-                        <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-                        <span class='ident'>rvalue</span>: <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_unary_op</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>: <span class='ident'>ToRValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                                             <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                                             <span class='ident'>op</span>: <span class='ident'>UnaryOp</span>,
+                                             <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
+                                             <span class='ident'>target</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>rvalue</span> <span class='op'>=</span> <span class='ident'>target</span>.<span class='ident'>to_rvalue</span>();
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
@@ -1229,11 +1270,13 @@
         }
     }
 
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_comparison</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                              <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                              <span class='ident'>op</span>: <span class='ident'>ComparisonOp</span>,
-                              <span class='ident'>left</span>: <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-                              <span class='ident'>right</span>: <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_comparison</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>L</span>: <span class='ident'>ToRValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>, <span class='ident'>R</span>: <span class='ident'>ToRValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                                                                <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                                                                <span class='ident'>op</span>: <span class='ident'>ComparisonOp</span>,
+                                                                <span class='ident'>left</span>: <span class='ident'>L</span>,
+                                                                <span class='ident'>right</span>: <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>left_rvalue</span> <span class='op'>=</span> <span class='ident'>left</span>.<span class='ident'>to_rvalue</span>();
+        <span class='kw'>let</span> <span class='ident'>right_rvalue</span> <span class='op'>=</span> <span class='ident'>right</span>.<span class='ident'>to_rvalue</span>();
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
@@ -1242,18 +1285,23 @@
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_new_comparison</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                                  <span class='ident'>loc_ptr</span>,
                                                                  <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>op</span>),
-                                                                 <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>left</span>),
-                                                                 <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>right</span>));
+                                                                 <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>left_rvalue</span>),
+                                                                 <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>right_rvalue</span>));
             <span class='ident'>rvalue</span>::<span class='ident'>from_ptr</span>(<span class='ident'>ptr</span>)
         }
     }
 
     <span class='doccomment'>/// Creates a function call to a function object with a given number of parameters.</span>
     <span class='doccomment'>/// The RValue that is returned is the result of the function call.</span>
+    <span class='doccomment'>/// Note that due to the way that Rust&#39;s generics work, it is currently</span>
+    <span class='doccomment'>/// not possible to be generic over different types of arguments (RValues</span>
+    <span class='doccomment'>/// together with LValues and Parameters, for example), so in order to</span>
+    <span class='doccomment'>/// mix the types of the arguments it may be necessary to call to_rvalue()</span>
+    <span class='doccomment'>/// before calling this function.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_call</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                    <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                    <span class='ident'>func</span>: <span class='ident'>Function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-                    <span class='ident'>args</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>]) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+                        <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                        <span class='ident'>func</span>: <span class='ident'>Function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
+                        <span class='ident'>args</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>]) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
@@ -1275,22 +1323,24 @@
     <span class='doccomment'>/// Creates an indirect function call that dereferences a function pointer and</span>
     <span class='doccomment'>/// attempts to invoke it with the given arguments. The RValue that is returned</span>
     <span class='doccomment'>/// is the result of the function call.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_call_through_ptr</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                                    <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                                    <span class='ident'>fun_ptr</span>: <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-                                    <span class='ident'>args</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>]) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_call_through_ptr</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>F</span>: <span class='ident'>ToRValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                                                     <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                                                     <span class='ident'>fun_ptr</span>: <span class='ident'>F</span>,
+                                                     <span class='ident'>args</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>]) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>fun_ptr_rvalue</span> <span class='op'>=</span> <span class='ident'>fun_ptr</span>.<span class='ident'>to_rvalue</span>();
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
         };
         <span class='kw'>let</span> <span class='ident'>num_params</span> <span class='op'>=</span> <span class='ident'>args</span>.<span class='ident'>len</span>() <span class='kw'>as</span> <span class='ident'>i32</span>;
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>params_ptrs</span> : <span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>args</span>.<span class='ident'>iter</span>()
+            .<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>.<span class='ident'>to_rvalue</span>())
             .<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw'>unsafe</span> { <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>x</span>) })
             .<span class='ident'>collect</span>();
         <span class='kw'>unsafe</span> {
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_new_call_through_ptr</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                            <span class='ident'>loc_ptr</span>,
-                                                           <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>fun_ptr</span>),
+                                                           <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>fun_ptr_rvalue</span>),
                                                            <span class='ident'>num_params</span>,
                                                            <span class='ident'>params_ptrs</span>.<span class='ident'>as_mut_ptr</span>());
             <span class='ident'>rvalue</span>::<span class='ident'>from_ptr</span>(<span class='ident'>ptr</span>)
@@ -1298,10 +1348,11 @@
     }
 
     <span class='doccomment'>/// Cast an RValue to a specific type. I don&#39;t know what happens when the cast fails yet.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_cast</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                        <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                        <span class='ident'>rvalue</span>: <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-                        <span class='ident'>dest_type</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_cast</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>: <span class='ident'>ToRValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                                         <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                                         <span class='ident'>value</span>: <span class='ident'>T</span>,
+                                         <span class='ident'>dest_type</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>rvalue</span> <span class='op'>=</span> <span class='ident'>value</span>.<span class='ident'>to_rvalue</span>();
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
@@ -1317,10 +1368,12 @@
 
     <span class='doccomment'>/// Creates an LValue from an array pointer and an offset. The LValue can be the target</span>
     <span class='doccomment'>/// of an assignment, or it can be converted into an RValue (i.e. loaded).</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_array_access</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                            <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                            <span class='ident'>array_ptr</span>: <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-                            <span class='ident'>index</span>: <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>LValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_array_access</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='ident'>ToRValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>, <span class='ident'>I</span>: <span class='ident'>ToRValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                                                                  <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                                                                  <span class='ident'>array_ptr</span>: <span class='ident'>A</span>,
+                                                                  <span class='ident'>index</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='ident'>LValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>array_rvalue</span> <span class='op'>=</span> <span class='ident'>array_ptr</span>.<span class='ident'>to_rvalue</span>();
+        <span class='kw'>let</span> <span class='ident'>idx_rvalue</span> <span class='op'>=</span> <span class='ident'>index</span>.<span class='ident'>to_rvalue</span>();
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
@@ -1328,8 +1381,8 @@
         <span class='kw'>unsafe</span> {
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_new_array_access</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                                    <span class='ident'>loc_ptr</span>,
-                                                                   <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>array_ptr</span>),
-                                                                   <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>index</span>));
+                                                                   <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>array_rvalue</span>),
+                                                                   <span class='ident'>rvalue</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>idx_rvalue</span>));
             <span class='ident'>lvalue</span>::<span class='ident'>from_ptr</span>(<span class='ident'>ptr</span>)
         }
     }
@@ -1391,7 +1444,9 @@
         }
     }
 
-    <span class='doccomment'>/// Creates an RValue for a raw pointer.</span>
+    <span class='doccomment'>/// Creates an RValue for a raw pointer. This function is unsafe</span>
+    <span class='doccomment'>/// because it requires that the lifetime of the pointer be greater</span>
+    <span class='doccomment'>/// than that of the jitted program.</span>
     <span class='kw'>pub</span> <span class='kw'>unsafe</span> <span class='kw'>fn</span> <span class='ident'>new_rvalue_from_ptr</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
                                           <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
                                           <span class='ident'>value</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>u8</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
@@ -1403,7 +1458,7 @@
 
     <span class='doccomment'>/// Creates a null RValue.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_null</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                    <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+                        <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
         <span class='kw'>unsafe</span> {
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_null</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                        <span class='ident'>types</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>ty</span>));
@@ -1413,7 +1468,7 @@
 
     <span class='doccomment'>/// Creates a string literal RValue.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_string_literal</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                              <span class='ident'>value</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+                                  <span class='ident'>value</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='ident'>RValue</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
         <span class='kw'>unsafe</span> {
             <span class='comment'>// FIXME - is this safe?</span>
             <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>value</span>).<span class='ident'>unwrap</span>();
@@ -1425,27 +1480,29 @@
 
     <span class='doccomment'>/// Dumps a small C file to the path that can be used to reproduce a series</span>
     <span class='doccomment'>/// of API calls. You should only ever need to call this if you are debugging</span>
-    <span class='doccomment'>/// a segfault in gccjit or this library.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>dump_reproducer_to_file</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>,
-                                   <span class='ident'>path</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) {
+    <span class='doccomment'>/// an issue in gccjit itself or this library.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>dump_reproducer_to_file</span><span class='op'>&lt;</span><span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>,
+                                                  <span class='ident'>path</span>: <span class='ident'>S</span>) {
         <span class='kw'>unsafe</span> {
-            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>path</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>path_ref</span> <span class='op'>=</span> <span class='ident'>path</span>.<span class='ident'>as_ref</span>();
+            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>path_ref</span>).<span class='ident'>unwrap</span>();
             <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_dump_reproducer_to_file</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                                 <span class='ident'>cstr</span>.<span class='ident'>as_ptr</span>());
         }
     }
 
     <span class='doccomment'>/// Creates a new parameter with a given type, name, and location.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_parameter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
-                         <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
-                         <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-                         <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='ident'>Parameter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_parameter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>,
+                                            <span class='ident'>loc</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Location</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
+                                            <span class='ident'>ty</span>: <span class='ident'>types</span>::<span class='ident'>Type</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
+                                            <span class='ident'>name</span>: <span class='ident'>S</span>) <span class='op'>-&gt;</span> <span class='ident'>Parameter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>name_ref</span> <span class='op'>=</span> <span class='ident'>name</span>.<span class='ident'>as_ref</span>();
         <span class='kw'>let</span> <span class='ident'>loc_ptr</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>loc</span> {
             <span class='prelude-val'>Some</span>(<span class='ident'>loc</span>) <span class='op'>=&gt;</span> <span class='kw'>unsafe</span> { <span class='ident'>location</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>loc</span>) },
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>ptr</span>::<span class='ident'>null_mut</span>()
         };
         <span class='kw'>unsafe</span> {
-            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name_ref</span>).<span class='ident'>unwrap</span>();
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_new_param</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                             <span class='ident'>loc_ptr</span>,
                                                             <span class='ident'>types</span>::<span class='ident'>get_ptr</span>(<span class='kw-2'>&amp;</span><span class='ident'>ty</span>),
@@ -1454,9 +1511,13 @@
         }
     }
 
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>get_builtin_function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>, <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='ident'>Function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='doccomment'>/// Get a builtin function from gcc. It&#39;s not clear what functions are</span>
+    <span class='doccomment'>/// builtin and you&#39;ll likely need to consult the GCC internal docs</span>
+    <span class='doccomment'>/// for a full list.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>get_builtin_function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>S</span>) <span class='op'>-&gt;</span> <span class='ident'>Function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>name_ref</span> <span class='op'>=</span> <span class='ident'>name</span>.<span class='ident'>as_ref</span>();
         <span class='kw'>unsafe</span> {
-            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>cstr</span> <span class='op'>=</span> <span class='ident'>CString</span>::<span class='ident'>new</span>(<span class='ident'>name_ref</span>).<span class='ident'>unwrap</span>();
             <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_context_get_builtin_function</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>,
                                                                        <span class='ident'>cstr</span>.<span class='ident'>as_ptr</span>());
             <span class='ident'>function</span>::<span class='ident'>from_ptr</span>(<span class='ident'>ptr</span>)
@@ -1479,37 +1540,60 @@
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>tests</span> {
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='op'>*</span>;
+    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>super</span>::<span class='op'>*</span>;
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>default</span>::<span class='ident'>Default</span>;
+    <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>mem</span>;
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>create_context</span>() {
-        <span class='kw'>let</span> <span class='ident'>ctx</span> <span class='op'>=</span> <span class='ident'>Context</span>::<span class='ident'>default</span>();
+        <span class='kw'>let</span> <span class='ident'>_ctx</span> <span class='op'>=</span> <span class='ident'>Context</span>::<span class='ident'>default</span>();
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>create_child_context</span>() {
         <span class='kw'>let</span> <span class='ident'>ctx</span> <span class='op'>=</span> <span class='ident'>Context</span>::<span class='ident'>default</span>();
-        <span class='kw'>let</span> <span class='ident'>child</span> <span class='op'>=</span> <span class='ident'>ctx</span>.<span class='ident'>new_child_context</span>();
+        <span class='kw'>let</span> <span class='ident'>_child</span> <span class='op'>=</span> <span class='ident'>ctx</span>.<span class='ident'>new_child_context</span>();
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>create_location</span>() {
         <span class='kw'>let</span> <span class='ident'>ctx</span> <span class='op'>=</span> <span class='ident'>Context</span>::<span class='ident'>default</span>();
-        <span class='kw'>let</span> <span class='ident'>location</span> <span class='op'>=</span> <span class='ident'>ctx</span>.<span class='ident'>new_location</span>(<span class='string'>&quot;hello.rs&quot;</span>, <span class='number'>1</span>, <span class='number'>32</span>);
+        <span class='kw'>let</span> <span class='ident'>_location</span> <span class='op'>=</span> <span class='ident'>ctx</span>.<span class='ident'>new_location</span>(<span class='string'>&quot;hello.rs&quot;</span>, <span class='number'>1</span>, <span class='number'>32</span>);
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>create_type</span>() {
         <span class='kw'>let</span> <span class='ident'>ctx</span> <span class='op'>=</span> <span class='ident'>Context</span>::<span class='ident'>default</span>();
-        <span class='kw'>let</span> <span class='ident'>int_type</span> <span class='op'>=</span> <span class='ident'>ctx</span>.<span class='ident'>new_type</span>::<span class='op'>&lt;</span><span class='ident'>i32</span><span class='op'>&gt;</span>();
+        <span class='kw'>let</span> <span class='ident'>_int_type</span> <span class='op'>=</span> <span class='ident'>ctx</span>.<span class='ident'>new_type</span>::<span class='op'>&lt;</span><span class='ident'>i32</span><span class='op'>&gt;</span>();
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>create_field</span>() {
         <span class='kw'>let</span> <span class='ident'>ctx</span> <span class='op'>=</span> <span class='ident'>Context</span>::<span class='ident'>default</span>();
         <span class='kw'>let</span> <span class='ident'>int_type</span> <span class='op'>=</span> <span class='ident'>ctx</span>.<span class='ident'>new_type</span>::<span class='op'>&lt;</span><span class='ident'>i32</span><span class='op'>&gt;</span>();
-        <span class='kw'>let</span> <span class='ident'>int_field</span> <span class='op'>=</span> <span class='ident'>ctx</span>.<span class='ident'>new_field</span>(<span class='prelude-val'>None</span>, <span class='ident'>int_type</span>, <span class='string'>&quot;x&quot;</span>);
+        <span class='kw'>let</span> <span class='ident'>_int_field</span> <span class='op'>=</span> <span class='ident'>ctx</span>.<span class='ident'>new_field</span>(<span class='prelude-val'>None</span>, <span class='ident'>int_type</span>, <span class='string'>&quot;x&quot;</span>);
+    }
+
+    <span class='attribute'>#[<span class='ident'>test</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>basic_function</span>() {
+        <span class='kw'>let</span> <span class='ident'>context</span> <span class='op'>=</span> <span class='ident'>Context</span>::<span class='ident'>default</span>();
+        <span class='kw'>let</span> <span class='ident'>int_ty</span> <span class='op'>=</span> <span class='ident'>context</span>.<span class='ident'>new_type</span>::<span class='op'>&lt;</span><span class='ident'>i32</span><span class='op'>&gt;</span>();
+        <span class='kw'>let</span> <span class='ident'>parameter</span> <span class='op'>=</span> <span class='ident'>context</span>.<span class='ident'>new_parameter</span>(<span class='prelude-val'>None</span>, <span class='ident'>int_ty</span>, <span class='string'>&quot;x&quot;</span>);
+        <span class='kw'>let</span> <span class='ident'>fun</span> <span class='op'>=</span> <span class='ident'>context</span>.<span class='ident'>new_function</span>(<span class='prelude-val'>None</span>, <span class='ident'>FunctionType</span>::<span class='ident'>Exported</span>, <span class='ident'>int_ty</span>, <span class='kw-2'>&amp;</span>[<span class='ident'>parameter</span>], <span class='string'>&quot;square&quot;</span>, <span class='boolval'>false</span>);
+        <span class='kw'>let</span> <span class='ident'>block</span> <span class='op'>=</span> <span class='ident'>fun</span>.<span class='ident'>new_block</span>(<span class='string'>&quot;main_block&quot;</span>);
+        <span class='kw'>let</span> <span class='ident'>parm</span> <span class='op'>=</span> <span class='ident'>fun</span>.<span class='ident'>get_param</span>(<span class='number'>0</span>).<span class='ident'>to_rvalue</span>();
+        <span class='kw'>let</span> <span class='ident'>square</span> <span class='op'>=</span> <span class='ident'>parm</span> <span class='op'>*</span> <span class='ident'>parm</span>;
+        <span class='ident'>block</span>.<span class='ident'>end_with_return</span>(<span class='prelude-val'>None</span>, <span class='ident'>square</span>);
+
+        <span class='kw'>let</span> <span class='ident'>result</span> <span class='op'>=</span> <span class='ident'>context</span>.<span class='ident'>compile</span>();
+        <span class='kw'>unsafe</span> {
+            <span class='kw'>let</span> <span class='ident'>func_ptr</span> <span class='op'>=</span> <span class='ident'>result</span>.<span class='ident'>get_function</span>(<span class='string'>&quot;square&quot;</span>);
+            <span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>!</span><span class='ident'>func_ptr</span>.<span class='ident'>is_null</span>());
+            <span class='kw'>let</span> <span class='ident'>func</span> : <span class='kw'>extern</span> <span class='string'>&quot;C&quot;</span> <span class='kw'>fn</span>(<span class='ident'>i32</span>) <span class='op'>-&gt;</span> <span class='ident'>i32</span> <span class='op'>=</span> <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>func_ptr</span>);
+            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>func</span>(<span class='number'>4</span>), <span class='number'>16</span>);
+            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>func</span>(<span class='number'>9</span>), <span class='number'>81</span>);
+            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>func</span>(<span class='op'>-</span><span class='number'>2</span>), <span class='number'>4</span>);
+        }
     }
 
     <span class='comment'>/* Uncomment these tests periodically to remind yourself of
@@ -1540,33 +1624,44 @@
     <section class="footer"></section>
 
     <div id="help" class="hidden">
-        <div class="shortcuts">
-            <h1>Keyboard shortcuts</h1>
-            <dl>
-                <dt>?</dt>
-                <dd>Show this help dialog</dd>
-                <dt>S</dt>
-                <dd>Focus the search field</dd>
-                <dt>&larrb;</dt>
-                <dd>Move up in search results</dd>
-                <dt>&rarrb;</dt>
-                <dd>Move down in search results</dd>
-                <dt>&#9166;</dt>
-                <dd>Go to active search result</dd>
-            </dl>
-        </div>
-        <div class="infos">
-            <h1>Search tricks</h1>
-            <p>
-                Prefix searches with a type followed by a colon (e.g.
-                <code>fn:</code>) to restrict the search to a given type.
-            </p>
-            <p>
-                Accepted types are: <code>fn</code>, <code>mod</code>,
-                <code>struct</code>, <code>enum</code>,
-                <code>trait</code>, <code>typedef</code> (or
-                <code>tdef</code>).
-            </p>
+        <div>
+            <div class="shortcuts">
+                <h1>Keyboard Shortcuts</h1>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h1>Search Tricks</h1>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>typedef</code> (or
+                    <code>tdef</code>).
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
         </div>
     </div>
 

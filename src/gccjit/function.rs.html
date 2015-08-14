@@ -34,7 +34,7 @@
             <div class="search-container">
                 <input class="search-input" name="search"
                        autocomplete="off"
-                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
                        type="search">
             </div>
         </form>
@@ -155,8 +155,15 @@
 <span id="113">113</span>
 <span id="114">114</span>
 <span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
 </pre><pre class='rust '>
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>marker</span>::{<span class='ident'>PhantomData</span>, <span class='ident'>Send</span>};
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>marker</span>::<span class='ident'>PhantomData</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ptr</span>;
 <span class='kw'>use</span> <span class='ident'>context</span>::<span class='ident'>Context</span>;
@@ -183,9 +190,18 @@
 <span class='doccomment'>/// always inlined wherever it is called and cannot be accessed outside of the jit.</span>
 <span class='attribute'>#[<span class='ident'>repr</span>(<span class='ident'>C</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>FunctionType</span> {
+    <span class='doccomment'>/// Defines a function that is &quot;exported&quot; by the JIT and can be called from</span>
+    <span class='doccomment'>/// Rust.</span>
     <span class='ident'>Exported</span>,
+    <span class='doccomment'>/// Defines a function that is internal to the JIT and cannot be called</span>
+    <span class='doccomment'>/// from Rust, but can be called from jitted code.</span>
     <span class='ident'>Internal</span>,
+    <span class='doccomment'>/// Defines a function with external linkage.</span>
     <span class='ident'>Extern</span>,
+    <span class='doccomment'>/// Defines a function that should always be inlined whenever it is called.</span>
+    <span class='doccomment'>/// A function with this type cannot be called from Rust. If the optimization</span>
+    <span class='doccomment'>/// level is None, this function will not actually be inlined, but it still</span>
+    <span class='doccomment'>/// can only be called from within jitted code.</span>
     <span class='ident'>AlwaysInline</span>
 }
 
@@ -257,8 +273,6 @@
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> <span class='op'>!</span><span class='ident'>Send</span> <span class='kw'>for</span> <span class='ident'>Function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> {}
-
 <span class='kw'>pub</span> <span class='kw'>unsafe</span> <span class='kw'>fn</span> <span class='ident'>from_ptr</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span>(<span class='ident'>ptr</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>gccjit_sys</span>::<span class='ident'>gcc_jit_function</span>) <span class='op'>-&gt;</span> <span class='ident'>Function</span><span class='op'>&lt;</span><span class='lifetime'>&#39;ctx</span><span class='op'>&gt;</span> {
     <span class='ident'>Function</span> {
         <span class='ident'>marker</span>: <span class='ident'>PhantomData</span>,
@@ -278,33 +292,44 @@
     <section class="footer"></section>
 
     <div id="help" class="hidden">
-        <div class="shortcuts">
-            <h1>Keyboard shortcuts</h1>
-            <dl>
-                <dt>?</dt>
-                <dd>Show this help dialog</dd>
-                <dt>S</dt>
-                <dd>Focus the search field</dd>
-                <dt>&larrb;</dt>
-                <dd>Move up in search results</dd>
-                <dt>&rarrb;</dt>
-                <dd>Move down in search results</dd>
-                <dt>&#9166;</dt>
-                <dd>Go to active search result</dd>
-            </dl>
-        </div>
-        <div class="infos">
-            <h1>Search tricks</h1>
-            <p>
-                Prefix searches with a type followed by a colon (e.g.
-                <code>fn:</code>) to restrict the search to a given type.
-            </p>
-            <p>
-                Accepted types are: <code>fn</code>, <code>mod</code>,
-                <code>struct</code>, <code>enum</code>,
-                <code>trait</code>, <code>typedef</code> (or
-                <code>tdef</code>).
-            </p>
+        <div>
+            <div class="shortcuts">
+                <h1>Keyboard Shortcuts</h1>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h1>Search Tricks</h1>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>typedef</code> (or
+                    <code>tdef</code>).
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
         </div>
     </div>
 
