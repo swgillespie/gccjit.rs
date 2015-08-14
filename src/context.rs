@@ -613,16 +613,18 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
-    /// Creates an RValue for a raw pointer. This function is unsafe
-    /// because it requires that the lifetime of the pointer be greater
+    /// Creates an RValue for a raw pointer. This function
+    /// requires that the lifetime of the pointer be greater
     /// than that of the jitted program.
-    pub unsafe fn new_rvalue_from_ptr<'a>(&'a self,
-                                          ty: types::Type<'a>,
-                                          value: *mut u8) -> RValue<'a> {
-        let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_ptr(self.ptr,
-                                                          types::get_ptr(&ty),
-                                                          mem::transmute(value));
-        rvalue::from_ptr(ptr)
+    pub fn new_rvalue_from_ptr<'a>(&'a self,
+                                   ty: types::Type<'a>,
+                                   value: *mut ()) -> RValue<'a> {
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_ptr(self.ptr,
+                                                                      types::get_ptr(&ty),
+                                                                      mem::transmute(value));
+            rvalue::from_ptr(ptr)
+        }
     }
 
     /// Creates a null RValue.
@@ -636,11 +638,10 @@ impl<'ctx> Context<'ctx> {
     }
 
     /// Creates a string literal RValue.
-    pub fn new_string_literal<'a>(&'a self,
-                                  value: &str) -> RValue<'a> {
+    pub fn new_string_literal<'a, S: AsRef<str>>(&'a self,
+                                  value: S) -> RValue<'a> {
         unsafe {
-            // FIXME - is this safe?
-            let cstr = CString::new(value).unwrap();
+            let cstr = CString::new(value.as_ref()).unwrap();
             let ptr = gccjit_sys::gcc_jit_context_new_string_literal(self.ptr,
                                                                      cstr.as_ptr());
             rvalue::from_ptr(ptr)

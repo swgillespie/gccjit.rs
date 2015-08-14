@@ -73,32 +73,32 @@ impl<'ctx> Function<'ctx> {
         }
     }
 
-    pub fn dump_to_dot(&self, path: &str) {
+    pub fn dump_to_dot<S: AsRef<str>>(&self, path: S) {
         unsafe {
-            let cstr = CString::new(path).unwrap();
+            let cstr = CString::new(path.as_ref()).unwrap();
             gccjit_sys::gcc_jit_function_dump_to_dot(self.ptr, cstr.as_ptr());
         }
     }
 
-    pub fn new_block(&self, name: &str) -> Block<'ctx> {
+    pub fn new_block<S: AsRef<str>>(&self, name: S) -> Block<'ctx> {
         unsafe {
-            let cstr = CString::new(name).unwrap();
+            let cstr = CString::new(name.as_ref()).unwrap();
             let ptr = gccjit_sys::gcc_jit_function_new_block(self.ptr,
                                                              cstr.as_ptr());
             block::from_ptr(ptr)
         }
     }
 
-    pub fn new_local(&self,
+    pub fn new_local<S: AsRef<str>>(&self,
                      loc: Option<Location<'ctx>>,
                      ty: Type<'ctx>,
-                     name: &str) -> LValue<'ctx> {
+                     name: S) -> LValue<'ctx> {
         unsafe {
             let loc_ptr = match loc {
                 Some(loc) => location::get_ptr(&loc),
                 None => ptr::null_mut()
             };
-            let cstr = CString::new(name).unwrap();
+            let cstr = CString::new(name.as_ref()).unwrap();
             let ptr = gccjit_sys::gcc_jit_function_new_local(self.ptr,
                                                              loc_ptr,
                                                              types::get_ptr(&ty),
