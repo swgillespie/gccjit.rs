@@ -25,9 +25,18 @@ use types;
 /// always inlined wherever it is called and cannot be accessed outside of the jit.
 #[repr(C)]
 pub enum FunctionType {
+    /// Defines a function that is "exported" by the JIT and can be called from
+    /// Rust.
     Exported,
+    /// Defines a function that is internal to the JIT and cannot be called
+    /// from Rust, but can be called from jitted code.
     Internal,
+    /// Defines a function with external linkage.
     Extern,
+    /// Defines a function that should always be inlined whenever it is called.
+    /// A function with this type cannot be called from Rust. If the optimization
+    /// level is None, this function will not actually be inlined, but it still
+    /// can only be called from within jitted code.
     AlwaysInline
 }
 

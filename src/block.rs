@@ -147,15 +147,16 @@ impl<'ctx> Block<'ctx> {
 
     /// Adds a comment to a block. It's unclear from the documentation what
     /// this actually means.
-    pub fn add_comment(&self,
+    pub fn add_comment<S: AsRef<str>>(&self,
                        loc: Option<Location<'ctx>>,
-                       message: &str) {
+                       message: S) {
+        let message_ref = message.as_ref();
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
         };
         unsafe {
-            let cstr = CString::new(message).unwrap();
+            let cstr = CString::new(message_ref).unwrap();
             gccjit_sys::gcc_jit_block_add_comment(self.ptr,
                                                   loc_ptr,
                                                   cstr.as_ptr());

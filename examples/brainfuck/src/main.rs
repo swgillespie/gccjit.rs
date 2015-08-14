@@ -32,11 +32,14 @@ fn main() {
     }
 
     let result = context.compile();
-    let main_result = result.get_function("bf_main");
-    let main : extern "C" fn() = match main_result {
-        Some(x) => unsafe { mem::transmute(x) },
-        None => panic!("failed to codegen")
-    };
+    let main_result = unsafe { result.get_function("bf_main") };
+    let main : extern "C" fn() =
+        if !main_result.is_null() {
+            unsafe { mem::transmute(main_result) }
+        }
+        else {
+           panic!("failed to codegen")
+        };
     main();
 }
 
