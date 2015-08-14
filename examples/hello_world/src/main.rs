@@ -29,10 +29,12 @@ fn main() {
     block.end_with_void_return(None);
     let result = context.compile();
     let hello = result.get_function("hello");
-    let hello_fn : extern "C" fn() = match hello {
-        Some(x) => unsafe { mem::transmute(x) },
-        None => panic!("failed to retrieve function")
-    };
+    let hello_fn : extern "C" fn() =
+        if !hello.is_null() {
+            unsafe { mem::transmute(hello) }
+        } else {
+            panic!("failed to retrieve function");
+        };
     hello_fn();
 }
 

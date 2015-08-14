@@ -64,29 +64,32 @@ impl CompileResult {
     /// does not exist (wasn't compiled by the Context that produced this
     /// CompileResult), this function returns a null pointer.
     ///
-    /// This function is unsafe because of two reasons: First, it is the
-    /// caller's responsibility to ensure that this pointer is not used
+    /// It is the caller's responsibility to ensure that this pointer is not used
     /// past the lifetime of the CompileResult object. Second, it is
     /// the caller's responsibility to check whether or not the pointer
     /// is null. It is also expected that the caller of this function
     /// will transmute this pointer to a function pointer type.
-    pub unsafe fn get_function<S: AsRef<str>>(&self, name: S) -> *mut () {
+    pub fn get_function<S: AsRef<str>>(&self, name: S) -> *mut () {
         let c_str = CString::new(name.as_ref()).unwrap();
-        let func = gccjit_sys::gcc_jit_result_get_code(self.ptr,
+        unsafe {
+            let func = gccjit_sys::gcc_jit_result_get_code(self.ptr,
                                                            c_str.as_ptr());
-        mem::transmute(func)
+            mem::transmute(func)
+        }
     }
 
     /// Gets a pointer to a global variable that lives on the JIT heap.
     ///
-    /// This function is unsafe because it is the caller's responsibility
+    /// It is the caller's responsibility
     /// to ensure that the pointer is not used past the lifetime of the
     /// CompileResult object. It is also the caller's responsibility to
     /// check whether or not the returned pointer is null.
-    pub unsafe fn get_global<S: AsRef<str>>(&self, name: S) -> *mut () {
+    pub fn get_global<S: AsRef<str>>(&self, name: S) -> *mut () {
         let c_str = CString::new(name.as_ref()).unwrap();
-        let ptr = gccjit_sys::gcc_jit_result_get_global(self.ptr, c_str.as_ptr());
-        mem::transmute(ptr)
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_result_get_global(self.ptr, c_str.as_ptr());
+            mem::transmute(ptr)
+        }
     }
 }
 

@@ -2,7 +2,6 @@ extern crate gccjit;
 
 use gccjit::Context;
 use gccjit::FunctionType;
-use gccjit::BinaryOp;
 use gccjit::ToRValue;
 use gccjit::OptimizationLevel;
 use gccjit::ComparisonOp;
@@ -43,11 +42,12 @@ fn main() {
     let result = context.compile();
     factorial.dump_to_dot("factorial.dot");
     let fact_ptr = result.get_function("factorial");
-    let fact_fn : extern "C" fn(i32) -> i32 = match fact_ptr {
-        Some(x) => unsafe { mem::transmute(x) },
-        None => panic!("failed to find factorial function")
-    };
+    let fact_fn : extern "C" fn(i32) -> i32 =
+        if !fact_ptr.is_null() {
+            unsafe { mem::transmute(fact_ptr) }
+        } else {
+            panic!("failed to find factorial function")
+        };
     println!("fact(5) = {}", fact_fn(5));
     println!("fact(10) = {}", fact_fn(10));
-    println!("fact(100) = {}", fact_fn(100));
 }

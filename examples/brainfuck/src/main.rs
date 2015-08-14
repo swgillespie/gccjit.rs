@@ -21,7 +21,7 @@ pub enum Op {
 
 fn main() {
     let context = gccjit::Context::default();
-    context.set_optimization_level(gccjit::OptimizationLevel::Aggressive);
+    context.set_optimization_level(gccjit::OptimizationLevel::Limited);
     let stdin = std::io::stdin();
     let ops = match read_ops(stdin) {
         Ok(v) => v,
@@ -32,7 +32,7 @@ fn main() {
     }
 
     let result = context.compile();
-    let main_result = unsafe { result.get_function("bf_main") };
+    let main_result = result.get_function("bf_main");
     let main : extern "C" fn() =
         if !main_result.is_null() {
             unsafe { mem::transmute(main_result) }
