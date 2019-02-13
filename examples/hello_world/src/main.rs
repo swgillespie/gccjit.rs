@@ -22,7 +22,7 @@ fn main() {
                                                          &[],
                                                          false);
     let ptr = unsafe {
-        context.new_rvalue_from_ptr(function_ptr, say_hello as *mut u8)
+        context.new_rvalue_from_ptr(function_ptr, say_hello as *mut ())
     };
     let call = context.new_call_through_ptr(None, ptr, &[]);
     block.add_eval(None, call);
