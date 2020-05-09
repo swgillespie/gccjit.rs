@@ -1,10 +1,12 @@
 use std::default::Default;
 use std::ops::Drop;
-use std::ffi::CString;
+use std::ffi::{CStr, CString};
 use std::marker::PhantomData;
 use std::mem;
 use std::ptr;
+use std::str::Utf8Error;
 
+use Type;
 use location::{self, Location};
 use structs::{self, Struct};
 use types;
@@ -19,6 +21,13 @@ use gccjit_sys::gcc_jit_int_option::*;
 use gccjit_sys::gcc_jit_str_option::*;
 use gccjit_sys::gcc_jit_bool_option::*;
 
+#[repr(C)]
+pub enum GlobalKind {
+    Exported,
+    Internal,
+    Imported,
+}
+
 /// Represents an optimization level that the JIT compiler
 /// will use when compiling your code.
 #[repr(C)]
@@ -29,7 +38,7 @@ pub enum OptimizationLevel {
     /// any optimizations that take extended periods of time.
     Limited,
     /// Performs all optimizations that do not involve a tradeoff
-    /// of code size for speed. 
+    /// of code size for speed.
     Standard,
     /// Performs all optimizations at the Standard level, as well
     /// as function inlining, loop vectorization, some loop unrolling,
@@ -137,7 +146,7 @@ impl<'ctx> Context<'ctx> {
                                                        c_str.as_ptr());
         }
     }
-    
+
     /// Sets the optimization level that the JIT compiler will use.
     /// The higher the optimization level, the longer compilation will
     /// take.
@@ -148,7 +157,39 @@ impl<'ctx> Context<'ctx> {
                                                        level as i32);
         }
     }
-    
+
+    pub fn set_debug_info(&self, value: bool) {
+        unsafe {
+            gccjit_sys::gcc_jit_context_set_bool_option(self.ptr,
+                                                        GCC_JIT_BOOL_OPTION_DEBUGINFO,
+                                                        value as i32);
+        }
+    }
+
+    pub fn set_keep_intermediates(&self, value: bool) {
+        unsafe {
+            gccjit_sys::gcc_jit_context_set_bool_option(self.ptr,
+                                                        GCC_JIT_BOOL_OPTION_KEEP_INTERMEDIATES,
+                                                        value as i32);
+        }
+    }
+
+    pub fn set_dump_everything(&self, value: bool) {
+        unsafe {
+            gccjit_sys::gcc_jit_context_set_bool_option(self.ptr,
+                                                        GCC_JIT_BOOL_OPTION_DUMP_EVERYTHING,
+                                                        value as i32);
+        }
+    }
+
+    pub fn set_dump_initial_gimple(&self, value: bool) {
+        unsafe {
+            gccjit_sys::gcc_jit_context_set_bool_option(self.ptr,
+                                                        GCC_JIT_BOOL_OPTION_DUMP_INITIAL_GIMPLE,
+                                                        value as i32);
+        }
+    }
+
     /// When set to true, dumps the code that the JIT generates to standard
     /// out during compilation.
     pub fn set_dump_code_on_compile(&self, value: bool) {
@@ -169,7 +210,7 @@ impl<'ctx> Context<'ctx> {
             }
         }
     }
-    
+
     /// Compiles the context and saves the result to a file. The
     /// type of the file is controlled by the OutputKind parameter.
     pub fn compile_to_file<S: AsRef<str>>(&self, kind: OutputKind, file: S) {
@@ -181,9 +222,7 @@ impl<'ctx> Context<'ctx> {
                                                         cstr.as_ptr());
         }
     }
-    
-    
-    
+
     /// Creates a new child context from this context. The child context
     /// is a fully-featured context, but it has a lifetime that is strictly
     /// less than the lifetime that spawned it.
@@ -195,7 +234,7 @@ impl<'ctx> Context<'ctx> {
             }
         }
     }
-    
+
     /// Creates a new location for use by gdb when debugging a JIT compiled
     /// program. The filename, line, and col are used by gdb to "show" your
     /// source when in a debugger.
@@ -213,7 +252,24 @@ impl<'ctx> Context<'ctx> {
             location::from_ptr(ptr)
         }
     }
-    
+
+    pub fn new_global<'a, S: AsRef<str>>(&self, loc: Option<Location<'a>>, kind: GlobalKind, ty: Type<'a>, name: S) -> LValue<'a> {
+        unsafe {
+            let loc_ptr = match loc {
+                Some(loc) => location::get_ptr(&loc),
+                None => ptr::null_mut()
+            };
+            let cstr = CString::new(name.as_ref()).unwrap();
+            let ptr = gccjit_sys::gcc_jit_context_new_global(
+                self.ptr,
+                loc_ptr,
+                mem::transmute(kind),
+                types::get_ptr(&ty),
+                cstr.as_ptr());
+            lvalue::from_ptr(ptr)
+        }
+    }
+
     /// Constructs a new type for any type that implements the Typeable trait.
     /// This library only provides a handful of implementations of Typeable
     /// for some primitive types - utilizers of this library are encouraged
@@ -222,7 +278,7 @@ impl<'ctx> Context<'ctx> {
     pub fn new_type<'a, T: types::Typeable>(&'a self) -> types::Type<'a> {
         <T as types::Typeable>::get_type(self)
     }
-    
+
     /// Constructs a new field with an optional source location, type, and name.
     /// This field can be used to compose unions or structs.
     pub fn new_field<'a, S: AsRef<str>>(&'a self,
@@ -243,7 +299,7 @@ impl<'ctx> Context<'ctx> {
             field::from_ptr(ptr)
         }
     }
-    
+
     /// Constructs a new array type with a given base element type and a
     /// size.
     pub fn new_array_type<'a>(&'a self,
@@ -289,7 +345,7 @@ impl<'ctx> Context<'ctx> {
             structs::from_ptr(ptr)
         }
     }
-    
+
     /// Constructs a new struct type whose fields are not known. Fields can
     /// be added to this struct later, but only once.
     pub fn new_opaque_struct_type<'a, S: AsRef<str>>(&'a self,
@@ -308,7 +364,7 @@ impl<'ctx> Context<'ctx> {
             structs::from_ptr(ptr)
         }
     }
-    
+
     /// Creates a new union type from a set of fields.
     pub fn new_union_type<'a, S: AsRef<str>>(&'a self,
                                              loc: Option<Location<'a>>,
@@ -333,7 +389,7 @@ impl<'ctx> Context<'ctx> {
             types::from_ptr(ptr)
         }
     }
-    
+
     /// Creates a new function pointer type with the given return type
     /// parameter types, and an optional location. The last flag can
     /// make the function variadic, although Rust can't really handle
@@ -691,6 +747,18 @@ impl<'ctx> Context<'ctx> {
             let ptr = gccjit_sys::gcc_jit_context_get_builtin_function(self.ptr,
                                                                        cstr.as_ptr());
             function::from_ptr(ptr)
+        }
+    }
+
+    pub fn get_first_error(&self) -> Result<Option<&'ctx str>, Utf8Error> {
+        unsafe {
+            let str = gccjit_sys::gcc_jit_context_get_first_error(self.ptr);
+            if str.is_null() {
+                Ok(None)
+            }
+            else {
+                Ok(Some(CStr::from_ptr(str).to_str()?))
+            }
         }
     }
 }

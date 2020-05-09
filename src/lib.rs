@@ -14,8 +14,6 @@
 //! never outlive the Context object from which they came, a requirement
 //! to using libgccjit correctly.
 
-#![allow(raw_pointer_derive)]
-
 extern crate gccjit_sys;
 
 mod types;
@@ -31,6 +29,7 @@ mod function;
 mod block;
 
 pub use context::Context;
+pub use context::GlobalKind;
 pub use context::OptimizationLevel;
 pub use context::CompileResult;
 pub use context::OutputKind;
