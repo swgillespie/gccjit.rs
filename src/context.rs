@@ -279,6 +279,14 @@ impl<'ctx> Context<'ctx> {
         <T as types::Typeable>::get_type(self)
     }
 
+    pub fn new_int_type<'a>(&'a self, num_bytes: i32, signed: bool) -> types::Type<'a> {
+        unsafe {
+            let ctx_ptr = get_ptr(self);
+            let ptr = gccjit_sys::gcc_jit_context_get_int_type(ctx_ptr, num_bytes, signed as i32);
+            types::from_ptr(ptr)
+        }
+    }
+
     /// Constructs a new field with an optional source location, type, and name.
     /// This field can be used to compose unions or structs.
     pub fn new_field<'a, S: AsRef<str>>(&'a self,

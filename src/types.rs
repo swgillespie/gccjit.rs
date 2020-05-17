@@ -84,17 +84,34 @@ macro_rules! typeable_def {
 typeable_def!((), GCC_JIT_TYPE_VOID);
 typeable_def!(bool, GCC_JIT_TYPE_BOOL);
 typeable_def!(char, GCC_JIT_TYPE_CHAR);
-typeable_def!(i8, GCC_JIT_TYPE_SIGNED_CHAR);
-typeable_def!(u8, GCC_JIT_TYPE_UNSIGNED_CHAR);
-typeable_def!(i16, GCC_JIT_TYPE_SHORT);
-typeable_def!(u16, GCC_JIT_TYPE_UNSIGNED_SHORT);
-typeable_def!(i32, GCC_JIT_TYPE_INT);
-typeable_def!(u32, GCC_JIT_TYPE_UNSIGNED_INT);
-typeable_def!(i64, GCC_JIT_TYPE_LONG);
-typeable_def!(u64, GCC_JIT_TYPE_UNSIGNED_LONG);
 typeable_def!(f32, GCC_JIT_TYPE_FLOAT);
 typeable_def!(f64, GCC_JIT_TYPE_DOUBLE);
 typeable_def!(usize, GCC_JIT_TYPE_SIZE_T);
+
+macro_rules! typeable_int_def {
+    ($ty:ty, $num_bytes:expr, $signed:expr) => {
+        impl Typeable for $ty {
+            fn get_type<'a, 'ctx>(ctx: &'a Context<'ctx>) -> Type<'a> {
+                unsafe {
+                    let ctx_ptr = context::get_ptr(ctx);
+                    let ptr = gccjit_sys::gcc_jit_context_get_int_type(ctx_ptr, $num_bytes, $signed as i32);
+                    from_ptr(ptr)
+                }
+            }
+        }
+    }
+}
+
+typeable_int_def!(i8, 1, true);
+typeable_int_def!(u8, 1, false);
+typeable_int_def!(i16, 2, true);
+typeable_int_def!(u16, 2, false);
+typeable_int_def!(i32, 4, true);
+typeable_int_def!(u32, 4, false);
+typeable_int_def!(i64, 8, true);
+typeable_int_def!(u64, 8, false);
+//typeable_int_def!(i128, 16, true); // FIXME: unsupported by libgccjit for now.
+//typeable_int_def!(u128, 16, false); // FIXME: unsupported by libgccjit for now.
 
 /// Specific implementations of Typeable for *mut T and *const T that
 /// represent void* and const void*, respectively. These impls should
