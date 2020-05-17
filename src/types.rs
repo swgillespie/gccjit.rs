@@ -13,7 +13,7 @@ use gccjit_sys::gcc_jit_types::*;
 /// A representation of a type, as it is known to the JIT compiler.
 /// Types can be created through the Typeable trait or they can
 /// be created dynamically by composing Field types.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Eq, Hash, PartialEq)]
 pub struct Type<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,
     ptr: *mut gccjit_sys::gcc_jit_type
