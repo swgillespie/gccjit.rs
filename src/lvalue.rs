@@ -16,7 +16,7 @@ use location;
 /// location in memory. A LValue can be converted into an RValue
 /// through the ToRValue trait.
 /// It is also possible to get the address of an LValue.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Eq, Hash, PartialEq)]
 pub struct LValue<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,
     ptr: *mut gccjit_sys::gcc_jit_lvalue

@@ -29,6 +29,7 @@ mod function;
 mod block;
 
 pub use context::Context;
+pub use context::CType;
 pub use context::GlobalKind;
 pub use context::OptimizationLevel;
 pub use context::CompileResult;

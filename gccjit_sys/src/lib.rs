@@ -2,7 +2,7 @@
 
 extern crate libc;
 
-use libc::{c_char, c_int, FILE, c_void, c_long, c_double};
+use libc::{c_char, c_int, FILE, c_void, c_long, c_double, size_t};
 
 // opaque pointers
 pub enum gcc_jit_context {}
@@ -17,6 +17,7 @@ pub enum gcc_jit_block {}
 pub enum gcc_jit_rvalue {}
 pub enum gcc_jit_lvalue {}
 pub enum gcc_jit_param {}
+pub enum gcc_jit_case {}
 
 #[repr(C)]
 pub enum gcc_jit_str_option {
@@ -252,6 +253,7 @@ extern {
                                        flags: c_int,
                                        verbosity: c_int);
     pub fn gcc_jit_context_get_first_error(ctx: *mut gcc_jit_context) -> *const c_char;
+    pub fn gcc_jit_context_get_last_error(ctx: *mut gcc_jit_context) -> *const c_char;
 
     // result operations
     pub fn gcc_jit_result_get_code(result: *mut gcc_jit_result,
@@ -468,4 +470,18 @@ extern {
     pub fn gcc_jit_context_new_child_context(parent: *mut gcc_jit_context) -> *mut gcc_jit_context;
     pub fn gcc_jit_context_dump_reproducer_to_file(parent: *mut gcc_jit_context,
                                                    path: *const c_char);
+
+    pub fn gcc_jit_context_new_case(ctxt: *mut gcc_jit_context, min_value: *mut gcc_jit_rvalue, max_value: *mut gcc_jit_rvalue, dest_block: *mut gcc_jit_block) -> *mut gcc_jit_case;
+    pub fn gcc_jit_block_end_with_switch(block: *mut gcc_jit_block, loc: *mut gcc_jit_location, expr: *mut gcc_jit_rvalue, default_block: *mut gcc_jit_block, num_cases: c_int, cases: *mut *mut gcc_jit_case);
+    pub fn gcc_jit_case_as_object(case_: *mut gcc_jit_case) -> *mut gcc_jit_object;
+
+    pub fn gcc_jit_function_get_address(fun: *mut gcc_jit_function, loc: *mut gcc_jit_location) ->  *mut gcc_jit_rvalue;
+
+    pub fn gcc_jit_type_get_vector(typ: *mut gcc_jit_type, num_units:  size_t) -> *mut gcc_jit_type;
+    pub fn gcc_jit_context_new_rvalue_from_vector(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, vec_type: *mut gcc_jit_type, num_elements: size_t, elements: *mut *mut gcc_jit_rvalue) ->  *mut gcc_jit_rvalue;
+
+    pub fn gcc_jit_context_add_command_line_option(ctxt: *mut gcc_jit_context, optname: *const c_char);
+    pub fn gcc_jit_context_add_driver_option(ctxt: *mut gcc_jit_context, optname: *const c_char);
+
+    pub fn gcc_jit_type_get_aligned(typ: *mut gcc_jit_type, alignment_in_bytes: size_t) ->  *mut gcc_jit_type;
 }

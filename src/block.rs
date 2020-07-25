@@ -3,7 +3,10 @@ use std::ffi::CString;
 use std::fmt;
 use std::ptr;
 use std::mem;
-use context::Context;
+use std::os::raw::c_int;
+
+use block;
+use context::{Case, Context};
 use gccjit_sys;
 use object::{self, ToObject, Object};
 use function::{self, Function};
@@ -120,6 +123,11 @@ impl<'ctx> Block<'ctx> {
                                                      lvalue::get_ptr(&lvalue),
                                                      rvalue::get_ptr(&rvalue));
         }
+
+        #[cfg(debug_assertions)]
+        if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+            panic!("{}", error);
+        }
     }
 
     /// Performs a binary operation on an LValue and an RValue, assigning
@@ -232,11 +240,29 @@ impl<'ctx> Block<'ctx> {
                                                            loc_ptr);
         }
     }
+
+    pub fn end_with_switch<T: ToRValue<'ctx>>(&self, loc: Option<Location<'ctx>>, expr: T, default_block: Block<'ctx>, cases: &[Case]) {
+        let expr = expr.to_rvalue();
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        unsafe {
+            gccjit_sys::gcc_jit_block_end_with_switch(self.ptr, loc_ptr, rvalue::get_ptr(&expr), block::get_ptr(&default_block),
+                cases.len() as c_int, cases.as_ptr() as *mut *mut _);
+        }
+    }
 }
+
+
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_block) -> Block<'ctx> {
     Block {
         marker: PhantomData,
         ptr: ptr
     }
+}
+
+pub unsafe fn get_ptr<'ctx>(block: &Block<'ctx>) -> *mut gccjit_sys::gcc_jit_block {
+    block.ptr
 }

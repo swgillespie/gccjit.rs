@@ -57,6 +57,12 @@ impl<'ctx> Type<'ctx> {
             from_ptr(gccjit_sys::gcc_jit_type_get_volatile(self.ptr))
         }
     }
+
+    pub fn get_aligned(self, alignment_in_bytes: u64) -> Type<'ctx> {
+        unsafe {
+            from_ptr(gccjit_sys::gcc_jit_type_get_aligned(self.ptr, alignment_in_bytes as _))
+        }
+    }
 }
 
 /// Typeable is a trait for types that have a corresponding type within

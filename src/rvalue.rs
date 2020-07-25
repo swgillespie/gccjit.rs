@@ -20,7 +20,7 @@ use block::BinaryOp;
 /// An RValue is a value that may or may not have a storage address in gccjit.
 /// RValues can be dereferenced, used for field accesses, and are the parameters
 /// given to a majority of the gccjit API calls.
-#[derive(Copy, Clone, PartialEq)]
+#[derive(Copy, Clone, Eq, Hash, PartialEq)]
 pub struct RValue<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,
     ptr: *mut gccjit_sys::gcc_jit_rvalue
@@ -70,6 +70,10 @@ macro_rules! binary_operator_for {
                                                                         types::get_ptr(&ty),
                                                                         self.ptr,
                                                                         rhs_rvalue.ptr);
+                    #[cfg(debug_assertions)]
+                    if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+                        panic!("{}", error);
+                    }
                     from_ptr(ptr)
                 }
             }
@@ -142,7 +146,11 @@ impl<'ctx> RValue<'ctx> {
         unsafe {
             let ptr = gccjit_sys::gcc_jit_rvalue_dereference(self.ptr,
                                                              loc_ptr);
-                                                            
+
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+                panic!("{}", error);
+            }
             lvalue::from_ptr(ptr)
         }
     }

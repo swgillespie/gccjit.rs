@@ -15,7 +15,7 @@ use object::{ToObject, Object};
 
 /// A Struct is gccjit's representation of a composite type. Despite the name,
 /// Struct can represent either a struct, an union, or an opaque named type.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Eq, Hash, PartialEq)]
 pub struct Struct<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,
     ptr: *mut gccjit_sys::gcc_jit_struct
@@ -46,6 +46,10 @@ impl<'ctx> Struct<'ctx> {
                                                   num_fields,
                                                   fields_ptrs.as_mut_ptr());
         }
+        #[cfg(debug_assertions)]
+        if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+            panic!("{}", error);
+        }
     }
 }
 
@@ -69,7 +73,3 @@ pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_struct) -> Struct<'ct
         ptr: ptr
     }
 }
-
-
-
-

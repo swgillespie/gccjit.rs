@@ -1,19 +1,22 @@
 use std::marker::PhantomData;
 use std::fmt;
 use std::ptr;
-use context::Context;
+
 use gccjit_sys;
+
+use block::Block;
+use block;
+use context::Context;
+use location::Location;
+use location;
+use lvalue::LValue;
+use lvalue;
 use object::{ToObject, Object};
 use object;
 use parameter::Parameter;
 use parameter;
+use rvalue::{self, RValue};
 use std::ffi::CString;
-use block::Block;
-use block;
-use lvalue::LValue;
-use lvalue;
-use location::Location;
-use location;
 use types::Type;
 use types;
 
@@ -24,6 +27,7 @@ use types;
 /// is a function with external linkage, and always inline is a function that is
 /// always inlined wherever it is called and cannot be accessed outside of the jit.
 #[repr(C)]
+#[derive(Clone, Copy, Debug)]
 pub enum FunctionType {
     /// Defines a function that is "exported" by the JIT and can be called from
     /// Rust.
@@ -43,7 +47,7 @@ pub enum FunctionType {
 /// Function is gccjit's representation of a function. Functions are constructed
 /// by constructing basic blocks and connecting them together. Locals are declared
 /// at the function level.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Eq, Hash, PartialEq)]
 pub struct Function<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,
     ptr: *mut gccjit_sys::gcc_jit_function
@@ -70,6 +74,17 @@ impl<'ctx> Function<'ctx> {
         unsafe {
             let ptr = gccjit_sys::gcc_jit_function_get_param(self.ptr, idx);
             parameter::from_ptr(ptr)
+        }
+    }
+
+    pub fn get_address(&self, loc: Option<Location<'ctx>>) -> RValue<'ctx> {
+        unsafe {
+            let loc_ptr = match loc {
+                Some(loc) => location::get_ptr(&loc),
+                None => ptr::null_mut()
+            };
+            let ptr = gccjit_sys::gcc_jit_function_get_address(self.ptr, loc_ptr);
+            rvalue::from_ptr(ptr)
         }
     }
 
