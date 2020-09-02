@@ -484,4 +484,7 @@ extern {
     pub fn gcc_jit_context_add_driver_option(ctxt: *mut gcc_jit_context, optname: *const c_char);
 
     pub fn gcc_jit_type_get_aligned(typ: *mut gcc_jit_type, alignment_in_bytes: size_t) ->  *mut gcc_jit_type;
+
+    pub fn gcc_jit_function_get_return_type(func: *mut gcc_jit_function) -> *mut gcc_jit_type;
+    pub fn gcc_jit_function_get_param_count(func: *mut gcc_jit_function) -> usize;
 }

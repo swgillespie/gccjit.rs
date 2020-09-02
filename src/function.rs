@@ -77,6 +77,18 @@ impl<'ctx> Function<'ctx> {
         }
     }
 
+    pub fn get_param_count(&self) -> usize {
+        unsafe {
+            gccjit_sys::gcc_jit_function_get_param_count(self.ptr)
+        }
+    }
+
+    pub fn get_return_type(&self) -> Type<'ctx> {
+        unsafe {
+            types::from_ptr(gccjit_sys::gcc_jit_function_get_return_type(self.ptr))
+        }
+    }
+
     pub fn get_address(&self, loc: Option<Location<'ctx>>) -> RValue<'ctx> {
         unsafe {
             let loc_ptr = match loc {
