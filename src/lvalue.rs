@@ -89,6 +89,13 @@ impl<'ctx> LValue<'ctx> {
             rvalue::from_ptr(ptr)
         }
     }
+
+    /// Set the initialization value for a global variable.
+    pub fn global_set_initializer(&self, blob: &[u8]) {
+        unsafe {
+            gccjit_sys::gcc_jit_global_set_initializer(self.ptr, blob.as_ptr() as _, blob.len() as _);
+        }
+    }
 }
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_lvalue) -> LValue<'ctx> {

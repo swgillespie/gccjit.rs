@@ -505,4 +505,6 @@ extern {
     pub fn gcc_jit_struct_get_field(struct_type: *mut gcc_jit_struct, index: c_int) -> *mut gcc_jit_field;
     pub fn gcc_jit_type_is_struct(typ: *mut gcc_jit_type) -> *mut gcc_jit_struct;
     pub fn gcc_jit_struct_get_field_count(struct_type: *mut gcc_jit_struct) -> ssize_t;
+
+    pub fn gcc_jit_global_set_initializer(global: *mut gcc_jit_lvalue, blob: *const c_void, num_bytes: size_t) -> *mut gcc_jit_lvalue;
 }
