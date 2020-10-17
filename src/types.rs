@@ -7,6 +7,7 @@ use context::Context;
 use context;
 use object;
 use object::{Object, ToObject};
+use structs::{self, Struct};
 
 use gccjit_sys::gcc_jit_types::*;
 
@@ -17,6 +18,66 @@ use gccjit_sys::gcc_jit_types::*;
 pub struct Type<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,
     ptr: *mut gccjit_sys::gcc_jit_type
+}
+
+#[derive(Copy, Clone, Eq, Hash, PartialEq)]
+pub struct VectorType<'ctx> {
+    marker: PhantomData<&'ctx Context<'ctx>>,
+    ptr: *mut gccjit_sys::gcc_jit_vector_type
+}
+
+impl<'ctx> VectorType<'ctx> {
+    unsafe fn from_ptr(ptr: *mut gccjit_sys::gcc_jit_vector_type) -> VectorType<'ctx> {
+        VectorType {
+            marker: PhantomData,
+            ptr: ptr
+        }
+    }
+
+    pub fn get_element_type(&self) -> Type<'ctx> {
+        unsafe {
+            from_ptr(gccjit_sys::gcc_jit_vector_type_get_element_type(self.ptr))
+        }
+    }
+
+    pub fn get_num_units(&self) -> usize {
+        unsafe {
+            gccjit_sys::gcc_jit_vector_type_get_num_units(self.ptr) as usize
+        }
+    }
+}
+
+#[derive(Copy, Clone, Eq, Hash, PartialEq)]
+pub struct FunctionPtrType<'ctx> {
+    marker: PhantomData<&'ctx Context<'ctx>>,
+    ptr: *mut gccjit_sys::gcc_jit_function_type
+}
+
+impl<'ctx> FunctionPtrType<'ctx> {
+    unsafe fn from_ptr(ptr: *mut gccjit_sys::gcc_jit_function_type) -> FunctionPtrType<'ctx> {
+        FunctionPtrType {
+            marker: PhantomData,
+            ptr: ptr
+        }
+    }
+
+    pub fn get_return_type(&self) -> Type<'ctx> {
+        unsafe {
+            from_ptr(gccjit_sys::gcc_jit_function_type_get_return_type(self.ptr))
+        }
+    }
+
+    pub fn get_param_count(&self) -> usize {
+        unsafe {
+            gccjit_sys::gcc_jit_function_type_get_param_count(self.ptr) as usize
+        }
+    }
+
+    pub fn get_param_type(&self, index: usize) -> Type<'ctx> {
+        unsafe {
+            from_ptr(gccjit_sys::gcc_jit_function_type_get_param_type(self.ptr, index as _))
+        }
+    }
 }
 
 impl<'ctx> ToObject<'ctx> for Type<'ctx> {
@@ -61,6 +122,70 @@ impl<'ctx> Type<'ctx> {
     pub fn get_aligned(self, alignment_in_bytes: u64) -> Type<'ctx> {
         unsafe {
             from_ptr(gccjit_sys::gcc_jit_type_get_aligned(self.ptr, alignment_in_bytes as _))
+        }
+    }
+
+    pub fn is_array(self) -> bool {
+        unsafe {
+            gccjit_sys::gcc_jit_type_is_array(self.ptr) != 0
+        }
+    }
+
+    pub fn is_bool(self) -> bool {
+        unsafe {
+            gccjit_sys::gcc_jit_type_is_bool(self.ptr) != 0
+        }
+    }
+
+    pub fn is_int(self) -> bool {
+        unsafe {
+            gccjit_sys::gcc_jit_type_is_int(self.ptr) != 0
+        }
+    }
+
+    pub fn is_vector(self) -> Option<VectorType<'ctx>> {
+        unsafe {
+            let vector_type = gccjit_sys::gcc_jit_type_is_vector(self.ptr);
+            if vector_type.is_null() {
+                return None;
+            }
+            Some(VectorType::from_ptr(vector_type))
+        }
+    }
+
+    pub fn is_struct(self) -> Option<Struct<'ctx>> {
+        unsafe {
+            let struct_type = gccjit_sys::gcc_jit_type_is_struct(self.ptr);
+            if struct_type.is_null() {
+                return None;
+            }
+            Some(structs::from_ptr(struct_type))
+        }
+    }
+
+    pub fn is_function_ptr_type(self) -> Option<FunctionPtrType<'ctx>> {
+        unsafe {
+            let function_ptr_type = gccjit_sys::gcc_jit_type_is_function_ptr_type(self.ptr);
+            if function_ptr_type.is_null() {
+                return None;
+            }
+            Some(FunctionPtrType::from_ptr(function_ptr_type))
+        }
+    }
+
+    pub fn unqualified(&self) -> Type<'ctx> {
+        unsafe {
+            from_ptr(gccjit_sys::gcc_jit_type_unqualified(self.ptr))
+        }
+    }
+
+    pub fn get_pointee(&self) -> Option<Type<'ctx>> {
+        unsafe {
+            let value = gccjit_sys::gcc_jit_type_is_pointer(self.ptr);
+            if value.is_null() {
+                return None;
+            }
+            Some(from_ptr(value))
         }
     }
 }

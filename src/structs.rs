@@ -51,6 +51,18 @@ impl<'ctx> Struct<'ctx> {
             panic!("{}", error);
         }
     }
+
+    pub fn get_field(&self, index: i32) -> Field<'ctx> {
+        unsafe {
+            field::from_ptr(gccjit_sys::gcc_jit_struct_get_field(self.ptr, index))
+        }
+    }
+
+    pub fn get_field_count(&self) -> usize {
+        unsafe {
+            gccjit_sys::gcc_jit_struct_get_field_count(self.ptr) as usize
+        }
+    }
 }
 
 impl<'ctx> ToObject<'ctx> for Struct<'ctx> {
