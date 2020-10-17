@@ -79,7 +79,7 @@ impl<'ctx> Function<'ctx> {
 
     pub fn get_param_count(&self) -> usize {
         unsafe {
-            gccjit_sys::gcc_jit_function_get_param_count(self.ptr)
+            gccjit_sys::gcc_jit_function_get_param_count(self.ptr) as usize
         }
     }
 
