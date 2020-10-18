@@ -137,9 +137,9 @@ impl<'ctx> Type<'ctx> {
         }
     }
 
-    pub fn is_int(self) -> bool {
+    pub fn is_integral(self) -> bool {
         unsafe {
-            gccjit_sys::gcc_jit_type_is_int(self.ptr) != 0
+            gccjit_sys::gcc_jit_type_is_integral(self.ptr) != 0
         }
     }
 
