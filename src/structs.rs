@@ -53,9 +53,19 @@ impl<'ctx> Struct<'ctx> {
     }
 
     pub fn get_field(&self, index: i32) -> Field<'ctx> {
-        unsafe {
-            field::from_ptr(gccjit_sys::gcc_jit_struct_get_field(self.ptr, index))
+        let field = unsafe {
+            let ptr = gccjit_sys::gcc_jit_struct_get_field(self.ptr, index);
+            #[cfg(debug_assertions)]
+            if ptr.is_null() {
+                panic!("Null ptr in get_field() from struct: {:?}", self);
+            }
+            field::from_ptr(ptr)
+        };
+        #[cfg(debug_assertions)]
+        if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+            panic!("{}", error);
         }
+        field
     }
 
     pub fn get_field_count(&self) -> usize {
