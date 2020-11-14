@@ -890,6 +890,18 @@ impl<'ctx> Context<'ctx> {
             gccjit_sys::gcc_jit_context_set_logfile(self.ptr, stderr as *mut _, 0, 0);
         }
     }
+
+    pub fn add_top_level_asm(&self, loc: Option<Location<'ctx>>, asm_stmts: &str) {
+        let asm_stmts = CStr::from_bytes_with_nul(asm_stmts.as_bytes()).expect("asm_stmts to cstring");
+        let loc_ptr =
+            match loc {
+                Some(loc) => unsafe { location::get_ptr(&loc) },
+                None => ptr::null_mut(),
+            };
+        unsafe {
+            gccjit_sys::gcc_jit_context_add_top_level_asm(self.ptr, loc_ptr, asm_stmts.as_ptr());
+        }
+    }
 }
 
 impl<'ctx> Drop for Context<'ctx> {

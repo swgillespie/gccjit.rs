@@ -1,10 +1,11 @@
 use std::marker::PhantomData;
-use std::ffi::CString;
+use std::ffi::{CStr, CString};
 use std::fmt;
 use std::ptr;
 use std::mem;
 use std::os::raw::c_int;
 
+use asm::ExtendedAsm;
 use block;
 use context::{Case, Context};
 use gccjit_sys;
@@ -250,6 +251,23 @@ impl<'ctx> Block<'ctx> {
         unsafe {
             gccjit_sys::gcc_jit_block_end_with_switch(self.ptr, loc_ptr, rvalue::get_ptr(&expr), block::get_ptr(&default_block),
                 cases.len() as c_int, cases.as_ptr() as *mut *mut _);
+        }
+    }
+
+    pub fn end_with_extended_asm_goto(&self, loc: Option<Location<'ctx>>, asm_template: &str, goto_blocks: &[Block<'ctx>], fallthrough_block: Option<Block<'ctx>>) -> ExtendedAsm {
+        let asm_template = CStr::from_bytes_with_nul(asm_template.as_bytes()).expect("asm template to cstring");
+        let loc_ptr =
+            match loc {
+                Some(loc) => unsafe { location::get_ptr(&loc) },
+                None => ptr::null_mut(),
+            };
+        let fallthrough_block_ptr =
+            match fallthrough_block {
+                Some(ref block) => unsafe { get_ptr(block) },
+                None => ptr::null_mut(),
+            };
+        unsafe {
+            ExtendedAsm::from_ptr(gccjit_sys::gcc_jit_block_end_with_extended_asm_goto(self.ptr, loc_ptr, asm_template.as_ptr(), goto_blocks.len() as c_int, goto_blocks.as_ptr() as *mut _, fallthrough_block_ptr))
         }
     }
 }

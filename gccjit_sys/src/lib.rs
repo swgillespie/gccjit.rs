@@ -20,6 +20,7 @@ pub enum gcc_jit_param {}
 pub enum gcc_jit_case {}
 pub enum gcc_jit_function_type {}
 pub enum gcc_jit_vector_type {}
+pub enum gcc_jit_extended_asm {}
 
 #[repr(C)]
 pub enum gcc_jit_str_option {
@@ -507,4 +508,14 @@ extern {
     pub fn gcc_jit_struct_get_field_count(struct_type: *mut gcc_jit_struct) -> ssize_t;
 
     pub fn gcc_jit_global_set_initializer(global: *mut gcc_jit_lvalue, blob: *const c_void, num_bytes: size_t) -> *mut gcc_jit_lvalue;
+
+
+    pub fn gcc_jit_block_end_with_extended_asm_goto(block: *mut gcc_jit_block, loc: *mut gcc_jit_location, asm_template: *const c_char, num_goto_blocks: c_int, goto_blocks: *mut *mut gcc_jit_block, fallthrough_block: *mut gcc_jit_block) -> *mut gcc_jit_extended_asm;
+    pub fn gcc_jit_extended_asm_as_object(ext_asm: *mut gcc_jit_extended_asm) -> *mut gcc_jit_object;
+    pub fn gcc_jit_extended_asm_set_volatile_flag(ext_asm: *mut gcc_jit_extended_asm, flag: c_int);
+    pub fn gcc_jit_extended_asm_set_inline_flag(ext_asm: *mut gcc_jit_extended_asm, flag: c_int);
+    pub fn gcc_jit_extended_asm_add_output_operand(ext_asm: *mut gcc_jit_extended_asm, asm_symbolic_name: *const c_char, constraint: *const c_char, dest: *mut gcc_jit_lvalue);
+    pub fn gcc_jit_extended_asm_add_input_operand(ext_asm: *mut gcc_jit_extended_asm, asm_symbolic_name: *const c_char, constraint: *const c_char, src: *mut gcc_jit_rvalue);
+    pub fn gcc_jit_extended_asm_add_clobber(ext_asm: *mut gcc_jit_extended_asm, victim: *const c_char);
+    pub fn gcc_jit_context_add_top_level_asm(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, asm_stmts: *const c_char);
 }

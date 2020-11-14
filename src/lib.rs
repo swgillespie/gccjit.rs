@@ -16,6 +16,7 @@
 
 extern crate gccjit_sys;
 
+mod asm;
 mod types;
 mod context;
 mod object;
