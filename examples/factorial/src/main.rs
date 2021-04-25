@@ -9,7 +9,6 @@ use gccjit::ComparisonOp;
 use std::default::Default;
 use std::mem;
 
-
 fn main() {
     let context = Context::default();
     context.set_dump_code_on_compile(true);

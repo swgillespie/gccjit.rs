@@ -147,7 +147,7 @@ impl Default for Context<'static> {
         unsafe {
             Context {
                 marker: PhantomData,
-                ptr: gccjit_sys::gcc_jit_context_acquire()
+                ptr: gccjit_sys::gcc_jit_context_acquire(),
             }
         }
     }
@@ -892,7 +892,7 @@ impl<'ctx> Context<'ctx> {
     }
 
     pub fn add_top_level_asm(&self, loc: Option<Location<'ctx>>, asm_stmts: &str) {
-        let asm_stmts = CStr::from_bytes_with_nul(asm_stmts.as_bytes()).expect("asm_stmts to cstring");
+        let asm_stmts = CString::new(asm_stmts).unwrap();
         let loc_ptr =
             match loc {
                 Some(loc) => unsafe { location::get_ptr(&loc) },

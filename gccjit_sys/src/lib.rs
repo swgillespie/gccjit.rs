@@ -518,4 +518,5 @@ extern {
     pub fn gcc_jit_extended_asm_add_input_operand(ext_asm: *mut gcc_jit_extended_asm, asm_symbolic_name: *const c_char, constraint: *const c_char, src: *mut gcc_jit_rvalue);
     pub fn gcc_jit_extended_asm_add_clobber(ext_asm: *mut gcc_jit_extended_asm, victim: *const c_char);
     pub fn gcc_jit_context_add_top_level_asm(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, asm_stmts: *const c_char);
+    pub fn gcc_jit_block_add_extended_asm(block: *mut gcc_jit_block, loc: *mut gcc_jit_location, asm_template: *const c_char) -> *mut gcc_jit_extended_asm;
 }

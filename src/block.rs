@@ -1,5 +1,5 @@
 use std::marker::PhantomData;
-use std::ffi::{CStr, CString};
+use std::ffi::CString;
 use std::fmt;
 use std::ptr;
 use std::mem;
@@ -254,8 +254,20 @@ impl<'ctx> Block<'ctx> {
         }
     }
 
+    pub fn add_extended_asm(&self, loc: Option<Location<'ctx>>, asm_template: &str) -> ExtendedAsm {
+        let asm_template = CString::new(asm_template).unwrap();
+        let loc_ptr =
+            match loc {
+                Some(loc) => unsafe { location::get_ptr(&loc) },
+                None => ptr::null_mut(),
+            };
+        unsafe {
+            ExtendedAsm::from_ptr(gccjit_sys::gcc_jit_block_add_extended_asm(self.ptr, loc_ptr, asm_template.as_ptr()))
+        }
+    }
+
     pub fn end_with_extended_asm_goto(&self, loc: Option<Location<'ctx>>, asm_template: &str, goto_blocks: &[Block<'ctx>], fallthrough_block: Option<Block<'ctx>>) -> ExtendedAsm {
-        let asm_template = CStr::from_bytes_with_nul(asm_template.as_bytes()).expect("asm template to cstring");
+        let asm_template = CString::new(asm_template).unwrap();
         let loc_ptr =
             match loc {
                 Some(loc) => unsafe { location::get_ptr(&loc) },
