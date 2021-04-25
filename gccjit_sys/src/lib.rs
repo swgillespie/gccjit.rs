@@ -430,7 +430,7 @@ extern {
 
     pub fn gcc_jit_rvalue_access_field(struct_or_union: *mut gcc_jit_rvalue,
                                        loc: *mut gcc_jit_location,
-                                       field: *mut gcc_jit_field) -> *mut gcc_jit_lvalue;
+                                       field: *mut gcc_jit_field) -> *mut gcc_jit_rvalue;
     pub fn gcc_jit_rvalue_dereference_field(ptr: *mut gcc_jit_rvalue,
                                             loc: *mut gcc_jit_location,
                                             field: *mut gcc_jit_field) -> *mut gcc_jit_lvalue;

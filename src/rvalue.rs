@@ -106,7 +106,7 @@ impl<'ctx> RValue<'ctx> {
     /// C's x.f.
     pub fn access_field(&self,
                         loc: Option<Location<'ctx>>,
-                        field: Field<'ctx>) -> LValue<'ctx> {
+                        field: Field<'ctx>) -> RValue<'ctx> {
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
             None => ptr::null_mut()
@@ -115,7 +115,7 @@ impl<'ctx> RValue<'ctx> {
             let ptr = gccjit_sys::gcc_jit_rvalue_access_field(self.ptr,
                                                               loc_ptr,
                                                               field::get_ptr(&field));
-            lvalue::from_ptr(ptr)
+            from_ptr(ptr)
         }
     }
 
