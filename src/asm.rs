@@ -45,11 +45,16 @@ impl<'ctx> ExtendedAsm<'ctx> {
         }
     }
 
-    pub fn add_input_operand(&self, asm_symbolic_name: &str, constraint: &str, src: RValue<'ctx>) {
-        let asm_symbolic_name = CString::new(asm_symbolic_name).unwrap();
+    pub fn add_input_operand(&self, asm_symbolic_name: Option<&str>, constraint: &str, src: RValue<'ctx>) {
+        let asm_symbolic_name = asm_symbolic_name.map(|name| CString::new(name).unwrap());
+        let asm_symbolic_name =
+            match asm_symbolic_name {
+                Some(name) => name.as_ptr(),
+                None => std::ptr::null_mut(),
+            };
         let constraint = CString::new(constraint).unwrap();
         unsafe {
-            gccjit_sys::gcc_jit_extended_asm_add_input_operand(self.ptr, asm_symbolic_name.as_ptr(), constraint.as_ptr(), rvalue::get_ptr(&src));
+            gccjit_sys::gcc_jit_extended_asm_add_input_operand(self.ptr, asm_symbolic_name, constraint.as_ptr(), rvalue::get_ptr(&src));
         }
     }
 
