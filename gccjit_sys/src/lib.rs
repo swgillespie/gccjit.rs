@@ -81,6 +81,17 @@ pub enum gcc_jit_types {
     /* C99's "long long" and "unsigned long long". */
     GCC_JIT_TYPE_LONG_LONG, /* signed */
     GCC_JIT_TYPE_UNSIGNED_LONG_LONG,
+    GCC_JIT_TYPE_UINT8_T,
+    GCC_JIT_TYPE_UINT16_T,
+    GCC_JIT_TYPE_UINT32_T,
+    GCC_JIT_TYPE_UINT64_T,
+    GCC_JIT_TYPE_UINT128_T,
+    GCC_JIT_TYPE_INT8_T,
+    GCC_JIT_TYPE_INT16_T,
+    GCC_JIT_TYPE_INT32_T,
+    GCC_JIT_TYPE_INT64_T,
+    GCC_JIT_TYPE_INT128_T,
+
     /* Floating-point types */
     GCC_JIT_TYPE_FLOAT,
     GCC_JIT_TYPE_DOUBLE,

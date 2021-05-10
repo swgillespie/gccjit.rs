@@ -1018,6 +1018,16 @@ pub enum CType {
     LongLong,
     ULongLong,
     SizeT,
+    Int8t,
+    Int16t,
+    Int32t,
+    Int64t,
+    Int128t,
+    UInt8t,
+    UInt16t,
+    UInt32t,
+    UInt64t,
+    UInt128t,
 }
 
 impl CType {
@@ -1039,6 +1049,16 @@ impl CType {
             LongLong => GCC_JIT_TYPE_LONG_LONG,
             ULongLong => GCC_JIT_TYPE_UNSIGNED_LONG_LONG,
             SizeT => GCC_JIT_TYPE_SIZE_T,
+            Int8t => GCC_JIT_TYPE_INT8_T,
+            Int16t => GCC_JIT_TYPE_INT16_T,
+            Int32t => GCC_JIT_TYPE_INT32_T,
+            Int64t => GCC_JIT_TYPE_INT64_T,
+            Int128t => GCC_JIT_TYPE_INT128_T,
+            UInt8t => GCC_JIT_TYPE_UINT8_T,
+            UInt16t => GCC_JIT_TYPE_UINT16_T,
+            UInt32t => GCC_JIT_TYPE_UINT32_T,
+            UInt64t => GCC_JIT_TYPE_UINT64_T,
+            UInt128t => GCC_JIT_TYPE_UINT128_T,
         }
     }
 }
