@@ -23,6 +23,15 @@ pub enum gcc_jit_vector_type {}
 pub enum gcc_jit_extended_asm {}
 
 #[repr(C)]
+pub enum gcc_jit_tls_model {
+    GCC_JIT_TLS_MODEL_GLOBAL_DYNAMIC,
+    GCC_JIT_TLS_MODEL_LOCAL_DYNAMIC,
+    GCC_JIT_TLS_MODEL_INITIAL_EXEC,
+    GCC_JIT_TLS_MODEL_LOCAL_EXEC,
+    GCC_JIT_TLS_MODEL_DEFAULT,
+}
+
+#[repr(C)]
 pub enum gcc_jit_str_option {
     GCC_JIT_STR_OPTION_PROGNAME,
     GCC_JIT_NUM_STR_OPTIONS
@@ -530,4 +539,6 @@ extern {
     pub fn gcc_jit_extended_asm_add_clobber(ext_asm: *mut gcc_jit_extended_asm, victim: *const c_char);
     pub fn gcc_jit_context_add_top_level_asm(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, asm_stmts: *const c_char);
     pub fn gcc_jit_block_add_extended_asm(block: *mut gcc_jit_block, loc: *mut gcc_jit_location, asm_template: *const c_char) -> *mut gcc_jit_extended_asm;
+
+    pub fn gcc_jit_lvalue_set_tls_model(lvalue: *mut gcc_jit_lvalue, model: gcc_jit_tls_model);
 }

@@ -12,6 +12,29 @@ use field;
 use location::Location;
 use location;
 
+#[derive(Clone, Copy, Debug)]
+pub enum TlsModel {
+    GlobalDynamic,
+    LocalDynamic,
+    InitialExec,
+    LocalExec,
+    Default,
+}
+
+impl TlsModel {
+    fn to_sys(&self) -> gccjit_sys::gcc_jit_tls_model {
+        use gccjit_sys::gcc_jit_tls_model::*;
+
+        match *self {
+            TlsModel::GlobalDynamic => GCC_JIT_TLS_MODEL_GLOBAL_DYNAMIC,
+            TlsModel::LocalDynamic => GCC_JIT_TLS_MODEL_LOCAL_DYNAMIC,
+            TlsModel::InitialExec => GCC_JIT_TLS_MODEL_INITIAL_EXEC,
+            TlsModel::LocalExec => GCC_JIT_TLS_MODEL_LOCAL_EXEC,
+            TlsModel::Default => GCC_JIT_TLS_MODEL_DEFAULT,
+        }
+    }
+}
+
 /// An LValue in gccjit represents a value that has a concrete
 /// location in memory. A LValue can be converted into an RValue
 /// through the ToRValue trait.
@@ -94,6 +117,12 @@ impl<'ctx> LValue<'ctx> {
     pub fn global_set_initializer(&self, blob: &[u8]) {
         unsafe {
             gccjit_sys::gcc_jit_global_set_initializer(self.ptr, blob.as_ptr() as _, blob.len() as _);
+        }
+    }
+
+    pub fn set_tls_model(&self, model: TlsModel) {
+        unsafe {
+            gccjit_sys::gcc_jit_lvalue_set_tls_model(self.ptr, model.to_sys());
         }
     }
 }
