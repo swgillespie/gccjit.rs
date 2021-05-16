@@ -112,6 +112,10 @@ impl<'ctx> Function<'ctx> {
             let cstr = CString::new(name.as_ref()).unwrap();
             let ptr = gccjit_sys::gcc_jit_function_new_block(self.ptr,
                                                              cstr.as_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+                panic!("{}", error);
+            }
             block::from_ptr(ptr)
         }
     }

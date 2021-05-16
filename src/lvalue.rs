@@ -1,4 +1,4 @@
-use std::marker::PhantomData;
+use std::{ffi::CString, marker::PhantomData};
 use std::fmt;
 use std::ptr;
 use gccjit_sys;
@@ -123,6 +123,13 @@ impl<'ctx> LValue<'ctx> {
     pub fn set_tls_model(&self, model: TlsModel) {
         unsafe {
             gccjit_sys::gcc_jit_lvalue_set_tls_model(self.ptr, model.to_sys());
+        }
+    }
+
+    pub fn set_link_section(&self, name: &str) {
+        let name = CString::new(name).unwrap();
+        unsafe {
+            gccjit_sys::gcc_jit_lvalue_set_link_section(self.ptr, name.as_ptr());
         }
     }
 }

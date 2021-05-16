@@ -541,4 +541,5 @@ extern {
     pub fn gcc_jit_block_add_extended_asm(block: *mut gcc_jit_block, loc: *mut gcc_jit_location, asm_template: *const c_char) -> *mut gcc_jit_extended_asm;
 
     pub fn gcc_jit_lvalue_set_tls_model(lvalue: *mut gcc_jit_lvalue, model: gcc_jit_tls_model);
+    pub fn gcc_jit_lvalue_set_link_section(lvalue: *mut gcc_jit_lvalue, name: *const c_char);
 }
