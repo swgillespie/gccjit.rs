@@ -120,6 +120,13 @@ impl<'ctx> LValue<'ctx> {
         }
     }
 
+    /// Set the initialization value for a global variable.
+    pub fn global_set_initializer_value(&self, value: RValue<'ctx>) {
+        unsafe {
+            gccjit_sys::gcc_jit_global_set_initializer_value(self.ptr, rvalue::get_ptr(&value));
+        }
+    }
+
     pub fn set_tls_model(&self, model: TlsModel) {
         unsafe {
             gccjit_sys::gcc_jit_lvalue_set_tls_model(self.ptr, model.to_sys());

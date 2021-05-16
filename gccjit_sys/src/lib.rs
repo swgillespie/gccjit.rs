@@ -528,6 +528,7 @@ extern {
     pub fn gcc_jit_struct_get_field_count(struct_type: *mut gcc_jit_struct) -> ssize_t;
 
     pub fn gcc_jit_global_set_initializer(global: *mut gcc_jit_lvalue, blob: *const c_void, num_bytes: size_t) -> *mut gcc_jit_lvalue;
+    pub fn gcc_jit_global_set_initializer_value(global: *mut gcc_jit_lvalue, value: *mut gcc_jit_rvalue);
 
 
     pub fn gcc_jit_block_end_with_extended_asm_goto(block: *mut gcc_jit_block, loc: *mut gcc_jit_location, asm_template: *const c_char, num_goto_blocks: c_int, goto_blocks: *mut *mut gcc_jit_block, fallthrough_block: *mut gcc_jit_block) -> *mut gcc_jit_extended_asm;
