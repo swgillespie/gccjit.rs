@@ -374,6 +374,10 @@ impl<'ctx> Context<'ctx> {
                                                                  loc_ptr,
                                                                  types::get_ptr(&ty),
                                                                  num_elements);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             types::from_ptr(ptr)
         }
     }
