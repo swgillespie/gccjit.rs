@@ -74,6 +74,7 @@ impl<'ctx> FunctionPtrType<'ctx> {
     }
 
     pub fn get_param_type(&self, index: usize) -> Type<'ctx> {
+        // TODO: return Option?
         unsafe {
             from_ptr(gccjit_sys::gcc_jit_function_type_get_param_type(self.ptr, index as _))
         }
@@ -125,9 +126,9 @@ impl<'ctx> Type<'ctx> {
         }
     }
 
-    pub fn is_array(self) -> bool {
+    pub fn dyncast_array(self) -> bool {
         unsafe {
-            gccjit_sys::gcc_jit_type_is_array(self.ptr) != 0
+            gccjit_sys::gcc_jit_type_dyncast_array(self.ptr) != 0
         }
     }
 
@@ -143,9 +144,9 @@ impl<'ctx> Type<'ctx> {
         }
     }
 
-    pub fn is_vector(self) -> Option<VectorType<'ctx>> {
+    pub fn dyncast_vector(self) -> Option<VectorType<'ctx>> {
         unsafe {
-            let vector_type = gccjit_sys::gcc_jit_type_is_vector(self.ptr);
+            let vector_type = gccjit_sys::gcc_jit_type_dyncast_vector(self.ptr);
             if vector_type.is_null() {
                 return None;
             }
@@ -163,9 +164,9 @@ impl<'ctx> Type<'ctx> {
         }
     }
 
-    pub fn is_function_ptr_type(self) -> Option<FunctionPtrType<'ctx>> {
+    pub fn dyncast_function_ptr_type(self) -> Option<FunctionPtrType<'ctx>> {
         unsafe {
-            let function_ptr_type = gccjit_sys::gcc_jit_type_is_function_ptr_type(self.ptr);
+            let function_ptr_type = gccjit_sys::gcc_jit_type_dyncast_function_ptr_type(self.ptr);
             if function_ptr_type.is_null() {
                 return None;
             }

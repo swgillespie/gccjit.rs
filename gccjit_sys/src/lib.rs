@@ -511,15 +511,15 @@ extern {
     pub fn gcc_jit_function_get_return_type(func: *mut gcc_jit_function) -> *mut gcc_jit_type;
     pub fn gcc_jit_function_get_param_count(func: *mut gcc_jit_function) -> ssize_t;
 
-    pub fn gcc_jit_type_is_array(typ: *mut gcc_jit_type) -> c_int;
+    pub fn gcc_jit_type_dyncast_array(typ: *mut gcc_jit_type) -> c_int;
     pub fn gcc_jit_type_is_bool(typ: *mut gcc_jit_type) -> c_int;
     pub fn gcc_jit_type_is_integral(typ: *mut gcc_jit_type) -> c_int;
     pub fn gcc_jit_type_unqualified(typ: *mut gcc_jit_type) -> *mut gcc_jit_type;
     pub fn gcc_jit_type_is_pointer(typ: *mut gcc_jit_type) -> *mut gcc_jit_type;
-    pub fn gcc_jit_type_is_function_ptr_type(typ: *mut gcc_jit_type) -> *mut gcc_jit_function_type;
+    pub fn gcc_jit_type_dyncast_function_ptr_type(typ: *mut gcc_jit_type) -> *mut gcc_jit_function_type;
     pub fn gcc_jit_function_type_get_return_type(function_type: *mut gcc_jit_function_type) -> *mut gcc_jit_type;
     pub fn gcc_jit_function_type_get_param_count(function_type: *mut gcc_jit_function_type) -> ssize_t;
-    pub fn gcc_jit_type_is_vector(typ: *mut gcc_jit_type) -> *mut gcc_jit_vector_type;
+    pub fn gcc_jit_type_dyncast_vector(typ: *mut gcc_jit_type) -> *mut gcc_jit_vector_type;
     pub fn gcc_jit_function_type_get_param_type(function_type: *mut gcc_jit_function_type, index: c_int) -> *mut gcc_jit_type;
     pub fn gcc_jit_vector_type_get_num_units(vector_type: *mut gcc_jit_vector_type) -> ssize_t;
     pub fn gcc_jit_vector_type_get_element_type(vector_type: *mut gcc_jit_vector_type) -> *mut gcc_jit_type;
