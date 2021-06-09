@@ -677,6 +677,29 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
+    /// Bitcast an RValue to a specific type.
+    pub fn new_bitcast<'a, T: ToRValue<'a>>(&'a self,
+                                         loc: Option<Location<'a>>,
+                                         value: T,
+                                         dest_type: types::Type<'a>) -> RValue<'a> {
+        let rvalue = value.to_rvalue();
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_new_bitcast(self.ptr,
+                                                           loc_ptr,
+                                                           rvalue::get_ptr(&rvalue),
+                                                           types::get_ptr(&dest_type));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
+            rvalue::from_ptr(ptr)
+        }
+    }
+
     /// Creates an LValue from an array pointer and an offset. The LValue can be the target
     /// of an assignment, or it can be converted into an RValue (i.e. loaded).
     pub fn new_array_access<'a, A: ToRValue<'a>, I: ToRValue<'a>>(&'a self,

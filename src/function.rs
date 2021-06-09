@@ -120,6 +120,12 @@ impl<'ctx> Function<'ctx> {
         }
     }
 
+    pub fn set_personality_function(&self, personality_func: Function<'ctx>) {
+        unsafe {
+            gccjit_sys::gcc_jit_function_set_personality_function(self.ptr, personality_func.ptr);
+        }
+    }
+
     pub fn new_local<S: AsRef<str>>(&self,
                      loc: Option<Location<'ctx>>,
                      ty: Type<'ctx>,

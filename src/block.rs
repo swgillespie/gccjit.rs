@@ -104,6 +104,20 @@ impl<'ctx> Block<'ctx> {
                                                loc_ptr,
                                                rvalue::get_ptr(&rvalue));
         }
+        #[cfg(debug_assertions)]
+        if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+            panic!("{}", error);
+        }
+    }
+
+    pub fn add_try_finally(&self, loc: Option<Location<'ctx>>, try_block: Block<'ctx>, finally_block: Block<'ctx>) {
+        let loc_ptr = match loc {
+                Some(loc) => unsafe { location::get_ptr(&loc) },
+                None => ptr::null_mut()
+            };
+        unsafe {
+            gccjit_sys::gcc_jit_block_add_try_finally(self.ptr, loc_ptr, try_block.ptr, finally_block.ptr);
+        }
     }
 
     /// Assigns the value of an rvalue to an lvalue directly. Equivalent

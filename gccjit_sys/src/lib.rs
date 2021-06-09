@@ -543,4 +543,9 @@ extern {
 
     pub fn gcc_jit_lvalue_set_tls_model(lvalue: *mut gcc_jit_lvalue, model: gcc_jit_tls_model);
     pub fn gcc_jit_lvalue_set_link_section(lvalue: *mut gcc_jit_lvalue, name: *const c_char);
+
+    pub fn gcc_jit_function_set_personality_function(func: *mut gcc_jit_function, personality_func: *mut gcc_jit_function);
+    pub fn gcc_jit_block_add_try_finally(block: *mut gcc_jit_block, loc: *mut gcc_jit_location, try_block: *mut gcc_jit_block, finally_block: *mut gcc_jit_block);
+
+    pub fn gcc_jit_context_new_bitcast(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, rvalue: *mut gcc_jit_rvalue, type_: *mut gcc_jit_type) -> *mut gcc_jit_rvalue;
 }
