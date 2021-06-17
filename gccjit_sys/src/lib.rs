@@ -250,6 +250,15 @@ pub enum gcc_jit_comparison
     GCC_JIT_COMPARISON_GE
 }
 
+#[repr(C)]
+pub enum gcc_jit_inline_mode
+{
+    GCC_JIT_INLINE_MODE_DEFAULT,
+    GCC_JIT_INLINE_MODE_ALWAYS_INLINE,
+    GCC_JIT_INLINE_MODE_NO_INLINE,
+    GCC_JIT_INLINE_MODE_INLINE,
+}
+
 #[link(name = "gccjit")]
 extern {
     // context operations
@@ -548,4 +557,6 @@ extern {
     pub fn gcc_jit_block_add_try_finally(block: *mut gcc_jit_block, loc: *mut gcc_jit_location, try_block: *mut gcc_jit_block, finally_block: *mut gcc_jit_block);*/
 
     pub fn gcc_jit_context_new_bitcast(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, rvalue: *mut gcc_jit_rvalue, type_: *mut gcc_jit_type) -> *mut gcc_jit_rvalue;
+
+    pub fn gcc_jit_function_set_inline_mode(func: *mut gcc_jit_function, inline_mode: gcc_jit_inline_mode);
 }

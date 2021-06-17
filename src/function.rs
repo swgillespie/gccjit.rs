@@ -44,6 +44,15 @@ pub enum FunctionType {
     AlwaysInline
 }
 
+#[repr(C)]
+#[derive(Clone, Copy, Debug)]
+pub enum InlineMode {
+    Default,
+    AlwaysInline,
+    NoInline,
+    Inline,
+}
+
 /// Function is gccjit's representation of a function. Functions are constructed
 /// by constructing basic blocks and connecting them together. Locals are declared
 /// at the function level.
@@ -74,6 +83,12 @@ impl<'ctx> Function<'ctx> {
         unsafe {
             let ptr = gccjit_sys::gcc_jit_function_get_param(self.ptr, idx);
             parameter::from_ptr(ptr)
+        }
+    }
+
+    pub fn set_inline_mode(&self, inline_mode: InlineMode) {
+        unsafe {
+            gccjit_sys::gcc_jit_function_set_inline_mode(self.ptr, std::mem::transmute(inline_mode));
         }
     }
 
