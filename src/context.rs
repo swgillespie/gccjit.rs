@@ -3,6 +3,7 @@ use std::ops::Drop;
 use std::ffi::{CStr, CString};
 use std::marker::PhantomData;
 use std::mem;
+use std::os::raw::c_int;
 use std::ptr;
 use std::str::Utf8Error;
 
@@ -842,6 +843,14 @@ impl<'ctx> Context<'ctx> {
             let cstr = CString::new(path_ref).unwrap();
             gccjit_sys::gcc_jit_context_dump_reproducer_to_file(self.ptr,
                                                                 cstr.as_ptr());
+        }
+    }
+
+    pub fn dump_to_file<S: AsRef<str>>(&self, path: S, update_locations: bool) {
+        unsafe {
+            let path_ref = path.as_ref();
+            let cstr = CString::new(path_ref).unwrap();
+            gccjit_sys::gcc_jit_context_dump_to_file(self.ptr, cstr.as_ptr(), update_locations as c_int);
         }
     }
 

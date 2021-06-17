@@ -125,9 +125,13 @@ impl<'ctx> Type<'ctx> {
         }
     }
 
-    pub fn is_array(self) -> bool {
+    pub fn is_array(self) -> Option<Type<'ctx>> {
         unsafe {
-            gccjit_sys::gcc_jit_type_is_array(self.ptr) != 0
+            let array_type = gccjit_sys::gcc_jit_type_is_array(self.ptr);
+            if array_type.is_null() {
+                return None;
+            }
+            Some(from_ptr(array_type))
         }
     }
 

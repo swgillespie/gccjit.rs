@@ -511,7 +511,7 @@ extern {
     pub fn gcc_jit_function_get_return_type(func: *mut gcc_jit_function) -> *mut gcc_jit_type;
     pub fn gcc_jit_function_get_param_count(func: *mut gcc_jit_function) -> ssize_t;
 
-    pub fn gcc_jit_type_is_array(typ: *mut gcc_jit_type) -> c_int;
+    pub fn gcc_jit_type_is_array(typ: *mut gcc_jit_type) -> *mut gcc_jit_type;
     pub fn gcc_jit_type_is_bool(typ: *mut gcc_jit_type) -> c_int;
     pub fn gcc_jit_type_is_integral(typ: *mut gcc_jit_type) -> c_int;
     pub fn gcc_jit_type_unqualified(typ: *mut gcc_jit_type) -> *mut gcc_jit_type;
