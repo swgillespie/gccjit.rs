@@ -915,7 +915,8 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
-    pub fn set_logfile<S: AsRef<str>>(&self, logfile: S) {
+    // TODO: use the logfile argument.
+    pub fn set_logfile<S: AsRef<str>>(&self, _logfile: S) {
         use std::os::raw::c_void;
 
         extern {

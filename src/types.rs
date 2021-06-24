@@ -199,7 +199,7 @@ impl<'ctx> Type<'ctx> {
 /// but it's also possible to implement this trait for more complex types
 /// that will use the API on Context to construct analagous struct/union types.
 pub trait Typeable {
-    fn get_type<'a, 'ctx>(&'a Context<'ctx>) -> Type<'a>;
+    fn get_type<'a, 'ctx>(ctx: &'a Context<'ctx>) -> Type<'a>;
 }
 
 macro_rules! typeable_def {

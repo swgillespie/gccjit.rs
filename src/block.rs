@@ -238,6 +238,10 @@ impl<'ctx> Block<'ctx> {
             gccjit_sys::gcc_jit_block_end_with_return(self.ptr,
                                                       loc_ptr,
                                                       rvalue::get_ptr(&ret_rvalue));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+                panic!("{}", error);
+            }
         }
     }
 
