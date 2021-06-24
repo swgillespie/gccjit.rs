@@ -3,7 +3,11 @@ use std::ffi::CString;
 use std::fmt;
 use std::ptr;
 use std::mem;
-use context::Context;
+use std::os::raw::c_int;
+
+use asm::ExtendedAsm;
+use block;
+use context::{Case, Context};
 use gccjit_sys;
 use object::{self, ToObject, Object};
 use function::{self, Function};
@@ -100,7 +104,21 @@ impl<'ctx> Block<'ctx> {
                                                loc_ptr,
                                                rvalue::get_ptr(&rvalue));
         }
+        #[cfg(debug_assertions)]
+        if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+            panic!("{}", error);
+        }
     }
+
+    /*pub fn add_try_finally(&self, loc: Option<Location<'ctx>>, try_block: Block<'ctx>, finally_block: Block<'ctx>) {
+        let loc_ptr = match loc {
+                Some(loc) => unsafe { location::get_ptr(&loc) },
+                None => ptr::null_mut()
+            };
+        unsafe {
+            gccjit_sys::gcc_jit_block_add_try_finally(self.ptr, loc_ptr, try_block.ptr, finally_block.ptr);
+        }
+    }*/
 
     /// Assigns the value of an rvalue to an lvalue directly. Equivalent
     /// to <lvalue> = <rvalue> in C.
@@ -119,6 +137,11 @@ impl<'ctx> Block<'ctx> {
                                                      loc_ptr,
                                                      lvalue::get_ptr(&lvalue),
                                                      rvalue::get_ptr(&rvalue));
+        }
+
+        #[cfg(debug_assertions)]
+        if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+            panic!("{}", error);
         }
     }
 
@@ -215,6 +238,10 @@ impl<'ctx> Block<'ctx> {
             gccjit_sys::gcc_jit_block_end_with_return(self.ptr,
                                                       loc_ptr,
                                                       rvalue::get_ptr(&ret_rvalue));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+                panic!("{}", error);
+            }
         }
     }
 
@@ -232,11 +259,58 @@ impl<'ctx> Block<'ctx> {
                                                            loc_ptr);
         }
     }
+
+    pub fn end_with_switch<T: ToRValue<'ctx>>(&self, loc: Option<Location<'ctx>>, expr: T, default_block: Block<'ctx>, cases: &[Case]) {
+        let expr = expr.to_rvalue();
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        unsafe {
+            gccjit_sys::gcc_jit_block_end_with_switch(self.ptr, loc_ptr, rvalue::get_ptr(&expr), block::get_ptr(&default_block),
+                cases.len() as c_int, cases.as_ptr() as *mut *mut _);
+        }
+    }
+
+    pub fn add_extended_asm(&self, loc: Option<Location<'ctx>>, asm_template: &str) -> ExtendedAsm {
+        let asm_template = CString::new(asm_template).unwrap();
+        let loc_ptr =
+            match loc {
+                Some(loc) => unsafe { location::get_ptr(&loc) },
+                None => ptr::null_mut(),
+            };
+        unsafe {
+            ExtendedAsm::from_ptr(gccjit_sys::gcc_jit_block_add_extended_asm(self.ptr, loc_ptr, asm_template.as_ptr()))
+        }
+    }
+
+    pub fn end_with_extended_asm_goto(&self, loc: Option<Location<'ctx>>, asm_template: &str, goto_blocks: &[Block<'ctx>], fallthrough_block: Option<Block<'ctx>>) -> ExtendedAsm {
+        let asm_template = CString::new(asm_template).unwrap();
+        let loc_ptr =
+            match loc {
+                Some(loc) => unsafe { location::get_ptr(&loc) },
+                None => ptr::null_mut(),
+            };
+        let fallthrough_block_ptr =
+            match fallthrough_block {
+                Some(ref block) => unsafe { get_ptr(block) },
+                None => ptr::null_mut(),
+            };
+        unsafe {
+            ExtendedAsm::from_ptr(gccjit_sys::gcc_jit_block_end_with_extended_asm_goto(self.ptr, loc_ptr, asm_template.as_ptr(), goto_blocks.len() as c_int, goto_blocks.as_ptr() as *mut _, fallthrough_block_ptr))
+        }
+    }
 }
+
+
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_block) -> Block<'ctx> {
     Block {
         marker: PhantomData,
         ptr: ptr
     }
+}
+
+pub unsafe fn get_ptr<'ctx>(block: &Block<'ctx>) -> *mut gccjit_sys::gcc_jit_block {
+    block.ptr
 }

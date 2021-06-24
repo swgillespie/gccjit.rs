@@ -2,7 +2,7 @@
 
 extern crate libc;
 
-use libc::{c_char, c_int, FILE, c_void, c_long, c_double};
+use libc::{c_char, c_int, FILE, c_void, c_long, c_double, size_t, ssize_t};
 
 // opaque pointers
 pub enum gcc_jit_context {}
@@ -17,6 +17,19 @@ pub enum gcc_jit_block {}
 pub enum gcc_jit_rvalue {}
 pub enum gcc_jit_lvalue {}
 pub enum gcc_jit_param {}
+pub enum gcc_jit_case {}
+pub enum gcc_jit_function_type {}
+pub enum gcc_jit_vector_type {}
+pub enum gcc_jit_extended_asm {}
+
+#[repr(C)]
+pub enum gcc_jit_tls_model {
+    GCC_JIT_TLS_MODEL_GLOBAL_DYNAMIC,
+    GCC_JIT_TLS_MODEL_LOCAL_DYNAMIC,
+    GCC_JIT_TLS_MODEL_INITIAL_EXEC,
+    GCC_JIT_TLS_MODEL_LOCAL_EXEC,
+    GCC_JIT_TLS_MODEL_DEFAULT,
+}
 
 #[repr(C)]
 pub enum gcc_jit_str_option {
@@ -77,6 +90,17 @@ pub enum gcc_jit_types {
     /* C99's "long long" and "unsigned long long". */
     GCC_JIT_TYPE_LONG_LONG, /* signed */
     GCC_JIT_TYPE_UNSIGNED_LONG_LONG,
+    GCC_JIT_TYPE_UINT8_T,
+    GCC_JIT_TYPE_UINT16_T,
+    GCC_JIT_TYPE_UINT32_T,
+    GCC_JIT_TYPE_UINT64_T,
+    GCC_JIT_TYPE_UINT128_T,
+    GCC_JIT_TYPE_INT8_T,
+    GCC_JIT_TYPE_INT16_T,
+    GCC_JIT_TYPE_INT32_T,
+    GCC_JIT_TYPE_INT64_T,
+    GCC_JIT_TYPE_INT128_T,
+
     /* Floating-point types */
     GCC_JIT_TYPE_FLOAT,
     GCC_JIT_TYPE_DOUBLE,
@@ -226,6 +250,15 @@ pub enum gcc_jit_comparison
     GCC_JIT_COMPARISON_GE
 }
 
+#[repr(C)]
+pub enum gcc_jit_inline_mode
+{
+    GCC_JIT_INLINE_MODE_DEFAULT,
+    GCC_JIT_INLINE_MODE_ALWAYS_INLINE,
+    GCC_JIT_INLINE_MODE_NO_INLINE,
+    GCC_JIT_INLINE_MODE_INLINE,
+}
+
 #[link(name = "gccjit")]
 extern {
     // context operations
@@ -252,6 +285,7 @@ extern {
                                        flags: c_int,
                                        verbosity: c_int);
     pub fn gcc_jit_context_get_first_error(ctx: *mut gcc_jit_context) -> *const c_char;
+    pub fn gcc_jit_context_get_last_error(ctx: *mut gcc_jit_context) -> *const c_char;
 
     // result operations
     pub fn gcc_jit_result_get_code(result: *mut gcc_jit_result,
@@ -425,7 +459,7 @@ extern {
 
     pub fn gcc_jit_rvalue_access_field(struct_or_union: *mut gcc_jit_rvalue,
                                        loc: *mut gcc_jit_location,
-                                       field: *mut gcc_jit_field) -> *mut gcc_jit_lvalue;
+                                       field: *mut gcc_jit_field) -> *mut gcc_jit_rvalue;
     pub fn gcc_jit_rvalue_dereference_field(ptr: *mut gcc_jit_rvalue,
                                             loc: *mut gcc_jit_location,
                                             field: *mut gcc_jit_field) -> *mut gcc_jit_lvalue;
@@ -468,4 +502,61 @@ extern {
     pub fn gcc_jit_context_new_child_context(parent: *mut gcc_jit_context) -> *mut gcc_jit_context;
     pub fn gcc_jit_context_dump_reproducer_to_file(parent: *mut gcc_jit_context,
                                                    path: *const c_char);
+
+    pub fn gcc_jit_context_new_case(ctxt: *mut gcc_jit_context, min_value: *mut gcc_jit_rvalue, max_value: *mut gcc_jit_rvalue, dest_block: *mut gcc_jit_block) -> *mut gcc_jit_case;
+    pub fn gcc_jit_block_end_with_switch(block: *mut gcc_jit_block, loc: *mut gcc_jit_location, expr: *mut gcc_jit_rvalue, default_block: *mut gcc_jit_block, num_cases: c_int, cases: *mut *mut gcc_jit_case);
+    pub fn gcc_jit_case_as_object(case_: *mut gcc_jit_case) -> *mut gcc_jit_object;
+
+    pub fn gcc_jit_function_get_address(fun: *mut gcc_jit_function, loc: *mut gcc_jit_location) ->  *mut gcc_jit_rvalue;
+
+    pub fn gcc_jit_type_get_vector(typ: *mut gcc_jit_type, num_units:  size_t) -> *mut gcc_jit_type;
+    pub fn gcc_jit_context_new_rvalue_from_vector(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, vec_type: *mut gcc_jit_type, num_elements: size_t, elements: *mut *mut gcc_jit_rvalue) ->  *mut gcc_jit_rvalue;
+
+    pub fn gcc_jit_context_add_command_line_option(ctxt: *mut gcc_jit_context, optname: *const c_char);
+    pub fn gcc_jit_context_add_driver_option(ctxt: *mut gcc_jit_context, optname: *const c_char);
+
+    pub fn gcc_jit_type_get_aligned(typ: *mut gcc_jit_type, alignment_in_bytes: size_t) ->  *mut gcc_jit_type;
+
+    pub fn gcc_jit_function_get_return_type(func: *mut gcc_jit_function) -> *mut gcc_jit_type;
+    pub fn gcc_jit_function_get_param_count(func: *mut gcc_jit_function) -> ssize_t;
+
+    pub fn gcc_jit_type_is_array(typ: *mut gcc_jit_type) -> *mut gcc_jit_type;
+    pub fn gcc_jit_type_is_bool(typ: *mut gcc_jit_type) -> c_int;
+    pub fn gcc_jit_type_is_integral(typ: *mut gcc_jit_type) -> c_int;
+    pub fn gcc_jit_type_unqualified(typ: *mut gcc_jit_type) -> *mut gcc_jit_type;
+    pub fn gcc_jit_type_is_pointer(typ: *mut gcc_jit_type) -> *mut gcc_jit_type;
+    pub fn gcc_jit_type_is_function_ptr_type(typ: *mut gcc_jit_type) -> *mut gcc_jit_function_type;
+    pub fn gcc_jit_function_type_get_return_type(function_type: *mut gcc_jit_function_type) -> *mut gcc_jit_type;
+    pub fn gcc_jit_function_type_get_param_count(function_type: *mut gcc_jit_function_type) -> ssize_t;
+    pub fn gcc_jit_type_is_vector(typ: *mut gcc_jit_type) -> *mut gcc_jit_vector_type;
+    pub fn gcc_jit_function_type_get_param_type(function_type: *mut gcc_jit_function_type, index: c_int) -> *mut gcc_jit_type;
+    pub fn gcc_jit_vector_type_get_num_units(vector_type: *mut gcc_jit_vector_type) -> ssize_t;
+    pub fn gcc_jit_vector_type_get_element_type(vector_type: *mut gcc_jit_vector_type) -> *mut gcc_jit_type;
+    pub fn gcc_jit_struct_get_field(struct_type: *mut gcc_jit_struct, index: c_int) -> *mut gcc_jit_field;
+    pub fn gcc_jit_type_is_struct(typ: *mut gcc_jit_type) -> *mut gcc_jit_struct;
+    pub fn gcc_jit_struct_get_field_count(struct_type: *mut gcc_jit_struct) -> ssize_t;
+
+    pub fn gcc_jit_global_set_initializer(global: *mut gcc_jit_lvalue, blob: *const c_void, num_bytes: size_t) -> *mut gcc_jit_lvalue;
+    pub fn gcc_jit_global_set_initializer_value(global: *mut gcc_jit_lvalue, value: *mut gcc_jit_rvalue);
+
+
+    pub fn gcc_jit_block_end_with_extended_asm_goto(block: *mut gcc_jit_block, loc: *mut gcc_jit_location, asm_template: *const c_char, num_goto_blocks: c_int, goto_blocks: *mut *mut gcc_jit_block, fallthrough_block: *mut gcc_jit_block) -> *mut gcc_jit_extended_asm;
+    pub fn gcc_jit_extended_asm_as_object(ext_asm: *mut gcc_jit_extended_asm) -> *mut gcc_jit_object;
+    pub fn gcc_jit_extended_asm_set_volatile_flag(ext_asm: *mut gcc_jit_extended_asm, flag: c_int);
+    pub fn gcc_jit_extended_asm_set_inline_flag(ext_asm: *mut gcc_jit_extended_asm, flag: c_int);
+    pub fn gcc_jit_extended_asm_add_output_operand(ext_asm: *mut gcc_jit_extended_asm, asm_symbolic_name: *const c_char, constraint: *const c_char, dest: *mut gcc_jit_lvalue);
+    pub fn gcc_jit_extended_asm_add_input_operand(ext_asm: *mut gcc_jit_extended_asm, asm_symbolic_name: *const c_char, constraint: *const c_char, src: *mut gcc_jit_rvalue);
+    pub fn gcc_jit_extended_asm_add_clobber(ext_asm: *mut gcc_jit_extended_asm, victim: *const c_char);
+    pub fn gcc_jit_context_add_top_level_asm(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, asm_stmts: *const c_char);
+    pub fn gcc_jit_block_add_extended_asm(block: *mut gcc_jit_block, loc: *mut gcc_jit_location, asm_template: *const c_char) -> *mut gcc_jit_extended_asm;
+
+    pub fn gcc_jit_lvalue_set_tls_model(lvalue: *mut gcc_jit_lvalue, model: gcc_jit_tls_model);
+    pub fn gcc_jit_lvalue_set_link_section(lvalue: *mut gcc_jit_lvalue, name: *const c_char);
+
+    /*pub fn gcc_jit_function_set_personality_function(func: *mut gcc_jit_function, personality_func: *mut gcc_jit_function);
+    pub fn gcc_jit_block_add_try_finally(block: *mut gcc_jit_block, loc: *mut gcc_jit_location, try_block: *mut gcc_jit_block, finally_block: *mut gcc_jit_block);*/
+
+    pub fn gcc_jit_context_new_bitcast(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, rvalue: *mut gcc_jit_rvalue, type_: *mut gcc_jit_type) -> *mut gcc_jit_rvalue;
+
+    pub fn gcc_jit_function_set_inline_mode(func: *mut gcc_jit_function, inline_mode: gcc_jit_inline_mode);
 }

@@ -2,7 +2,7 @@
 name = "gccjit_sys"
 version = "0.0.1"
 authors = ["Sean Gillespie <sean.william.g@gmail.com>"]
-links = "gccjit"
+#links = "gccjit"
 description = "Raw bindings to libgccjit. Companion to the gccjit crate."
 keywords = ["compiler", "jit", "gcc"]
 license = "GPL-3.0"

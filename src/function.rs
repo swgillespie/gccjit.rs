@@ -1,19 +1,22 @@
 use std::marker::PhantomData;
 use std::fmt;
 use std::ptr;
-use context::Context;
+
 use gccjit_sys;
+
+use block::Block;
+use block;
+use context::Context;
+use location::Location;
+use location;
+use lvalue::LValue;
+use lvalue;
 use object::{ToObject, Object};
 use object;
 use parameter::Parameter;
 use parameter;
+use rvalue::{self, RValue};
 use std::ffi::CString;
-use block::Block;
-use block;
-use lvalue::LValue;
-use lvalue;
-use location::Location;
-use location;
 use types::Type;
 use types;
 
@@ -24,6 +27,7 @@ use types;
 /// is a function with external linkage, and always inline is a function that is
 /// always inlined wherever it is called and cannot be accessed outside of the jit.
 #[repr(C)]
+#[derive(Clone, Copy, Debug)]
 pub enum FunctionType {
     /// Defines a function that is "exported" by the JIT and can be called from
     /// Rust.
@@ -40,10 +44,19 @@ pub enum FunctionType {
     AlwaysInline
 }
 
+#[repr(C)]
+#[derive(Clone, Copy, Debug)]
+pub enum InlineMode {
+    Default,
+    AlwaysInline,
+    NoInline,
+    Inline,
+}
+
 /// Function is gccjit's representation of a function. Functions are constructed
 /// by constructing basic blocks and connecting them together. Locals are declared
 /// at the function level.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Eq, Hash, PartialEq)]
 pub struct Function<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,
     ptr: *mut gccjit_sys::gcc_jit_function
@@ -73,6 +86,35 @@ impl<'ctx> Function<'ctx> {
         }
     }
 
+    pub fn set_inline_mode(&self, inline_mode: InlineMode) {
+        unsafe {
+            gccjit_sys::gcc_jit_function_set_inline_mode(self.ptr, std::mem::transmute(inline_mode));
+        }
+    }
+
+    pub fn get_param_count(&self) -> usize {
+        unsafe {
+            gccjit_sys::gcc_jit_function_get_param_count(self.ptr) as usize
+        }
+    }
+
+    pub fn get_return_type(&self) -> Type<'ctx> {
+        unsafe {
+            types::from_ptr(gccjit_sys::gcc_jit_function_get_return_type(self.ptr))
+        }
+    }
+
+    pub fn get_address(&self, loc: Option<Location<'ctx>>) -> RValue<'ctx> {
+        unsafe {
+            let loc_ptr = match loc {
+                Some(loc) => location::get_ptr(&loc),
+                None => ptr::null_mut()
+            };
+            let ptr = gccjit_sys::gcc_jit_function_get_address(self.ptr, loc_ptr);
+            rvalue::from_ptr(ptr)
+        }
+    }
+
     pub fn dump_to_dot<S: AsRef<str>>(&self, path: S) {
         unsafe {
             let cstr = CString::new(path.as_ref()).unwrap();
@@ -85,9 +127,19 @@ impl<'ctx> Function<'ctx> {
             let cstr = CString::new(name.as_ref()).unwrap();
             let ptr = gccjit_sys::gcc_jit_function_new_block(self.ptr,
                                                              cstr.as_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+                panic!("{}", error);
+            }
             block::from_ptr(ptr)
         }
     }
+
+    /*pub fn set_personality_function(&self, personality_func: Function<'ctx>) {
+        unsafe {
+            gccjit_sys::gcc_jit_function_set_personality_function(self.ptr, personality_func.ptr);
+        }
+    }*/
 
     pub fn new_local<S: AsRef<str>>(&self,
                      loc: Option<Location<'ctx>>,
@@ -118,5 +170,3 @@ pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_function) -> Function
 pub unsafe fn get_ptr<'ctx>(loc: &Function<'ctx>) -> *mut gccjit_sys::gcc_jit_function {
     loc.ptr
 }
-
-

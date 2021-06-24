@@ -1,27 +1,41 @@
 use std::default::Default;
 use std::ops::Drop;
-use std::ffi::CString;
+use std::ffi::{CStr, CString};
 use std::marker::PhantomData;
 use std::mem;
+use std::os::raw::c_int;
 use std::ptr;
+use std::str::Utf8Error;
 
-use location::{self, Location};
-use structs::{self, Struct};
-use types;
-use field::{self, Field};
-use rvalue::{self, RValue, ToRValue};
-use function::{self, Function, FunctionType};
-use block::{BinaryOp, UnaryOp, ComparisonOp};
-use parameter::{self, Parameter};
-use lvalue::{self, LValue};
 use gccjit_sys;
 use gccjit_sys::gcc_jit_int_option::*;
 use gccjit_sys::gcc_jit_str_option::*;
 use gccjit_sys::gcc_jit_bool_option::*;
 
+use block::{self, BinaryOp, Block, UnaryOp, ComparisonOp};
+use field::{self, Field};
+use function::{self, Function, FunctionType};
+use location::{self, Location};
+use lvalue::{self, LValue};
+use object::{self, Object, ToObject};
+use parameter::{self, Parameter};
+use rvalue::{self, RValue, ToRValue};
+use structs::{self, Struct};
+use Type;
+use types;
+
+#[repr(C)]
+#[derive(Debug)]
+pub enum GlobalKind {
+    Exported,
+    Internal,
+    Imported,
+}
+
 /// Represents an optimization level that the JIT compiler
 /// will use when compiling your code.
 #[repr(C)]
+#[derive(Debug)]
 pub enum OptimizationLevel {
     /// No optimizations are applied.
     None,
@@ -29,7 +43,7 @@ pub enum OptimizationLevel {
     /// any optimizations that take extended periods of time.
     Limited,
     /// Performs all optimizations that do not involve a tradeoff
-    /// of code size for speed. 
+    /// of code size for speed.
     Standard,
     /// Performs all optimizations at the Standard level, as well
     /// as function inlining, loop vectorization, some loop unrolling,
@@ -101,6 +115,20 @@ impl Drop for CompileResult {
     }
 }
 
+pub struct Case<'ctx> {
+    marker: PhantomData<&'ctx Case<'ctx>>,
+    ptr: *mut gccjit_sys::gcc_jit_case,
+}
+
+impl<'ctx> ToObject<'ctx> for Case<'ctx> {
+    fn to_object(&self) -> Object<'ctx> {
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_case_as_object(self.ptr);
+            object::from_ptr(ptr)
+        }
+    }
+}
+
 /// Wrapper around a GCC JIT context object that keeps
 /// the state of the JIT compiler. In GCCJIT, this object
 /// is responsible for all memory management of JIT data
@@ -120,7 +148,7 @@ impl Default for Context<'static> {
         unsafe {
             Context {
                 marker: PhantomData,
-                ptr: gccjit_sys::gcc_jit_context_acquire()
+                ptr: gccjit_sys::gcc_jit_context_acquire(),
             }
         }
     }
@@ -137,7 +165,21 @@ impl<'ctx> Context<'ctx> {
                                                        c_str.as_ptr());
         }
     }
-    
+
+    pub fn add_command_line_option<S: AsRef<str>>(&self, name: S) {
+        let c_str = CString::new(name.as_ref()).unwrap();
+        unsafe {
+            gccjit_sys::gcc_jit_context_add_command_line_option(self.ptr, c_str.as_ptr())
+        }
+    }
+
+    pub fn add_driver_option<S: AsRef<str>>(&self, name: S) {
+        let c_str = CString::new(name.as_ref()).unwrap();
+        unsafe {
+            gccjit_sys::gcc_jit_context_add_driver_option(self.ptr, c_str.as_ptr())
+        }
+    }
+
     /// Sets the optimization level that the JIT compiler will use.
     /// The higher the optimization level, the longer compilation will
     /// take.
@@ -148,7 +190,39 @@ impl<'ctx> Context<'ctx> {
                                                        level as i32);
         }
     }
-    
+
+    pub fn set_debug_info(&self, value: bool) {
+        unsafe {
+            gccjit_sys::gcc_jit_context_set_bool_option(self.ptr,
+                                                        GCC_JIT_BOOL_OPTION_DEBUGINFO,
+                                                        value as i32);
+        }
+    }
+
+    pub fn set_keep_intermediates(&self, value: bool) {
+        unsafe {
+            gccjit_sys::gcc_jit_context_set_bool_option(self.ptr,
+                                                        GCC_JIT_BOOL_OPTION_KEEP_INTERMEDIATES,
+                                                        value as i32);
+        }
+    }
+
+    pub fn set_dump_everything(&self, value: bool) {
+        unsafe {
+            gccjit_sys::gcc_jit_context_set_bool_option(self.ptr,
+                                                        GCC_JIT_BOOL_OPTION_DUMP_EVERYTHING,
+                                                        value as i32);
+        }
+    }
+
+    pub fn set_dump_initial_gimple(&self, value: bool) {
+        unsafe {
+            gccjit_sys::gcc_jit_context_set_bool_option(self.ptr,
+                                                        GCC_JIT_BOOL_OPTION_DUMP_INITIAL_GIMPLE,
+                                                        value as i32);
+        }
+    }
+
     /// When set to true, dumps the code that the JIT generates to standard
     /// out during compilation.
     pub fn set_dump_code_on_compile(&self, value: bool) {
@@ -169,7 +243,7 @@ impl<'ctx> Context<'ctx> {
             }
         }
     }
-    
+
     /// Compiles the context and saves the result to a file. The
     /// type of the file is controlled by the OutputKind parameter.
     pub fn compile_to_file<S: AsRef<str>>(&self, kind: OutputKind, file: S) {
@@ -181,9 +255,7 @@ impl<'ctx> Context<'ctx> {
                                                         cstr.as_ptr());
         }
     }
-    
-    
-    
+
     /// Creates a new child context from this context. The child context
     /// is a fully-featured context, but it has a lifetime that is strictly
     /// less than the lifetime that spawned it.
@@ -195,7 +267,19 @@ impl<'ctx> Context<'ctx> {
             }
         }
     }
-    
+
+    pub fn new_case<S: ToRValue<'ctx>, T: ToRValue<'ctx>>(&self, min_value: S, max_value: T, dest_block: Block<'ctx>) -> Case {
+        let min_value = min_value.to_rvalue();
+        let max_value = max_value.to_rvalue();
+        unsafe {
+            Case {
+                marker: PhantomData,
+                ptr: gccjit_sys::gcc_jit_context_new_case(self.ptr, rvalue::get_ptr(&min_value), rvalue::get_ptr(&max_value),
+                    block::get_ptr(&dest_block)),
+            }
+        }
+    }
+
     /// Creates a new location for use by gdb when debugging a JIT compiled
     /// program. The filename, line, and col are used by gdb to "show" your
     /// source when in a debugger.
@@ -213,7 +297,24 @@ impl<'ctx> Context<'ctx> {
             location::from_ptr(ptr)
         }
     }
-    
+
+    pub fn new_global<'a, S: AsRef<str>>(&self, loc: Option<Location<'a>>, kind: GlobalKind, ty: Type<'a>, name: S) -> LValue<'a> {
+        unsafe {
+            let loc_ptr = match loc {
+                Some(loc) => location::get_ptr(&loc),
+                None => ptr::null_mut()
+            };
+            let cstr = CString::new(name.as_ref()).unwrap();
+            let ptr = gccjit_sys::gcc_jit_context_new_global(
+                self.ptr,
+                loc_ptr,
+                mem::transmute(kind),
+                types::get_ptr(&ty),
+                cstr.as_ptr());
+            lvalue::from_ptr(ptr)
+        }
+    }
+
     /// Constructs a new type for any type that implements the Typeable trait.
     /// This library only provides a handful of implementations of Typeable
     /// for some primitive types - utilizers of this library are encouraged
@@ -222,7 +323,22 @@ impl<'ctx> Context<'ctx> {
     pub fn new_type<'a, T: types::Typeable>(&'a self) -> types::Type<'a> {
         <T as types::Typeable>::get_type(self)
     }
-    
+
+    pub fn new_c_type<'a>(&'a self, c_type: CType) -> types::Type<'a> {
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_get_type(get_ptr(self), c_type.to_sys());
+            types::from_ptr(ptr)
+        }
+    }
+
+    pub fn new_int_type<'a>(&'a self, num_bytes: i32, signed: bool) -> types::Type<'a> {
+        unsafe {
+            let ctx_ptr = get_ptr(self);
+            let ptr = gccjit_sys::gcc_jit_context_get_int_type(ctx_ptr, num_bytes, signed as i32);
+            types::from_ptr(ptr)
+        }
+    }
+
     /// Constructs a new field with an optional source location, type, and name.
     /// This field can be used to compose unions or structs.
     pub fn new_field<'a, S: AsRef<str>>(&'a self,
@@ -243,7 +359,7 @@ impl<'ctx> Context<'ctx> {
             field::from_ptr(ptr)
         }
     }
-    
+
     /// Constructs a new array type with a given base element type and a
     /// size.
     pub fn new_array_type<'a>(&'a self,
@@ -259,6 +375,17 @@ impl<'ctx> Context<'ctx> {
                                                                  loc_ptr,
                                                                  types::get_ptr(&ty),
                                                                  num_elements);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
+            types::from_ptr(ptr)
+        }
+    }
+
+    pub fn new_vector_type<'a>(&'a self, ty: types::Type<'a>, num_units: u64) -> types::Type<'a> {
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_type_get_vector(types::get_ptr(&ty), num_units);
             types::from_ptr(ptr)
         }
     }
@@ -289,7 +416,7 @@ impl<'ctx> Context<'ctx> {
             structs::from_ptr(ptr)
         }
     }
-    
+
     /// Constructs a new struct type whose fields are not known. Fields can
     /// be added to this struct later, but only once.
     pub fn new_opaque_struct_type<'a, S: AsRef<str>>(&'a self,
@@ -308,7 +435,7 @@ impl<'ctx> Context<'ctx> {
             structs::from_ptr(ptr)
         }
     }
-    
+
     /// Creates a new union type from a set of fields.
     pub fn new_union_type<'a, S: AsRef<str>>(&'a self,
                                              loc: Option<Location<'a>>,
@@ -333,7 +460,7 @@ impl<'ctx> Context<'ctx> {
             types::from_ptr(ptr)
         }
     }
-    
+
     /// Creates a new function pointer type with the given return type
     /// parameter types, and an optional location. The last flag can
     /// make the function variadic, although Rust can't really handle
@@ -414,6 +541,10 @@ impl<'ctx> Context<'ctx> {
                                                                 types::get_ptr(&ty),
                                                                 rvalue::get_ptr(&left_rvalue),
                                                                 rvalue::get_ptr(&right_rvalue));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -456,6 +587,10 @@ impl<'ctx> Context<'ctx> {
                                                                  mem::transmute(op),
                                                                  rvalue::get_ptr(&left_rvalue),
                                                                  rvalue::get_ptr(&right_rvalue));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -485,6 +620,10 @@ impl<'ctx> Context<'ctx> {
                                                            function::get_ptr(&func),
                                                            num_params,
                                                            params_ptrs.as_mut_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -531,6 +670,33 @@ impl<'ctx> Context<'ctx> {
                                                            loc_ptr,
                                                            rvalue::get_ptr(&rvalue),
                                                            types::get_ptr(&dest_type));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
+            rvalue::from_ptr(ptr)
+        }
+    }
+
+    /// Bitcast an RValue to a specific type.
+    pub fn new_bitcast<'a, T: ToRValue<'a>>(&'a self,
+                                         loc: Option<Location<'a>>,
+                                         value: T,
+                                         dest_type: types::Type<'a>) -> RValue<'a> {
+        let rvalue = value.to_rvalue();
+        let loc_ptr = match loc {
+            Some(loc) => unsafe { location::get_ptr(&loc) },
+            None => ptr::null_mut()
+        };
+        unsafe {
+            let ptr = gccjit_sys::gcc_jit_context_new_bitcast(self.ptr,
+                                                           loc_ptr,
+                                                           rvalue::get_ptr(&rvalue),
+                                                           types::get_ptr(&dest_type));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -564,6 +730,21 @@ impl<'ctx> Context<'ctx> {
             let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_long(self.ptr,
                                                                        types::get_ptr(&ty),
                                                                        value);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
+            rvalue::from_ptr(ptr)
+        }
+    }
+
+    pub fn new_rvalue_from_vector<'a>(&'a self, loc: Option<Location<'a>>, vec_type: types::Type<'a>, elements: &[RValue<'a>]) -> RValue<'a> {
+        unsafe {
+            let loc_ptr = match loc {
+                Some(loc) => location::get_ptr(&loc),
+                None => ptr::null_mut()
+            };
+            let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_vector(self.ptr, loc_ptr, types::get_ptr(&vec_type), elements.len() as _, elements.as_ptr() as *mut *mut _);
             rvalue::from_ptr(ptr)
         }
     }
@@ -633,6 +814,10 @@ impl<'ctx> Context<'ctx> {
         unsafe {
             let ptr = gccjit_sys::gcc_jit_context_null(self.ptr,
                                                        types::get_ptr(&ty));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -658,6 +843,14 @@ impl<'ctx> Context<'ctx> {
             let cstr = CString::new(path_ref).unwrap();
             gccjit_sys::gcc_jit_context_dump_reproducer_to_file(self.ptr,
                                                                 cstr.as_ptr());
+        }
+    }
+
+    pub fn dump_to_file<S: AsRef<str>>(&self, path: S, update_locations: bool) {
+        unsafe {
+            let path_ref = path.as_ref();
+            let cstr = CString::new(path_ref).unwrap();
+            gccjit_sys::gcc_jit_context_dump_to_file(self.ptr, cstr.as_ptr(), update_locations as c_int);
         }
     }
 
@@ -690,7 +883,60 @@ impl<'ctx> Context<'ctx> {
             let cstr = CString::new(name_ref).unwrap();
             let ptr = gccjit_sys::gcc_jit_context_get_builtin_function(self.ptr,
                                                                        cstr.as_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             function::from_ptr(ptr)
+        }
+    }
+
+    pub fn get_first_error(&self) -> Result<Option<&'ctx str>, Utf8Error> {
+        unsafe {
+            let str = gccjit_sys::gcc_jit_context_get_first_error(self.ptr);
+            if str.is_null() {
+                Ok(None)
+            }
+            else {
+                Ok(Some(CStr::from_ptr(str).to_str()?))
+            }
+        }
+    }
+
+    pub fn get_last_error(&self) -> Result<Option<&'ctx str>, Utf8Error> {
+        unsafe {
+            let str = gccjit_sys::gcc_jit_context_get_last_error(self.ptr);
+            if str.is_null() {
+                Ok(None)
+            }
+            else {
+                Ok(Some(CStr::from_ptr(str).to_str()?))
+            }
+        }
+    }
+
+    // TODO: use the logfile argument.
+    pub fn set_logfile<S: AsRef<str>>(&self, _logfile: S) {
+        use std::os::raw::c_void;
+
+        extern {
+            static stderr: *mut c_void;
+        }
+
+        unsafe {
+            gccjit_sys::gcc_jit_context_set_logfile(self.ptr, stderr as *mut _, 0, 0);
+        }
+    }
+
+    pub fn add_top_level_asm(&self, loc: Option<Location<'ctx>>, asm_stmts: &str) {
+        let asm_stmts = CString::new(asm_stmts).unwrap();
+        let loc_ptr =
+            match loc {
+                Some(loc) => unsafe { location::get_ptr(&loc) },
+                None => ptr::null_mut(),
+            };
+        unsafe {
+            gccjit_sys::gcc_jit_context_add_top_level_asm(self.ptr, loc_ptr, asm_stmts.as_ptr());
         }
     }
 }
@@ -706,6 +952,13 @@ impl<'ctx> Drop for Context<'ctx> {
 #[doc(hidden)]
 pub unsafe fn get_ptr<'ctx>(ctx: &'ctx Context<'ctx>) -> *mut gccjit_sys::gcc_jit_context {
     ctx.ptr
+}
+
+pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_context) -> Context<'ctx> {
+    Context {
+        marker: PhantomData,
+        ptr: ptr
+    }
 }
 
 #[cfg(test)]
@@ -786,4 +1039,63 @@ mod tests {
             ctx.new_child_context()
         };
     }*/
+}
+
+pub enum CType {
+    Bool,
+    Char,
+    UChar,
+    SChar,
+    Short,
+    UShort,
+    Int,
+    UInt,
+    Long,
+    ULong,
+    LongLong,
+    ULongLong,
+    SizeT,
+    Int8t,
+    Int16t,
+    Int32t,
+    Int64t,
+    Int128t,
+    UInt8t,
+    UInt16t,
+    UInt32t,
+    UInt64t,
+    UInt128t,
+}
+
+impl CType {
+    fn to_sys(&self) -> gccjit_sys::gcc_jit_types {
+        use gccjit_sys::gcc_jit_types::*;
+        use self::CType::*;
+
+        match *self {
+            Bool => GCC_JIT_TYPE_BOOL,
+            Char => GCC_JIT_TYPE_CHAR,
+            UChar => GCC_JIT_TYPE_UNSIGNED_CHAR,
+            SChar => GCC_JIT_TYPE_SIGNED_CHAR,
+            Short => GCC_JIT_TYPE_SHORT,
+            UShort => GCC_JIT_TYPE_UNSIGNED_SHORT,
+            Int => GCC_JIT_TYPE_INT,
+            UInt => GCC_JIT_TYPE_UNSIGNED_INT,
+            Long => GCC_JIT_TYPE_LONG,
+            ULong => GCC_JIT_TYPE_UNSIGNED_LONG,
+            LongLong => GCC_JIT_TYPE_LONG_LONG,
+            ULongLong => GCC_JIT_TYPE_UNSIGNED_LONG_LONG,
+            SizeT => GCC_JIT_TYPE_SIZE_T,
+            Int8t => GCC_JIT_TYPE_INT8_T,
+            Int16t => GCC_JIT_TYPE_INT16_T,
+            Int32t => GCC_JIT_TYPE_INT32_T,
+            Int64t => GCC_JIT_TYPE_INT64_T,
+            Int128t => GCC_JIT_TYPE_INT128_T,
+            UInt8t => GCC_JIT_TYPE_UINT8_T,
+            UInt16t => GCC_JIT_TYPE_UINT16_T,
+            UInt32t => GCC_JIT_TYPE_UINT32_T,
+            UInt64t => GCC_JIT_TYPE_UINT64_T,
+            UInt128t => GCC_JIT_TYPE_UINT128_T,
+        }
+    }
 }

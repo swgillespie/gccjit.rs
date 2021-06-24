@@ -9,7 +9,7 @@ use object;
 
 /// Field represents a field that composes structs or unions. A number of fields
 /// can be combined to create either a struct or a union.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Eq, Hash, PartialEq)]
 pub struct Field<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,
     ptr: *mut gccjit_sys::gcc_jit_field

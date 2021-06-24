@@ -11,7 +11,7 @@ use lvalue;
 
 /// Parameter represents a parameter to a function. A series of parameteres
 /// can be combined to form a function signature.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq)]
 pub struct Parameter<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,
     ptr: *mut gccjit_sys::gcc_jit_param

@@ -14,10 +14,9 @@
 //! never outlive the Context object from which they came, a requirement
 //! to using libgccjit correctly.
 
-#![allow(raw_pointer_derive)]
-
 extern crate gccjit_sys;
 
+mod asm;
 mod types;
 mod context;
 mod object;
@@ -31,6 +30,8 @@ mod function;
 mod block;
 
 pub use context::Context;
+pub use context::CType;
+pub use context::GlobalKind;
 pub use context::OptimizationLevel;
 pub use context::CompileResult;
 pub use context::OutputKind;
@@ -41,8 +42,8 @@ pub use types::Type;
 pub use types::Typeable;
 pub use field::Field;
 pub use structs::Struct;
-pub use lvalue::{LValue, ToLValue};
+pub use lvalue::{LValue, TlsModel, ToLValue};
 pub use rvalue::{RValue, ToRValue};
 pub use parameter::Parameter;
-pub use function::{Function, FunctionType};
+pub use function::{Function, FunctionType, InlineMode};
 pub use block::{Block, BinaryOp, UnaryOp, ComparisonOp};

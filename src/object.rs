@@ -5,6 +5,8 @@ use std::fmt;
 use std::ffi::CStr;
 use std::str;
 
+use crate::context;
+
 /// Object represents the root of all objects in gccjit. It is not useful
 /// in and of itself, but it provides the implementation for Debug
 /// used by most objects in this library.
@@ -21,6 +23,31 @@ impl<'ctx> fmt::Debug for Object<'ctx> {
             let cstr = CStr::from_ptr(ptr);
             let rust_str = str::from_utf8_unchecked(cstr.to_bytes());
             fmt.write_str(rust_str)
+        }
+    }
+}
+
+use std::mem::ManuallyDrop;
+use std::ops::Deref;
+
+pub struct ContextRef<'ctx> {
+    context: ManuallyDrop<Context<'ctx>>,
+}
+
+impl<'ctx> Deref for ContextRef<'ctx> {
+    type Target = Context<'ctx>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.context
+    }
+}
+
+impl<'ctx> Object<'ctx> {
+    pub fn get_context(&self) -> ContextRef<'ctx> {
+        unsafe {
+            ContextRef {
+                context: ManuallyDrop::new(context::from_ptr(gccjit_sys::gcc_jit_object_get_context(self.ptr))),
+            }
         }
     }
 }
