@@ -86,11 +86,11 @@ impl<'ctx> Function<'ctx> {
         }
     }
 
-    pub fn set_inline_mode(&self, inline_mode: InlineMode) {
+    /*pub fn set_inline_mode(&self, inline_mode: InlineMode) {
         unsafe {
             gccjit_sys::gcc_jit_function_set_inline_mode(self.ptr, std::mem::transmute(inline_mode));
         }
-    }
+    }*/
 
     pub fn get_param_count(&self) -> usize {
         unsafe {
