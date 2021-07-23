@@ -12,4 +12,3 @@ readme = "README.md"
 
 [dependencies]
 gccjit_sys = { version = "0.0.1", path = "gccjit_sys" }
-

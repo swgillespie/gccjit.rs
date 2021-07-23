@@ -385,7 +385,7 @@ impl<'ctx> Context<'ctx> {
 
     pub fn new_vector_type<'a>(&'a self, ty: types::Type<'a>, num_units: u64) -> types::Type<'a> {
         unsafe {
-            let ptr = gccjit_sys::gcc_jit_type_get_vector(types::get_ptr(&ty), num_units);
+            let ptr = gccjit_sys::gcc_jit_type_get_vector(types::get_ptr(&ty), num_units as _);
             types::from_ptr(ptr)
         }
     }
@@ -729,7 +729,7 @@ impl<'ctx> Context<'ctx> {
         unsafe {
             let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_long(self.ptr,
                                                                        types::get_ptr(&ty),
-                                                                       value);
+                                                                       value as _);
             #[cfg(debug_assertions)]
             if let Ok(Some(error)) = self.get_last_error() {
                 panic!("{}", error);
