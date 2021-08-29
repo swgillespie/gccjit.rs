@@ -139,6 +139,13 @@ impl<'ctx> LValue<'ctx> {
             gccjit_sys::gcc_jit_lvalue_set_link_section(self.ptr, name.as_ptr());
         }
     }
+
+    pub fn set_register_name(&self, reg_name: &str) {
+        let name = CString::new(reg_name).unwrap();
+        unsafe {
+            gccjit_sys::gcc_jit_lvalue_set_register_name(self.ptr, name.as_ptr());
+        }
+    }
 }
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_lvalue) -> LValue<'ctx> {

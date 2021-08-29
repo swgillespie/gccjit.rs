@@ -209,6 +209,10 @@ macro_rules! typeable_def {
                 unsafe {
                     let ctx_ptr = context::get_ptr(ctx);
                     let ptr = gccjit_sys::gcc_jit_context_get_type(ctx_ptr, $expr);
+                    #[cfg(debug_assertions)]
+                    if let Ok(Some(error)) = ctx.get_last_error() {
+                        panic!("{}", error);
+                    }
                     from_ptr(ptr)
                 }
             }
@@ -258,6 +262,10 @@ impl<T> Typeable for *mut T {
         unsafe {
             let ctx_ptr = context::get_ptr(ctx);
             let ptr = gccjit_sys::gcc_jit_context_get_type(ctx_ptr, GCC_JIT_TYPE_VOID_PTR);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = ctx.get_last_error() {
+                panic!("{}", error);
+            }
             from_ptr(ptr)
         }
     }
@@ -268,6 +276,10 @@ impl<T> Typeable for *const T {
         unsafe {
             let ctx_ptr = context::get_ptr(ctx);
             let ptr = gccjit_sys::gcc_jit_context_get_type(ctx_ptr, GCC_JIT_TYPE_VOID_PTR);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = ctx.get_last_error() {
+                panic!("{}", error);
+            }
             from_ptr(ptr).make_const()
         }
     }
