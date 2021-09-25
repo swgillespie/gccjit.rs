@@ -561,4 +561,7 @@ extern {
     //pub fn gcc_jit_function_set_inline_mode(func: *mut gcc_jit_function, inline_mode: gcc_jit_inline_mode);
 
     pub fn gcc_jit_lvalue_set_register_name(lvalue: *mut gcc_jit_lvalue, reg_name: *const c_char);
+
+    pub fn gcc_jit_context_new_rvalue_from_struct(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, struct_type: *mut gcc_jit_struct, num_fields: size_t, fields: *mut *mut gcc_jit_rvalue) ->  *mut gcc_jit_rvalue;
+    pub fn gcc_jit_context_new_rvalue_from_array(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, typ: *mut gcc_jit_type, num_elements: size_t, elements: *mut *mut gcc_jit_rvalue) -> *mut gcc_jit_rvalue;
 }

@@ -95,3 +95,7 @@ pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_struct) -> Struct<'ct
         ptr: ptr
     }
 }
+
+pub unsafe fn get_ptr<'ctx>(ty: &Struct<'ctx>) -> *mut gccjit_sys::gcc_jit_struct {
+    ty.ptr
+}

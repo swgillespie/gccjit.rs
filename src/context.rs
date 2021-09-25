@@ -749,6 +749,36 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
+    pub fn new_rvalue_from_struct<'a>(&'a self, loc: Option<Location<'a>>, struct_type: Struct<'a>, fields: &[RValue<'a>]) -> RValue<'a> {
+        unsafe {
+            let loc_ptr = match loc {
+                Some(loc) => location::get_ptr(&loc),
+                None => ptr::null_mut()
+            };
+            let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_struct(self.ptr, loc_ptr, structs::get_ptr(&struct_type), fields.len() as _, fields.as_ptr() as *mut *mut _);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
+            rvalue::from_ptr(ptr)
+        }
+    }
+
+    pub fn new_rvalue_from_array<'a>(&'a self, loc: Option<Location<'a>>, array_type: types::Type<'a>, elements: &[RValue<'a>]) -> RValue<'a> {
+        unsafe {
+            let loc_ptr = match loc {
+                Some(loc) => location::get_ptr(&loc),
+                None => ptr::null_mut()
+            };
+            let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_array(self.ptr, loc_ptr, types::get_ptr(&array_type), elements.len() as _, elements.as_ptr() as *mut *mut _);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
+            rvalue::from_ptr(ptr)
+        }
+    }
+
     /// Creates a new RValue from a given int value.
     pub fn new_rvalue_from_int<'a>(&'a self,
                                    ty: types::Type<'a>,
@@ -1065,6 +1095,7 @@ pub enum CType {
     UInt32t,
     UInt64t,
     UInt128t,
+    ConstCharPtr,
 }
 
 impl CType {
@@ -1096,6 +1127,7 @@ impl CType {
             UInt32t => GCC_JIT_TYPE_UINT32_T,
             UInt64t => GCC_JIT_TYPE_UINT64_T,
             UInt128t => GCC_JIT_TYPE_UINT128_T,
+            ConstCharPtr => GCC_JIT_TYPE_CONST_CHAR_PTR,
         }
     }
 }

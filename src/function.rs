@@ -129,7 +129,7 @@ impl<'ctx> Function<'ctx> {
                                                              cstr.as_ptr());
             #[cfg(debug_assertions)]
             if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
-                panic!("{}", error);
+                panic!("{} ({:?})", error, self);
             }
             block::from_ptr(ptr)
         }
