@@ -564,4 +564,6 @@ extern {
 
     pub fn gcc_jit_context_new_rvalue_from_struct(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, struct_type: *mut gcc_jit_struct, num_fields: size_t, fields: *mut *mut gcc_jit_rvalue) ->  *mut gcc_jit_rvalue;
     pub fn gcc_jit_context_new_rvalue_from_array(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, typ: *mut gcc_jit_type, num_elements: size_t, elements: *mut *mut gcc_jit_rvalue) -> *mut gcc_jit_rvalue;
+
+   pub fn gcc_jit_type_get_size(typ: *mut gcc_jit_type) -> ssize_t;
 }
