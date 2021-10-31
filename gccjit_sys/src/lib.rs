@@ -566,4 +566,5 @@ extern {
     pub fn gcc_jit_context_new_rvalue_from_array(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, typ: *mut gcc_jit_type, num_elements: size_t, elements: *mut *mut gcc_jit_rvalue) -> *mut gcc_jit_rvalue;
 
    pub fn gcc_jit_type_get_size(typ: *mut gcc_jit_type) -> ssize_t;
+   pub fn gcc_jit_compatible_types(ltype: *mut gcc_jit_type, rtype: *mut gcc_jit_type) -> bool;
 }

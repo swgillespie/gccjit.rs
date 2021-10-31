@@ -36,6 +36,7 @@ pub enum BinaryOp {
 /// UnaryOp is an enum representing the various unary operations
 /// that gccjit knows how to codegen.
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub enum UnaryOp {
     Minus,
     BitwiseNegate,

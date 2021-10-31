@@ -200,6 +200,13 @@ impl<'ctx> Type<'ctx> {
             Some(from_ptr(value))
         }
     }
+
+
+   pub fn is_compatible_with(&self, typ: Type<'ctx>) -> bool {
+       unsafe {
+           gccjit_sys::gcc_jit_compatible_types(self.ptr, typ.ptr)
+       }
+   }
 }
 
 /// Typeable is a trait for types that have a corresponding type within

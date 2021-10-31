@@ -566,6 +566,10 @@ impl<'ctx> Context<'ctx> {
                                                                mem::transmute(op),
                                                                types::get_ptr(&ty),
                                                                rvalue::get_ptr(&rvalue));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -718,6 +722,10 @@ impl<'ctx> Context<'ctx> {
                                                                    loc_ptr,
                                                                    rvalue::get_ptr(&array_rvalue),
                                                                    rvalue::get_ptr(&idx_rvalue));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             lvalue::from_ptr(ptr)
         }
     }
