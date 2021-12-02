@@ -121,9 +121,9 @@ impl<'ctx> LValue<'ctx> {
     }
 
     /// Set the initialization value for a global variable.
-    pub fn global_set_initializer_value(&self, value: RValue<'ctx>) {
+    pub fn global_set_initializer_rvalue(&self, value: RValue<'ctx>) -> LValue<'ctx> {
         unsafe {
-            gccjit_sys::gcc_jit_global_set_initializer_value(self.ptr, rvalue::get_ptr(&value));
+            from_ptr(gccjit_sys::gcc_jit_global_set_initializer_rvalue(self.ptr, rvalue::get_ptr(&value)))
         }
     }
 
