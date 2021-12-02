@@ -47,6 +47,7 @@ pub enum UnaryOp {
 /// ComparisonOp is an enum representing the various comparisons that
 /// gccjit is capable of doing.
 #[repr(C)]
+#[derive(Debug)]
 pub enum ComparisonOp {
     Equals,
     NotEquals,

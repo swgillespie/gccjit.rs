@@ -796,6 +796,10 @@ impl<'ctx> Context<'ctx> {
             let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_int(self.ptr,
                                                                       types::get_ptr(&ty),
                                                                       value);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
