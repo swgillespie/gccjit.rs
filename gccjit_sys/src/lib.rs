@@ -24,11 +24,11 @@ pub enum gcc_jit_extended_asm {}
 
 #[repr(C)]
 pub enum gcc_jit_tls_model {
+    GCC_JIT_TLS_MODEL_NONE,
     GCC_JIT_TLS_MODEL_GLOBAL_DYNAMIC,
     GCC_JIT_TLS_MODEL_LOCAL_DYNAMIC,
     GCC_JIT_TLS_MODEL_INITIAL_EXEC,
     GCC_JIT_TLS_MODEL_LOCAL_EXEC,
-    GCC_JIT_TLS_MODEL_DEFAULT,
 }
 
 #[repr(C)]
@@ -565,6 +565,6 @@ extern {
     pub fn gcc_jit_context_new_rvalue_from_struct(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, struct_type: *mut gcc_jit_struct, num_fields: size_t, fields: *mut *mut gcc_jit_rvalue) ->  *mut gcc_jit_rvalue;
     pub fn gcc_jit_context_new_rvalue_from_array(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, typ: *mut gcc_jit_type, num_elements: size_t, elements: *mut *mut gcc_jit_rvalue) -> *mut gcc_jit_rvalue;
 
-   pub fn gcc_jit_type_get_size(typ: *mut gcc_jit_type) -> ssize_t;
-   pub fn gcc_jit_compatible_types(ltype: *mut gcc_jit_type, rtype: *mut gcc_jit_type) -> bool;
+   //pub fn gcc_jit_type_get_size(typ: *mut gcc_jit_type) -> ssize_t;
+   //pub fn gcc_jit_compatible_types(ltype: *mut gcc_jit_type, rtype: *mut gcc_jit_type) -> bool;
 }

@@ -18,7 +18,7 @@ pub enum TlsModel {
     LocalDynamic,
     InitialExec,
     LocalExec,
-    Default,
+    None,
 }
 
 impl TlsModel {
@@ -30,7 +30,7 @@ impl TlsModel {
             TlsModel::LocalDynamic => GCC_JIT_TLS_MODEL_LOCAL_DYNAMIC,
             TlsModel::InitialExec => GCC_JIT_TLS_MODEL_INITIAL_EXEC,
             TlsModel::LocalExec => GCC_JIT_TLS_MODEL_LOCAL_EXEC,
-            TlsModel::Default => GCC_JIT_TLS_MODEL_DEFAULT,
+            TlsModel::None => GCC_JIT_TLS_MODEL_NONE,
         }
     }
 }

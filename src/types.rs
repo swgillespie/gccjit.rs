@@ -177,13 +177,13 @@ impl<'ctx> Type<'ctx> {
         }
     }
 
-    pub fn get_size(&self) -> u32 {
+    /*pub fn get_size(&self) -> u32 {
         unsafe {
             let size = gccjit_sys::gcc_jit_type_get_size(self.ptr);
             assert_ne!(size, -1, "called get_size of unsupported type");
             size as u32
         }
-    }
+    }*/
 
     pub fn unqualified(&self) -> Type<'ctx> {
         unsafe {
@@ -202,11 +202,11 @@ impl<'ctx> Type<'ctx> {
     }
 
 
-   pub fn is_compatible_with(&self, typ: Type<'ctx>) -> bool {
+   /*pub fn is_compatible_with(&self, typ: Type<'ctx>) -> bool {
        unsafe {
            gccjit_sys::gcc_jit_compatible_types(self.ptr, typ.ptr)
        }
-   }
+   }*/
 }
 
 /// Typeable is a trait for types that have a corresponding type within
