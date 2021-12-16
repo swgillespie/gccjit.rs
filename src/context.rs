@@ -757,13 +757,21 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
-    pub fn new_rvalue_from_struct<'a>(&'a self, loc: Option<Location<'a>>, struct_type: Struct<'a>, fields: &[RValue<'a>]) -> RValue<'a> {
+   //pub fn gcc_jit_context_new_union_constructor(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, typ: *mut gcc_jit_type, field: *mut gcc_jit_field, value: *mut gcc_jit_rvalue) -> *mut gcc_jit_rvalue;
+
+    pub fn new_struct_constructor<'a>(&'a self, loc: Option<Location<'a>>, struct_type: types::Type<'a>, fields: Option<&[Field<'a>]>, values: &[RValue<'a>]) -> RValue<'a> {
         unsafe {
             let loc_ptr = match loc {
                 Some(loc) => location::get_ptr(&loc),
                 None => ptr::null_mut()
             };
-            let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_struct(self.ptr, loc_ptr, structs::get_ptr(&struct_type), fields.len() as _, fields.as_ptr() as *mut *mut _);
+            let fields_ptr =
+                match fields {
+                    Some(fields) => fields.as_ptr(),
+                    None => ptr::null_mut(),
+                };
+
+            let ptr = gccjit_sys::gcc_jit_context_new_struct_constructor(self.ptr, loc_ptr, types::get_ptr(&struct_type), values.len() as _, fields_ptr as *mut *mut _, values.as_ptr() as *mut *mut _);
             #[cfg(debug_assertions)]
             if let Ok(Some(error)) = self.get_last_error() {
                 panic!("{}", error);
@@ -772,13 +780,13 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
-    pub fn new_rvalue_from_array<'a>(&'a self, loc: Option<Location<'a>>, array_type: types::Type<'a>, elements: &[RValue<'a>]) -> RValue<'a> {
+    pub fn new_array_constructor<'a>(&'a self, loc: Option<Location<'a>>, array_type: types::Type<'a>, elements: &[RValue<'a>]) -> RValue<'a> {
         unsafe {
             let loc_ptr = match loc {
                 Some(loc) => location::get_ptr(&loc),
                 None => ptr::null_mut()
             };
-            let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_array(self.ptr, loc_ptr, types::get_ptr(&array_type), elements.len() as _, elements.as_ptr() as *mut *mut _);
+            let ptr = gccjit_sys::gcc_jit_context_new_array_constructor(self.ptr, loc_ptr, types::get_ptr(&array_type), elements.len() as _, elements.as_ptr() as *mut *mut _);
             #[cfg(debug_assertions)]
             if let Ok(Some(error)) = self.get_last_error() {
                 panic!("{}", error);
