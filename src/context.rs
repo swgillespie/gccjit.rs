@@ -207,6 +207,14 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
+    pub fn set_hide_log_stderr(&self, value: bool) {
+        unsafe {
+            gccjit_sys::gcc_jit_context_set_bool_option(self.ptr,
+                                                        GCC_JIT_BOOL_OPTION_HIDE_LOG_STDERR,
+                                                        value as i32);
+        }
+    }
+
     pub fn set_dump_everything(&self, value: bool) {
         unsafe {
             gccjit_sys::gcc_jit_context_set_bool_option(self.ptr,
@@ -335,6 +343,10 @@ impl<'ctx> Context<'ctx> {
         unsafe {
             let ctx_ptr = get_ptr(self);
             let ptr = gccjit_sys::gcc_jit_context_get_int_type(ctx_ptr, num_bytes, signed as i32);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             types::from_ptr(ptr)
         }
     }
@@ -920,6 +932,10 @@ impl<'ctx> Context<'ctx> {
                                                             loc_ptr,
                                                             types::get_ptr(&ty),
                                                             cstr.as_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             parameter::from_ptr(ptr)
         }
     }
