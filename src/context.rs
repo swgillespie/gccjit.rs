@@ -138,6 +138,7 @@ impl<'ctx> ToObject<'ctx> for Case<'ctx> {
 /// It's possible to create a child context from a parent context.
 /// In that case, the child context must have a lifetime strictly
 /// less than the parent context.
+#[derive(Debug)]
 pub struct Context<'ctx> {
     marker: PhantomData<&'ctx Context<'ctx>>,
     ptr: *mut gccjit_sys::gcc_jit_context

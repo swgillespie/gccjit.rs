@@ -30,6 +30,7 @@ impl<'ctx> fmt::Debug for Object<'ctx> {
 use std::mem::ManuallyDrop;
 use std::ops::Deref;
 
+#[derive(Debug)]
 pub struct ContextRef<'ctx> {
     context: ManuallyDrop<Context<'ctx>>,
 }
