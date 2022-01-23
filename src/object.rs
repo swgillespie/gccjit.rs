@@ -17,7 +17,7 @@ pub struct Object<'ctx> {
 }
 
 impl<'ctx> fmt::Debug for Object<'ctx> {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> {
+    fn fmt<'a>(&self, fmt: &mut fmt::Formatter<'a>) -> Result<(), fmt::Error> {
         unsafe {
             let ptr = gccjit_sys::gcc_jit_object_get_debug_string(self.ptr);
             let cstr = CStr::from_ptr(ptr);

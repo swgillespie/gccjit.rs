@@ -72,7 +72,7 @@ impl<'ctx> ToObject<'ctx> for Function<'ctx> {
 }
 
 impl<'ctx> fmt::Debug for Function<'ctx> {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> {
+    fn fmt<'a>(&self, fmt: &mut fmt::Formatter<'a>) -> Result<(), fmt::Error> {
         let obj = self.to_object();
         obj.fmt(fmt)
     }

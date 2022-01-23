@@ -83,7 +83,7 @@ impl<'ctx> ToObject<'ctx> for Struct<'ctx> {
 }
 
 impl<'ctx> fmt::Debug for Struct<'ctx> {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> {
+    fn fmt<'a>(&self, fmt: &mut fmt::Formatter<'a>) -> Result<(), fmt::Error> {
         let obj = self.as_type();
         obj.fmt(fmt)
     }
@@ -94,8 +94,4 @@ pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_struct) -> Struct<'ct
         marker: PhantomData,
         ptr: ptr
     }
-}
-
-pub unsafe fn get_ptr<'ctx>(ty: &Struct<'ctx>) -> *mut gccjit_sys::gcc_jit_struct {
-    ty.ptr
 }

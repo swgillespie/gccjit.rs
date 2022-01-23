@@ -277,7 +277,7 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
-    pub fn new_case<S: ToRValue<'ctx>, T: ToRValue<'ctx>>(&self, min_value: S, max_value: T, dest_block: Block<'ctx>) -> Case {
+    pub fn new_case<S: ToRValue<'ctx>, T: ToRValue<'ctx>>(&self, min_value: S, max_value: T, dest_block: Block<'ctx>) -> Case<'ctx> {
         let min_value = min_value.to_rvalue();
         let max_value = max_value.to_rvalue();
         unsafe {

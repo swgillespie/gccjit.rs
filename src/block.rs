@@ -77,7 +77,7 @@ impl<'ctx> ToObject<'ctx> for Block<'ctx> {
 }
 
 impl<'ctx> fmt::Debug for Block<'ctx> {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> {
+    fn fmt<'a>(&self, fmt: &mut fmt::Formatter<'a>) -> Result<(), fmt::Error> {
         let obj = self.to_object();
         obj.fmt(fmt)
     }
@@ -207,6 +207,10 @@ impl<'ctx> Block<'ctx> {
                                                            on_true.ptr,
                                                            on_false.ptr);
         }
+        #[cfg(debug_assertions)]
+        if let Ok(Some(error)) = self.to_object().get_context().get_last_error() {
+            panic!("{}", error);
+        }
     }
 
     /// Terminates a block by unconditionally jumping to another block.
@@ -262,7 +266,7 @@ impl<'ctx> Block<'ctx> {
         }
     }
 
-    pub fn end_with_switch<T: ToRValue<'ctx>>(&self, loc: Option<Location<'ctx>>, expr: T, default_block: Block<'ctx>, cases: &[Case]) {
+    pub fn end_with_switch<T: ToRValue<'ctx>>(&self, loc: Option<Location<'ctx>>, expr: T, default_block: Block<'ctx>, cases: &[Case<'ctx>]) {
         let expr = expr.to_rvalue();
         let loc_ptr = match loc {
             Some(loc) => unsafe { location::get_ptr(&loc) },
@@ -274,7 +278,7 @@ impl<'ctx> Block<'ctx> {
         }
     }
 
-    pub fn add_extended_asm(&self, loc: Option<Location<'ctx>>, asm_template: &str) -> ExtendedAsm {
+    pub fn add_extended_asm(&self, loc: Option<Location<'ctx>>, asm_template: &str) -> ExtendedAsm<'ctx> {
         let asm_template = CString::new(asm_template).unwrap();
         let loc_ptr =
             match loc {
@@ -286,7 +290,7 @@ impl<'ctx> Block<'ctx> {
         }
     }
 
-    pub fn end_with_extended_asm_goto(&self, loc: Option<Location<'ctx>>, asm_template: &str, goto_blocks: &[Block<'ctx>], fallthrough_block: Option<Block<'ctx>>) -> ExtendedAsm {
+    pub fn end_with_extended_asm_goto(&self, loc: Option<Location<'ctx>>, asm_template: &str, goto_blocks: &[Block<'ctx>], fallthrough_block: Option<Block<'ctx>>) -> ExtendedAsm<'ctx> {
         let asm_template = CString::new(asm_template).unwrap();
         let loc_ptr =
             match loc {

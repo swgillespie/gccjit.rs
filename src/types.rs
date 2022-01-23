@@ -91,7 +91,7 @@ impl<'ctx> ToObject<'ctx> for Type<'ctx> {
 }
 
 impl<'ctx> fmt::Debug for Type<'ctx> {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> {
+    fn fmt<'a>(&self, fmt: &mut fmt::Formatter<'a>) -> Result<(), fmt::Error> {
         let obj = self.to_object();
         obj.fmt(fmt)
     }
@@ -181,7 +181,7 @@ impl<'ctx> Type<'ctx> {
     pub fn get_size(&self) -> u32 {
         unsafe {
             let size = gccjit_sys::gcc_jit_type_get_size(self.ptr);
-            assert_ne!(size, -1, "called get_size of unsupported type");
+            assert_ne!(size, -1, "called get_size of unsupported type: {:?}", self);
             size as u32
         }
     }
@@ -202,12 +202,11 @@ impl<'ctx> Type<'ctx> {
         }
     }
 
-
-   pub fn is_compatible_with(&self, typ: Type<'ctx>) -> bool {
-       unsafe {
-           gccjit_sys::gcc_jit_compatible_types(self.ptr, typ.ptr)
-       }
-   }
+    pub fn is_compatible_with(&self, typ: Type<'ctx>) -> bool {
+        unsafe {
+            gccjit_sys::gcc_jit_compatible_types(self.ptr, typ.ptr)
+        }
+    }
 }
 
 /// Typeable is a trait for types that have a corresponding type within
