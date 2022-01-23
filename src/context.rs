@@ -208,11 +208,9 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
-    pub fn set_hide_log_stderr(&self, value: bool) {
+    pub fn set_print_errors_to_stderr(&self, enabled: bool) {
         unsafe {
-            gccjit_sys::gcc_jit_context_set_bool_option(self.ptr,
-                                                        GCC_JIT_BOOL_OPTION_HIDE_LOG_STDERR,
-                                                        value as i32);
+            gccjit_sys::gcc_jit_context_set_bool_print_errors_to_stderr(self.ptr, enabled as c_int);
         }
     }
 
