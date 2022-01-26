@@ -570,4 +570,7 @@ extern {
     pub fn gcc_jit_compatible_types(ltype: *mut gcc_jit_type, rtype: *mut gcc_jit_type) -> bool;
 
     pub fn gcc_jit_context_set_bool_print_errors_to_stderr(ctxt: *mut gcc_jit_context, enabled: c_int);
+
+    pub fn gcc_jit_lvalue_set_alignment(lvalue: *mut gcc_jit_lvalue, alignment: c_int);
+    pub fn gcc_jit_lvalue_get_alignment(lvalue: *mut gcc_jit_lvalue) -> c_int;
 }

@@ -146,6 +146,18 @@ impl<'ctx> LValue<'ctx> {
             gccjit_sys::gcc_jit_lvalue_set_register_name(self.ptr, name.as_ptr());
         }
     }
+
+    pub fn set_alignment(&self, alignment: i32) {
+        unsafe {
+            gccjit_sys::gcc_jit_lvalue_set_alignment(self.ptr, alignment);
+        }
+    }
+
+    pub fn get_alignment(&self) -> i32 {
+        unsafe {
+            gccjit_sys::gcc_jit_lvalue_get_alignment(self.ptr)
+        }
+    }
 }
 
 pub unsafe fn from_ptr<'ctx>(ptr: *mut gccjit_sys::gcc_jit_lvalue) -> LValue<'ctx> {
