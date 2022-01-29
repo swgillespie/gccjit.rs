@@ -18,6 +18,7 @@ use lvalue::{self, ToLValue};
 /// BinaryOp is a enum representing the various binary operations
 /// that gccjit knows how to codegen.
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub enum BinaryOp {
     Plus,
     Minus,
