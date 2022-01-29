@@ -278,13 +278,18 @@ impl<'ctx> Context<'ctx> {
     pub fn new_case<S: ToRValue<'ctx>, T: ToRValue<'ctx>>(&self, min_value: S, max_value: T, dest_block: Block<'ctx>) -> Case<'ctx> {
         let min_value = min_value.to_rvalue();
         let max_value = max_value.to_rvalue();
-        unsafe {
+        let result = unsafe {
             Case {
                 marker: PhantomData,
                 ptr: gccjit_sys::gcc_jit_context_new_case(self.ptr, rvalue::get_ptr(&min_value), rvalue::get_ptr(&max_value),
                     block::get_ptr(&dest_block)),
             }
+        };
+        #[cfg(debug_assertions)]
+        if let Ok(Some(error)) = self.get_last_error() {
+            panic!("{}", error);
         }
+        result
     }
 
     /// Creates a new location for use by gdb when debugging a JIT compiled
@@ -301,6 +306,10 @@ impl<'ctx> Context<'ctx> {
                                                                cstr.as_ptr(),
                                                                line,
                                                                col);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             location::from_ptr(ptr)
         }
     }
@@ -318,6 +327,10 @@ impl<'ctx> Context<'ctx> {
                 mem::transmute(kind),
                 types::get_ptr(&ty),
                 cstr.as_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             lvalue::from_ptr(ptr)
         }
     }
@@ -334,6 +347,10 @@ impl<'ctx> Context<'ctx> {
     pub fn new_c_type<'a>(&'a self, c_type: CType) -> types::Type<'a> {
         unsafe {
             let ptr = gccjit_sys::gcc_jit_context_get_type(get_ptr(self), c_type.to_sys());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             types::from_ptr(ptr)
         }
     }
@@ -367,6 +384,10 @@ impl<'ctx> Context<'ctx> {
                                                             loc_ptr,
                                                             types::get_ptr(&ty),
                                                             cstr.as_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             field::from_ptr(ptr)
         }
     }
@@ -397,6 +418,10 @@ impl<'ctx> Context<'ctx> {
     pub fn new_vector_type<'a>(&'a self, ty: types::Type<'a>, num_units: u64) -> types::Type<'a> {
         unsafe {
             let ptr = gccjit_sys::gcc_jit_type_get_vector(types::get_ptr(&ty), num_units as _);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             types::from_ptr(ptr)
         }
     }
@@ -424,6 +449,10 @@ impl<'ctx> Context<'ctx> {
                                                                   cname.as_ptr(),
                                                                   num_fields,
                                                                   fields_ptrs.as_mut_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             structs::from_ptr(ptr)
         }
     }
@@ -443,6 +472,10 @@ impl<'ctx> Context<'ctx> {
             let ptr = gccjit_sys::gcc_jit_context_new_opaque_struct(self.ptr,
                                                                     loc_ptr,
                                                                     cstr.as_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             structs::from_ptr(ptr)
         }
     }
@@ -468,6 +501,10 @@ impl<'ctx> Context<'ctx> {
                                                                  cname.as_ptr(),
                                                                  num_fields,
                                                                  fields_ptrs.as_mut_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             types::from_ptr(ptr)
         }
     }
@@ -496,6 +533,10 @@ impl<'ctx> Context<'ctx> {
                                                                         num_types,
                                                                         types_ptrs.as_mut_ptr(),
                                                                         is_variadic as i32);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             types::from_ptr(ptr)
         }
     }
@@ -528,6 +569,10 @@ impl<'ctx> Context<'ctx> {
                                                                num_params,
                                                                params_ptrs.as_mut_ptr(),
                                                                is_variadic as i32);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             function::from_ptr(ptr)
         }
     }
@@ -666,6 +711,10 @@ impl<'ctx> Context<'ctx> {
                                                            rvalue::get_ptr(&fun_ptr_rvalue),
                                                            num_params,
                                                            params_ptrs.as_mut_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -764,6 +813,10 @@ impl<'ctx> Context<'ctx> {
                 None => ptr::null_mut()
             };
             let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_vector(self.ptr, loc_ptr, types::get_ptr(&vec_type), elements.len() as _, elements.as_ptr() as *mut *mut _);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -831,6 +884,10 @@ impl<'ctx> Context<'ctx> {
             let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_double(self.ptr,
                                                                        types::get_ptr(&ty),
                                                                        value);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -841,6 +898,10 @@ impl<'ctx> Context<'ctx> {
         unsafe {
             let ptr = gccjit_sys::gcc_jit_context_zero(self.ptr,
                                                        types::get_ptr(&ty));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -851,6 +912,10 @@ impl<'ctx> Context<'ctx> {
         unsafe {
             let ptr = gccjit_sys::gcc_jit_context_one(self.ptr,
                                                       types::get_ptr(&ty));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -865,6 +930,10 @@ impl<'ctx> Context<'ctx> {
             let ptr = gccjit_sys::gcc_jit_context_new_rvalue_from_ptr(self.ptr,
                                                                       types::get_ptr(&ty),
                                                                       mem::transmute(value));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -890,6 +959,10 @@ impl<'ctx> Context<'ctx> {
             let cstr = CString::new(value.as_ref()).unwrap();
             let ptr = gccjit_sys::gcc_jit_context_new_string_literal(self.ptr,
                                                                      cstr.as_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
             rvalue::from_ptr(ptr)
         }
     }
@@ -1002,6 +1075,10 @@ impl<'ctx> Context<'ctx> {
             };
         unsafe {
             gccjit_sys::gcc_jit_context_add_top_level_asm(self.ptr, loc_ptr, asm_stmts.as_ptr());
+        }
+        #[cfg(debug_assertions)]
+        if let Ok(Some(error)) = self.get_last_error() {
+            panic!("{}", error);
         }
     }
 }
