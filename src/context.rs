@@ -821,6 +821,21 @@ impl<'ctx> Context<'ctx> {
         }
     }
 
+    pub fn new_rvalue_vector_perm<'a>(&'a self, loc: Option<Location<'a>>, elements1: RValue<'a>, elements2: RValue<'a>, mask: RValue<'a>) -> RValue<'a> {
+        unsafe {
+            let loc_ptr = match loc {
+                Some(loc) => location::get_ptr(&loc),
+                None => ptr::null_mut()
+            };
+            let ptr = gccjit_sys::gcc_jit_context_new_rvalue_vector_perm(self.ptr, loc_ptr, rvalue::get_ptr(&elements1), rvalue::get_ptr(&elements2), rvalue::get_ptr(&mask));
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
+            rvalue::from_ptr(ptr)
+        }
+    }
+
    //pub fn gcc_jit_context_new_union_constructor(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, typ: *mut gcc_jit_type, field: *mut gcc_jit_field, value: *mut gcc_jit_rvalue) -> *mut gcc_jit_rvalue;
 
     pub fn new_struct_constructor<'a>(&'a self, loc: Option<Location<'a>>, struct_type: types::Type<'a>, fields: Option<&[Field<'a>]>, values: &[RValue<'a>]) -> RValue<'a> {
@@ -851,6 +866,22 @@ impl<'ctx> Context<'ctx> {
                 None => ptr::null_mut()
             };
             let ptr = gccjit_sys::gcc_jit_context_new_array_constructor(self.ptr, loc_ptr, types::get_ptr(&array_type), elements.len() as _, elements.as_ptr() as *mut *mut _);
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
+            rvalue::from_ptr(ptr)
+        }
+    }
+
+    pub fn new_vector_constructor<'a>(&'a self, loc: Option<Location<'a>>, vector_type: types::Type<'a>, elements: &[RValue<'a>]) -> RValue<'a> {
+        unsafe {
+            let loc_ptr = match loc {
+                Some(loc) => location::get_ptr(&loc),
+                None => ptr::null_mut()
+            };
+
+            let ptr = gccjit_sys::gcc_jit_context_new_vector_constructor(self.ptr, loc_ptr, types::get_ptr(&vector_type), elements.len() as _, elements.as_ptr() as *mut *mut _);
             #[cfg(debug_assertions)]
             if let Ok(Some(error)) = self.get_last_error() {
                 panic!("{}", error);
@@ -1020,6 +1051,23 @@ impl<'ctx> Context<'ctx> {
         unsafe {
             let cstr = CString::new(name_ref).unwrap();
             let ptr = gccjit_sys::gcc_jit_context_get_builtin_function(self.ptr,
+                                                                       cstr.as_ptr());
+            #[cfg(debug_assertions)]
+            if let Ok(Some(error)) = self.get_last_error() {
+                panic!("{}", error);
+            }
+            function::from_ptr(ptr)
+        }
+    }
+
+    /// Get a target-dependant builtin function from gcc. It's not clear what functions are
+    /// builtin and you'll likely need to consult the GCC internal docs
+    /// for a full list.
+    pub fn get_target_builtin_function<'a, S: AsRef<str>>(&'a self, name: S) -> Function<'a> {
+        let name_ref = name.as_ref();
+        unsafe {
+            let cstr = CString::new(name_ref).unwrap();
+            let ptr = gccjit_sys::gcc_jit_context_get_target_builtin_function(self.ptr,
                                                                        cstr.as_ptr());
             #[cfg(debug_assertions)]
             if let Ok(Some(error)) = self.get_last_error() {

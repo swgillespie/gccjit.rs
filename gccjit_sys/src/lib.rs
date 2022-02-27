@@ -573,4 +573,10 @@ extern {
 
     pub fn gcc_jit_lvalue_set_alignment(lvalue: *mut gcc_jit_lvalue, alignment: c_int);
     pub fn gcc_jit_lvalue_get_alignment(lvalue: *mut gcc_jit_lvalue) -> c_int;
+
+
+    pub fn gcc_jit_context_get_target_builtin_function(ctxt: *mut gcc_jit_context, name: *const c_char) -> *mut gcc_jit_function;
+
+    pub fn gcc_jit_context_new_rvalue_vector_perm(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, elements1: *mut gcc_jit_rvalue, elements2: *mut gcc_jit_rvalue, mask: *mut gcc_jit_rvalue) -> *mut gcc_jit_rvalue;
+    pub fn gcc_jit_context_new_vector_constructor(ctxt: *mut gcc_jit_context, loc: *mut gcc_jit_location, typ: *mut gcc_jit_type, num_values: size_t, values: *mut *mut gcc_jit_rvalue) -> *mut gcc_jit_rvalue;
 }
