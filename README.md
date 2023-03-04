@@ -21,7 +21,9 @@ There are four examples right now living in the `examples/` directory:
 * `square_function` - A square function, as a simple example for code generation,
 * `factorial` - A factorial function, as a more complicated example involving recursion and conditional jumps. gcc removes all recursion at O3.
 * `hello_world` - An example that invokes a function written in Rust from JIT-compiled code.
-* `brainfuck` - An ahead-of-time compiler for brainfuck. The speed is very impressive given how easy it was to setup with libgccjit. Some benchmarks, my compiler vs a naive interpreter I wrote in Haskell:
+* `brainfuck` - An ahead-of-time compiler for brainfuck. The speed is very impressive given how easy it was to setup with libgccjit.
+
+## Some benchmarks, my compiler vs a naive interpreter I wrote in Haskell:
 ```
 sierpinski_triangle, haskell:
    real     0m0.052s
